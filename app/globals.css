@@ -1,0 +1,353 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0f172a;
+  --secondary: #1e40af;
+  --accent: #06b6d4;
+  --success: #10b981;
+  --text-dark: #1e293b;
+  --light-gray: #f8fafc;
+}
+
+* {
+  @apply scroll-smooth;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-white text-text-dark;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-light-gray;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-accent text-white;
+}
+
+::-moz-selection {
+  @apply bg-accent text-white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  @apply animate-fade-in;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.slide-in-down {
+  animation: slideInDown 0.6s ease-out;
+}
+
+/* Link styles */
+a {
+  @apply transition-colors duration-300;
+}
+
+/* Button base styles */
+button {
+  @apply transition-all duration-300;
+}
+
+/* Form elements */
+input,
+textarea,
+select {
+  @apply transition-colors duration-300;
+}
+
+/* Utilities */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary to-secondary;
+}
+
+.gradient-accent {
+  @apply bg-gradient-to-r from-accent to-secondary;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+}
+
+/* ========================================================
+   COMPLETE LIGHT / WHITE THEME OVERRIDES
+   ======================================================== */
+
+/* 1. Global backgrounds & borders */
+body {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+.bg-slate-900, [class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.bg-slate-950, [class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Semi-transparent slate backgrounds */
+[class*="bg-slate-900/"], [class*="bg-slate-905/"], [class*="bg-slate-950/"], [class*="bg-slate-955/"] {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[class*="bg-slate-950/10"] {
+  background-color: rgba(6, 182, 212, 0.05) !important;
+}
+
+.bg-slate-100, .bg-slate-50 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.border-slate-700, .border-slate-800, .border-slate-850, .border-slate-900 {
+  border-color: #e2e8f0 !important;
+}
+
+/* 2. Text colors inside white-overridden zones */
+.bg-slate-900, .bg-slate-950, [class*="bg-slate-900"], [class*="bg-slate-950"] {
+  color: #334155 !important;
+}
+
+.bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, .bg-slate-900 h4,
+.bg-slate-955 h1, .bg-slate-955 h2, .bg-slate-955 h3, .bg-slate-955 h4,
+.bg-slate-950 h1, .bg-slate-950 h2, .bg-slate-950 h3, .bg-slate-950 h4,
+[class*="bg-slate-900"] h1, [class*="bg-slate-900"] h2, [class*="bg-slate-900"] h3, [class*="bg-slate-900"] h4,
+[class*="bg-slate-955"] h1, [class*="bg-slate-955"] h2, [class*="bg-slate-955"] h3, [class*="bg-slate-955"] h4,
+[class*="bg-slate-950"] h1, [class*="bg-slate-950"] h2, [class*="bg-slate-955"] h3, [class*="bg-slate-950"] h4,
+.bg-slate-900 strong, .bg-slate-950 strong,
+[class*="bg-slate-900"] strong, [class*="bg-slate-950"] strong,
+.bg-slate-900 th, .bg-slate-950 th,
+.bg-slate-900 dt, .bg-slate-950 dt {
+  color: #0f172a !important;
+}
+
+.bg-slate-900 p, .bg-slate-950 p,
+[class*="bg-slate-900"] p, [class*="bg-slate-955"] p, [class*="bg-slate-950"] p,
+.bg-slate-900 li, .bg-slate-950 li,
+[class*="bg-slate-900"] li, [class*="bg-slate-950"] li,
+.bg-slate-900 td, .bg-slate-950 td,
+.bg-slate-900 dd, .bg-slate-950 dd {
+  color: #475569 !important;
+}
+
+.bg-slate-900 span:not(.bg-gradient-to-r):not(.animate-pulse),
+.bg-slate-955 span:not(.bg-gradient-to-r):not(.animate-pulse),
+.bg-slate-950 span:not(.bg-gradient-to-r):not(.animate-pulse),
+[class*="bg-slate-900"] span:not(.bg-gradient-to-r):not(.animate-pulse),
+[class*="bg-slate-955"] span:not(.bg-gradient-to-r):not(.animate-pulse),
+[class*="bg-slate-950"] span:not(.bg-gradient-to-r):not(.animate-pulse) {
+  color: #64748b !important;
+}
+
+/* 3. Exceptions: keep specific highlighted items colored */
+.text-accent { color: #06b6d4 !important; }
+.text-cyan-400 { color: #0891b2 !important; }
+.text-cyan-600 { color: #0891b2 !important; }
+.text-cyan-500 { color: #06b6d4 !important; }
+.text-emerald-500 { color: #10b981 !important; }
+.text-emerald-400 { color: #10b981 !important; }
+.text-rose-500 { color: #f43f5e !important; }
+.text-secondary { color: #1e40af !important; }
+
+/* 4. Form elements inside overridden areas */
+.bg-slate-900 input, .bg-slate-900 textarea, .bg-slate-900 select,
+.bg-slate-950 input, .bg-slate-950 textarea, .bg-slate-950 select,
+[class*="bg-slate-900"] input, [class*="bg-slate-900"] textarea, [class*="bg-slate-900"] select,
+[class*="bg-slate-955"] input, [class*="bg-slate-955"] textarea, [class*="bg-slate-955"] select,
+[class*="bg-slate-950"] input, [class*="bg-slate-950"] textarea, [class*="bg-slate-950"] select {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.bg-slate-900 input::placeholder, .bg-slate-900 textarea::placeholder,
+.bg-slate-950 input::placeholder, .bg-slate-955 textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* 5. Custom Button Styling under light theme */
+.bg-slate-800, [class*="bg-slate-800"] {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+.bg-slate-800:hover, [class*="bg-slate-800"]:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Ensure active action links keep white text */
+a.bg-gradient-to-r, button.bg-gradient-to-r,
+a.bg-gradient-to-r *, button.bg-gradient-to-r * {
+  color: #ffffff !important;
+}
+
+/* 6. CAD Blueprint Specific Enhancements */
+svg.text-cyan-500 {
+  color: #0891b2 !important;
+}
+svg .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+svg .text-cyan-400 {
+  color: #06b6d4 !important;
+}
+svg text.font-bold {
+  fill: #0f172a !important;
+}
+
+/* Demo Credentials Box */
+[class*="bg-blue-955"], [class*="bg-blue-950"] {
+  background-color: rgba(30, 64, 175, 0.05) !important;
+  border-color: rgba(30, 64, 175, 0.15) !important;
+}
+[class*="bg-blue-955"] *, [class*="bg-blue-950"] * {
+  color: #1e40af !important;
+}
+
+/* 7. Client Portal Dashboard sidebar and active items */
+aside.bg-slate-900, aside[class*="bg-slate-900"] {
+  background-color: #f8fafc !important;
+  border-right-color: #e2e8f0 !important;
+}
+aside.bg-slate-900 *, aside[class*="bg-slate-900"] * {
+  color: #334155 !important;
+}
+aside.bg-slate-900 .text-accent, aside[class*="bg-slate-900"] .text-accent {
+  color: #06b6d4 !important;
+}
+aside.bg-slate-900 .text-white, aside[class*="bg-slate-900"] .text-white {
+  color: #0f172a !important;
+}
+aside.bg-slate-900 button.bg-slate-800, aside[class*="bg-slate-900"] button.bg-slate-800 {
+  background-color: #e2e8f0 !important;
+  border-color: transparent !important;
+  color: #0f172a !important;
+}
+aside.bg-slate-900 button.bg-slate-800 *, aside[class*="bg-slate-900"] button.bg-slate-800 * {
+  color: #0f172a !important;
+}
+main.bg-slate-950, main[class*="bg-slate-955"], main[class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+}
+
+/* Gradient overrides for white theme */
+.bg-slate-900, .bg-slate-950, [class*="bg-slate-900"], [class*="bg-slate-955"], [class*="bg-slate-950"],
+.from-slate-900, .to-slate-955, .to-slate-950, .from-primary, .to-slate-900 {
+  background-image: none !important;
+}
+
+.from-slate-900.to-slate-955,
+.from-slate-900.to-slate-950,
+.from-slate-900.to-slate-900,
+.from-primary.to-slate-900 {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Specific stats wrapper with dark gradient overrides */
+.bg-gradient-to-r.from-primary.to-slate-900 {
+  background-color: #f8fafc !important;
+  background-image: none !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Ensure text inside stats wrapper is dark */
+.bg-gradient-to-r.from-primary.to-slate-900 * {
+  color: #0f172a !important;
+}
+.bg-gradient-to-r.from-primary.to-slate-900 span {
+  color: #475569 !important;
+}
+.bg-gradient-to-r.from-primary.to-slate-900 span.text-white {
+  color: #0f172a !important;
+}
+
+/* Ensure general white text classes inside white-themed backgrounds are dark */
+.bg-slate-900 .text-white,
+.bg-slate-955 .text-white,
+.bg-slate-950 .text-white,
+[class*="bg-slate-900"] .text-white,
+[class*="bg-slate-955"] .text-white,
+[class*="bg-slate-950"] .text-white,
+.bg-slate-900 .text-slate-300,
+.bg-slate-950 .text-slate-300,
+.bg-slate-900 .text-slate-350,
+.bg-slate-950 .text-slate-350,
+.from-slate-900 .text-white,
+.to-slate-955 .text-white,
+.to-slate-950 .text-white {
+  color: #334155 !important;
+}
+
+/* Logo custom inversion to fit light theme */
+.logo-light-theme {
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: multiply;
+}
