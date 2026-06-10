@@ -30,8 +30,8 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/98 backdrop-blur-md supports-[backdrop-filter]:bg-white/95 transition-all duration-300 shadow-sm">
-      <div className="container-custom flex h-20 items-center justify-between">
+    <header className="sticky top-3 md:top-5 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
+      <div className="container-custom flex h-20 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
           <img src="/kork_logo.jpg" alt="KORK InventReX Logo" className="h-11 w-auto max-w-[160px] logo-light-theme" />
@@ -46,8 +46,8 @@ export default function Header() {
               className={cn(
                 'text-sm font-semibold tracking-wide relative py-2 transition-colors duration-300',
                 isActive(item.href)
-                  ? 'text-secondary dark:text-accent font-bold'
-                  : 'text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-white'
+                  ? 'text-secondary dark:text-accent font-extrabold'
+                  : 'text-secondary hover:text-blue-800 dark:text-slate-300 dark:hover:text-white font-bold'
               )}
             >
               {item.label}
@@ -103,8 +103,8 @@ export default function Header() {
                   className={cn(
                     'text-base font-semibold py-2 px-3 rounded-lg transition-colors',
                     isActive(item.href)
-                      ? 'bg-slate-100 text-secondary dark:bg-slate-900 dark:text-accent font-bold'
-                      : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900'
+                      ? 'bg-slate-100 text-secondary dark:bg-slate-900 dark:text-accent font-extrabold'
+                      : 'text-secondary hover:bg-slate-50 hover:text-blue-800 dark:text-slate-300 dark:hover:bg-slate-900 font-bold'
                   )}
                 >
                   {item.label}

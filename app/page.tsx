@@ -174,11 +174,12 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen dark:bg-slate-950 transition-colors duration-300">
       
       {/* 1. HERO SECTION */}
-      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-slate-900 text-white">
-        {/* Grid Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none" />
+      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-slate-50 text-slate-900">
+        {/* Beautiful Light Mesh Overlay */}
+        <div className="absolute inset-0 bg-white" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.08)_1.5px,transparent_1.5px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] opacity-80" />
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-200/40 to-blue-100/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-cyan-200/30 to-emerald-100/20 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: '1s' }} />
 
         <div className="container-custom relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Hero Content */}
@@ -187,9 +188,9 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-secondary text-xs font-bold uppercase tracking-wider"
             >
-              <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse-glow" />
+              <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse-glow" />
               Integrated IP & Patent Support Platform
             </motion.div>
             
@@ -209,7 +210,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-slate-300 leading-relaxed max-w-2xl"
+              className="text-lg text-slate-600 leading-relaxed max-w-2xl"
             >
               One platform coordinating patent searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.
             </motion.p>
@@ -236,46 +237,93 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Hero Graphic - Interactive 3D Mockup with Scroll Animation */}
-          <div className="lg:col-span-5 relative [perspective:1200px]">
+          {/* Hero Graphic - Smooth Continuous Floating Animation */}
+          <div className="lg:col-span-5 relative h-[400px] md:h-[500px] w-full flex items-center justify-center [perspective:1200px]">
             <motion.div
-              style={{
-                rotateX,
-                rotateY,
-                rotateZ,
-                scale,
-                transformStyle: "preserve-3d"
+              animate={{ 
+                y: [-20, 20, -20],
+                rotateX: [15, 20, 15],
+                rotateY: [-15, -10, -15]
               }}
-              className="relative rounded-2xl border border-slate-800 bg-slate-950/70 p-4 backdrop-blur-md shadow-2xl overflow-hidden"
+              transition={{ 
+                repeat: Infinity, 
+                duration: 6, 
+                ease: "easeInOut" 
+              }}
+              style={{ transformStyle: "preserve-3d" }}
+              className="relative w-4/5 md:w-full max-w-md mx-auto"
             >
-              {/* Drawing Sheet border details */}
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 text-[10px] text-slate-500 font-mono">
-                <div className="flex items-center space-x-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>CAD VIEWER ACTIVE</span>
+              {/* Main Floating Object (Simulated 3D Blueprint/Document) */}
+              <div className="relative rounded-2xl border border-white/40 bg-white/60 p-3 backdrop-blur-xl shadow-2xl overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/40 before:to-transparent before:pointer-events-none">
+                <div className="relative rounded-xl overflow-hidden bg-slate-50 border border-slate-200">
+                  {/* We use the blueprint image but style it cleanly as a floating document */}
+                  <img 
+                    src="/blueprint-1.png" 
+                    alt="Patent Blueprint View" 
+                    className="w-full h-auto object-cover opacity-90"
+                    style={{ filter: 'brightness(1.05) contrast(1.1)' }}
+                  />
+                  
+                  {/* Shimmer/Reflection effect on the document */}
+                  <motion.div 
+                    animate={{ 
+                      x: ['-100%', '200%'],
+                      opacity: [0, 0.5, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 4,
+                      ease: "linear",
+                      delay: 1
+                    }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent skew-x-12"
+                  />
                 </div>
-                <span>SCALE: 1:1 (INCHES)</span>
               </div>
 
-              {/* Patent blueprint rotating images */}
-              <div className="relative border border-dashed border-slate-800 bg-slate-950 p-2 rounded flex gap-4 overflow-hidden">
-                <img 
-                  src="/blueprint-1.png" 
-                  alt="Patent Blueprint View 1" 
-                  className="w-full h-auto rounded object-cover shadow-[0_0_20px_rgba(6,182,212,0.15)] ring-1 ring-slate-800"
-                />
-              </div>
+              {/* Decorative Floating Elements (Seals/Badges) around the main object */}
+              <motion.div
+                animate={{ y: [10, -10, 10], rotate: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -top-6 -right-6 bg-white border border-slate-100 shadow-xl rounded-2xl p-4 flex items-center gap-3 backdrop-blur-md"
+              >
+                <div className="bg-emerald-100 text-emerald-600 p-2 rounded-full">
+                  <ShieldCheck size={24} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-800">Protected</span>
+                  <span className="text-[10px] text-slate-500">IP Secured</span>
+                </div>
+              </motion.div>
 
-              {/* Status footer mock */}
-              <div className="mt-4 flex items-center justify-between font-mono text-[9px] text-slate-400 bg-slate-950 p-2.5 rounded border border-slate-900">
-                <span className="text-accent">NDA PROTECTED SESSION</span>
-                <span>SYSTEM VERSION 2.4</span>
-              </div>
+              <motion.div
+                animate={{ y: [-15, 15, -15], rotate: [0, -5, 0] }}
+                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
+                className="absolute -bottom-8 -left-6 bg-white border border-slate-100 shadow-xl rounded-2xl p-4 flex items-center gap-3 backdrop-blur-md"
+              >
+                <div className="bg-blue-100 text-secondary p-2 rounded-full">
+                  <Award size={24} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-800">USPTO Ready</span>
+                  <span className="text-[10px] text-slate-500">100% Compliant</span>
+                </div>
+              </motion.div>
+
+              {/* Dynamic Shadow under the floating object */}
+              <motion.div
+                animate={{ 
+                  scale: [1, 0.8, 1],
+                  opacity: [0.3, 0.1, 0.3]
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 6, 
+                  ease: "easeInOut" 
+                }}
+                className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-blue-900/30 blur-2xl rounded-full"
+              />
             </motion.div>
-
-            {/* Glowing orbs */}
-            <div className="absolute -top-4 -left-4 w-16 h-16 bg-blue-500/20 rounded-full blur-xl pointer-events-none" />
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-cyan-500/20 rounded-full blur-xl pointer-events-none" />
           </div>
         </div>
       </section>
