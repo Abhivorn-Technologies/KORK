@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { 
   FileText,
   Search,
@@ -63,6 +63,12 @@ function Counter({ value, suffix = '' }: { value: number; suffix?: string }) {
 }
 
 export default function HomePage() {
+  const { scrollYProgress } = useScroll();
+  const rotateX = useTransform(scrollYProgress, [0, 0.15], [30, 0]);
+  const rotateY = useTransform(scrollYProgress, [0, 0.15], [-20, 0]);
+  const rotateZ = useTransform(scrollYProgress, [0, 0.15], [10, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.15], [0.8, 1]);
+
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -230,13 +236,17 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Hero Graphic - Interactive Patent Blueprint Mockup */}
-          <div className="lg:col-span-5 relative">
+          {/* Hero Graphic - Interactive 3D Mockup with Scroll Animation */}
+          <div className="lg:col-span-5 relative [perspective:1200px]">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="relative rounded-2xl border border-slate-800 bg-slate-950/70 p-6 backdrop-blur-md shadow-2xl overflow-hidden"
+              style={{
+                rotateX,
+                rotateY,
+                rotateZ,
+                scale,
+                transformStyle: "preserve-3d"
+              }}
+              className="relative rounded-2xl border border-slate-800 bg-slate-950/70 p-4 backdrop-blur-md shadow-2xl overflow-hidden"
             >
               {/* Drawing Sheet border details */}
               <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 text-[10px] text-slate-500 font-mono">
@@ -247,63 +257,13 @@ export default function HomePage() {
                 <span>SCALE: 1:1 (INCHES)</span>
               </div>
 
-              {/* Patent blueprint drawing grid */}
-              <div className="relative border border-dashed border-slate-800 bg-slate-950 p-2 rounded">
-                <svg viewBox="0 0 500 360" className="w-full h-auto text-cyan-500 stroke-current select-none" fill="none">
-                  {/* Blueprint Grid */}
-                  <defs>
-                    <pattern id="blueprint-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.08" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#blueprint-grid)" className="text-cyan-500/10" />
-
-                  {/* Mechanical patent details */}
-                  <circle cx="250" cy="170" r="75" strokeWidth="1.5" strokeDasharray="6,4" className="text-slate-600" />
-                  <circle cx="250" cy="170" r="55" strokeWidth="2" className="text-cyan-400" />
-                  <circle cx="250" cy="170" r="35" strokeWidth="1.5" />
-                  <circle cx="250" cy="170" r="12" strokeWidth="2.5" />
-
-                  {/* Gear teeth representations */}
-                  {Array.from({ length: 12 }).map((_, i) => {
-                    const angle = (i * 30 * Math.PI) / 180;
-                    const x1 = 250 + 55 * Math.cos(angle);
-                    const y1 = 170 + 55 * Math.sin(angle);
-                    const x2 = 250 + 68 * Math.cos(angle);
-                    const y2 = 170 + 68 * Math.sin(angle);
-                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth="2" className="text-cyan-400" />;
-                  })}
-
-                  {/* Axes lines */}
-                  <line x1="80" y1="170" x2="420" y2="170" strokeWidth="1" strokeDasharray="4,4" className="text-slate-600" />
-                  <line x1="250" y1="50" x2="250" y2="290" strokeWidth="1" strokeDasharray="4,4" className="text-slate-600" />
-
-                  {/* Bracket housings */}
-                  <path d="M 120 120 L 155 120 L 155 220 L 120 220" strokeWidth="1.5" />
-                  <path d="M 380 120 L 345 120 L 345 220 L 380 220" strokeWidth="1.5" />
-
-                  {/* Dimension lines & Callouts */}
-                  {/* Item 10 */}
-                  <line x1="210" y1="140" x2="140" y2="90" strokeWidth="1" className="text-slate-400" />
-                  <circle cx="140" cy="90" r="10" fill="white" className="dark:fill-slate-900" strokeWidth="1.5" />
-                  <text x="140" y="93.5" textAnchor="middle" fontSize="10" className="fill-slate-950 dark:fill-white font-bold font-mono">10</text>
-
-                  {/* Item 12 */}
-                  <line x1="250" y1="170" x2="290" y2="90" strokeWidth="1" className="text-slate-400" />
-                  <circle cx="290" cy="90" r="10" fill="white" className="dark:fill-slate-900" strokeWidth="1.5" />
-                  <text x="290" y="93.5" textAnchor="middle" fontSize="10" className="fill-slate-950 dark:fill-white font-bold font-mono">12</text>
-
-                  {/* Item 14 */}
-                  <line x1="345" y1="170" x2="390" y2="230" strokeWidth="1" className="text-slate-400" />
-                  <circle cx="390" cy="230" r="10" fill="white" className="dark:fill-slate-900" strokeWidth="1.5" />
-                  <text x="390" y="233.5" textAnchor="middle" fontSize="10" className="fill-slate-950 dark:fill-white font-bold font-mono">14</text>
-                  
-                  {/* FIG block */}
-                  <rect x="15" y="295" width="130" height="50" rx="3" strokeWidth="1" className="text-slate-800" />
-                  <text x="25" y="310" fontSize="8" className="fill-slate-400 font-mono">FIG. 1</text>
-                  <text x="25" y="323" fontSize="8" className="fill-slate-400 font-mono">USPTO UTILITY DWG</text>
-                  <text x="25" y="335" fontSize="8" className="fill-slate-400 font-mono">CLIENT PORTAL VERIFIED</text>
-                </svg>
+              {/* Patent blueprint rotating images */}
+              <div className="relative border border-dashed border-slate-800 bg-slate-950 p-2 rounded flex gap-4 overflow-hidden">
+                <img 
+                  src="/blueprint-1.png" 
+                  alt="Patent Blueprint View 1" 
+                  className="w-full h-auto rounded object-cover shadow-[0_0_20px_rgba(6,182,212,0.15)] ring-1 ring-slate-800"
+                />
               </div>
 
               {/* Status footer mock */}
