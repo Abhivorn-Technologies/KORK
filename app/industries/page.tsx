@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   HeartPulse, 
   ShoppingBag, 
@@ -114,9 +115,8 @@ export default function IndustriesPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-20 bg-slate-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35" />
 
         <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
@@ -167,9 +167,14 @@ export default function IndustriesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {industries.map((ind, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className="group p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-850 hover:border-accent/20 hover:shadow-card hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card group p-8 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 hover:border-accent/30 shadow-sm hover:shadow-xl transition-shadow transition-colors duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 text-secondary dark:text-accent group-hover:scale-105 transition-transform">
@@ -196,7 +201,7 @@ export default function IndustriesPage() {
                     <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-normal font-normal">{ind.challenges}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -215,37 +220,49 @@ export default function IndustriesPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-normal">
-            <div className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start gap-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} whileHover={{ y: -4, scale: 1.02 }}
+              className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
+            >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-primary dark:text-white text-sm">Patent Search Coordination</h4>
                 <p className="text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">Identify relevant prior art and evaluate patentability before investing budget in application packages.</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start gap-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} whileHover={{ y: -4, scale: 1.02 }}
+              className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
+            >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-primary dark:text-white text-sm">Patent Illustration Services</h4>
                 <p className="text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">Utility, design, plant, trademark, and trade dress figures drafted strictly in accordance with USPTO rules.</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start gap-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} whileHover={{ y: -4, scale: 1.02 }}
+              className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
+            >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-primary dark:text-white text-sm">Filing Coordination</h4>
                 <p className="text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">Coordinate provisional, non-provisional, design, and international applications through registered practitioners.</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start gap-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} whileHover={{ y: -4, scale: 1.02 }}
+              className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
+            >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-primary dark:text-white text-sm">Office Action Response Support</h4>
                 <p className="text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">Amend claims, revise drawing sheets, track responses, and coordinate with examiners during prosecution.</p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -263,20 +280,29 @@ export default function IndustriesPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs font-normal">
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} whileHover={{ y: -6, scale: 1.02 }}
+              className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
+            >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Inventors</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Structured guides, worksheets, and search tools designed to translate raw ideas into protected patent assets.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} whileHover={{ y: -6, scale: 1.02 }}
+              className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
+            >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Startups</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Cost-effective provisional hold applications, trademark lock-ins, and IP audit consultations to back funding pitches.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} whileHover={{ y: -6, scale: 1.02 }}
+              className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
+            >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Attorneys & Agents</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Outsource time-consuming CAD/vector illustration sheets drafting, drawings amendments, and intake coordination.</p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -324,31 +350,39 @@ export default function IndustriesPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative py-20 bg-slate-950 text-white overflow-hidden text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-3xl font-black tracking-tight text-white">
-            Innovation Happens Across Every Industry
-          </h2>
-          <p className="text-sm text-slate-350 leading-relaxed max-w-xl mx-auto">
-            Protect your ideas with a structured intellectual property workflow designed to support inventors, startups, businesses, and innovation teams.
-          </p>
-          <div className="flex justify-center gap-4 pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Innovation Happens Across Every Industry
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Protect your ideas with a structured intellectual property workflow designed to support inventors, startups, businesses, and innovation teams.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact?type=assessment"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
             >
               Start Free Assessment
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=discuss"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 transform hover:-translate-y-0.5 transition-all"
             >
               Discuss Your Innovation
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

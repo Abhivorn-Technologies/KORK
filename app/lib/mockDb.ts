@@ -9,9 +9,9 @@ const initialProducts: Product[] = [
     slug: 'idea-evaluation-package',
     description: 'Best for inventors exploring whether their invention is worth pursuing. Includes prior art search coordination, patentability review, and innovation readiness assessment.',
     category: 'Inventor Packages',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/idea_evaluation.png',
     gallery: [
-      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80',
+      '/images/packages/idea_evaluation.png',
       'https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=80'
     ],
     featured: true,
@@ -36,9 +36,9 @@ const initialProducts: Product[] = [
     slug: 'provisional-patent-package',
     description: 'Best for inventors seeking an early filing date while continuing product development. Establishes a "patent pending" status valid for 12 months.',
     category: 'Inventor Packages',
-    image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/provisional_patent.png',
     gallery: [
-      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80',
+      '/images/packages/provisional_patent.png',
       'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&auto=format&fit=crop&q=80'
     ],
     featured: true,
@@ -63,9 +63,9 @@ const initialProducts: Product[] = [
     slug: 'utility-patent-package',
     description: 'Best for inventors ready to pursue full patent protection for functional features, systems, processes, and mechanical/electrical assemblies.',
     category: 'Inventor Packages',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/utility_patent.png',
     gallery: [
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&auto=format&fit=crop&q=80',
+      '/images/packages/utility_patent.png',
       'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
     ],
     featured: true,
@@ -90,9 +90,9 @@ const initialProducts: Product[] = [
     slug: 'design-patent-package',
     description: 'Best for protecting the unique visual appearance and ornamental design features of a product or device.',
     category: 'Inventor Packages',
-    image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/design_patent.png',
     gallery: [
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop&q=80'
+      '/images/packages/design_patent.png'
     ],
     featured: false,
     createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
@@ -116,9 +116,9 @@ const initialProducts: Product[] = [
     slug: 'trademark-protection-package',
     description: 'Best for businesses seeking brand protection for names, logos, slogans, and trade dress packages.',
     category: 'Brand Packages',
-    image: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/trademark_protection.png',
     gallery: [
-      'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&auto=format&fit=crop&q=80'
+      '/images/packages/trademark_protection.png'
     ],
     featured: false,
     createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString(),
@@ -142,9 +142,9 @@ const initialProducts: Product[] = [
     slug: 'complete-ip-launch-package',
     description: 'Best for startups and emerging companies launching a new product. Provides comprehensive protection for technology and brand.',
     category: 'Startup Packages',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80',
+    image: '/images/packages/complete_ip_launch.png',
     gallery: [
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
+      '/images/packages/complete_ip_launch.png'
     ],
     featured: true,
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
@@ -311,8 +311,8 @@ const setStoredData = <T>(key: string, data: T): void => {
 };
 
 export const mockDb = {
-  getProducts: (): Product[] => getStoredData<Product[]>('mock_products', initialProducts),
-  saveProducts: (products: Product[]) => setStoredData('mock_products', products),
+  getProducts: (): Product[] => getStoredData<Product[]>('mock_products_v2', initialProducts),
+  saveProducts: (products: Product[]) => setStoredData('mock_products_v2', products),
   
   getBlogs: (): Blog[] => getStoredData<Blog[]>('mock_blogs', initialBlogs),
   saveBlogs: (blogs: Blog[]) => setStoredData('mock_blogs', blogs),

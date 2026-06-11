@@ -44,7 +44,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-slate-950 text-slate-400 border-t border-slate-900 transition-colors duration-300 pt-20 pb-8 overflow-hidden">
+    <footer id="main-footer" className="relative bg-blue-950 text-slate-400 border-t border-blue-900/50 transition-colors duration-300 pt-20 pb-8 overflow-hidden">
       {/* Visual background details */}
       <div className="absolute top-0 right-0 -mt-20 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 -mb-20 w-[300px] h-[300px] bg-cyan-900/10 rounded-full blur-[80px] pointer-events-none" />
@@ -54,17 +54,7 @@ export default function Footer() {
           {/* Company Brief & Newsletter */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-accent text-white shadow-md shadow-blue-500/20">
-                <span className="text-lg font-black tracking-tighter">KI</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-bold tracking-tight text-white leading-none">
-                  KORK INVENTREX
-                </span>
-                <span className="text-[9px] font-semibold tracking-widest text-accent uppercase leading-none mt-1">
-                  Technologies
-                </span>
-              </div>
+              <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-12 w-auto max-w-[200px]" />
             </Link>
             
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -104,6 +94,7 @@ export default function Footer() {
               ) : (
                 <form onSubmit={handleSubscribe} className="flex max-w-sm rounded-lg overflow-hidden border border-slate-800 bg-slate-900/60 focus-within:border-accent transition-colors">
                   <input
+                    suppressHydrationWarning
                     type="email"
                     required
                     placeholder="Enter your email"
@@ -112,6 +103,7 @@ export default function Footer() {
                     className="flex-1 px-4 py-2.5 bg-transparent border-0 text-sm text-white placeholder-slate-500 focus:ring-0 focus:outline-none"
                   />
                   <button
+                    suppressHydrationWarning
                     type="submit"
                     disabled={loading}
                     className="px-4 bg-gradient-to-r from-secondary to-accent hover:opacity-95 text-white flex items-center justify-center disabled:opacity-50 transition-opacity"
@@ -283,6 +275,7 @@ export default function Footer() {
               Terms of Service
             </Link>
             <button
+              suppressHydrationWarning
               onClick={scrollToTop}
               className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-800 hover:bg-accent hover:text-white transition-all shadow-md"
               title="Scroll to Top"

@@ -6,7 +6,6 @@ import Footer from '@/components/footer/Footer';
 import WhatsAppButton from '@/components/common/WhatsAppButton';
 import GoogleAnalytics from '@/components/common/GoogleAnalytics';
 import { ToastProvider } from '@/components/common/Toast';
-
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -64,14 +63,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/new_fevi.png" />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ToastProvider>
           <Header />
           <main>{children}</main>

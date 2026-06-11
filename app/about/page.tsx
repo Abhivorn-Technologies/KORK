@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Target, Eye, ShieldCheck, Heart, Award, ArrowUpRight, Scale, Users } from 'lucide-react';
+import { Target, Eye, ShieldCheck, Heart, Award, ArrowUpRight, ArrowRight, Scale, Users } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AboutPage() {
@@ -143,7 +143,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             
             {/* Mission */}
-            <div className="bg-white dark:bg-slate-950 p-8 rounded-2xl border border-slate-100 dark:border-slate-850 shadow-card flex gap-6 items-start">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="shine-card bg-white dark:bg-slate-950 p-8 rounded-2xl border border-slate-100 dark:border-slate-850 shadow-card hover:border-accent/30 flex gap-6 items-start transition-shadow transition-colors"
+            >
               <div className="h-12 w-12 rounded-xl bg-blue-500/10 text-secondary dark:text-accent flex items-center justify-center shrink-0">
                 <Target size={24} />
               </div>
@@ -153,10 +160,17 @@ export default function AboutPage() {
                   To democratize access to high-quality patent support services. We strive to provide inventors and startups with secure tools, compliant drawings, and expert coordination to minimize the cost of protecting their ideas.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Vision */}
-            <div className="bg-white dark:bg-slate-950 p-8 rounded-2xl border border-slate-100 dark:border-slate-850 shadow-card flex gap-6 items-start">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="shine-card bg-white dark:bg-slate-950 p-8 rounded-2xl border border-slate-100 dark:border-slate-850 shadow-card hover:border-accent/30 flex gap-6 items-start transition-shadow transition-colors"
+            >
               <div className="h-12 w-12 rounded-xl bg-cyan-500/10 text-accent flex items-center justify-center shrink-0">
                 <Eye size={24} />
               </div>
@@ -166,7 +180,7 @@ export default function AboutPage() {
                   To build the most secure and intuitive digital workspace coordinating inventors and patent attorneys globally. We aim to reduce USPTO objection rates for drawings to absolute zero.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>
@@ -183,14 +197,22 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
-            {values.map((v) => (
-              <div key={v.title} className="p-6 rounded-2xl bg-light-gray dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-3">
+            {values.map((v, idx) => (
+              <motion.div 
+                key={v.title} 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card p-6 rounded-2xl bg-light-gray dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-3 hover:border-accent/30 transition-shadow transition-colors shadow-sm"
+              >
                 <div className="h-10 w-10 rounded-lg bg-secondary/10 dark:bg-accent/10 text-secondary dark:text-accent flex items-center justify-center">
                   <v.icon size={20} />
                 </div>
                 <h3 className="text-base font-bold text-primary dark:text-white">{v.title}</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{v.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -254,10 +276,15 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {leadership.map((member) => (
-              <div
+            {leadership.map((member, idx) => (
+              <motion.div
                 key={member.name}
-                className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-950 shadow-card hover:shadow-card-hover transition-all duration-300 text-left"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card group flex flex-col rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-950 shadow-card hover:shadow-card-hover hover:border-accent/30 transition-shadow transition-colors text-left"
               >
                 <div className="relative h-64 w-full bg-slate-100 dark:bg-slate-900 overflow-hidden">
                   <img
@@ -290,32 +317,46 @@ export default function AboutPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* About CTA */}
-      <section className="relative py-20 bg-slate-950 overflow-hidden text-center text-white border-t border-slate-900">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-3xl space-y-6">
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Ready to Protect Your Innovation?
-          </h2>
-          <p className="text-slate-350 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Get started by scheduling an initial consultation or submitting your idea for a prior art search review under a secure NDA.
-          </p>
-          <div className="pt-4">
+      {/* FINAL CTA */}
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Ready to Protect Your Innovation?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Get started by scheduling an initial consultation or submitting your idea for a prior art search review under a secure NDA.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              href="/contact?type=assessment"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
             >
-              Start Your Project
-              <ArrowUpRight size={16} />
+              Start Free Assessment
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/contact?type=discuss"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 transform hover:-translate-y-0.5 transition-all"
+            >
+              Discuss Your Innovation
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

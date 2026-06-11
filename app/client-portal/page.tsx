@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
   Layers, 
@@ -81,6 +83,20 @@ export default function ClientPortalPage() {
         }));
         setActiveProjects(prev => [...mappedProjects, ...prev]);
       }
+    }
+  }, [isAuthenticated]);
+
+  // Hide the global header and footer ONLY when logged into the dashboard
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isAuthenticated) {
+        document.body.classList.add('portal-dashboard-active');
+      } else {
+        document.body.classList.remove('portal-dashboard-active');
+      }
+      return () => {
+        document.body.classList.remove('portal-dashboard-active');
+      };
     }
   }, [isAuthenticated]);
 
@@ -165,82 +181,146 @@ export default function ClientPortalPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 relative overflow-hidden font-sans">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-20" />
+      <div className="flex h-screen w-full bg-slate-950 font-sans overflow-hidden">
         
-        <div className="relative z-10 w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
-          <div className="text-center space-y-2">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-accent text-white font-black text-xl shadow-lg shadow-blue-500/25">
-              KI
+        {/* LEFT SIDE: Info Section (Dark Mode) */}
+        <div className="relative hidden md:flex w-1/2 lg:w-[55%] h-full flex-col justify-center p-12 lg:p-20 overflow-hidden">
+          {/* Animated Background Glows */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_50%)] opacity-30" />
+          <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+          
+          <div className="relative z-10 space-y-12 max-w-lg">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
+                Authorized Access Only
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                Secure Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Workspace</span>
+              </h1>
+              <p className="text-base text-slate-350 leading-relaxed">
+                Log in to coordinate filings, review secure CAD drawings, and communicate directly with your assigned intellectual property professionals.
+              </p>
             </div>
-            <h1 className="text-xl font-bold text-white tracking-tight pt-2">KORK Control Portal</h1>
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Secure Intellectual Property Gateway</p>
-          </div>
 
-          <div className="bg-blue-950/20 border border-blue-900/30 rounded-xl p-4 text-xs text-slate-350">
-            <span className="font-bold block text-accent mb-0.5">Demo Gateway Credentials:</span>
-            <span>Username: <strong className="text-white">client@kork.com</strong><br />Password: <strong className="text-white">clientpassword</strong></span>
+            <div className="space-y-6">
+              <div className="flex gap-4 items-start">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-950 border border-blue-900/50 text-accent">
+                  <ShieldCheck size={20} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white">Military-Grade Encryption</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mt-1">All design files, sketches, and communications are secured via SSL and restricted database rules.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-950 border border-blue-900/50 text-accent">
+                  <Clock size={20} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white">Real-Time Milestone Tracking</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mt-1">Monitor the exact status of your prior art searches, illustrations, and patent application drafting.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-950 border border-blue-900/50 text-accent">
+                  <MessageSquare size={20} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white">Direct Professional Access</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mt-1">Submit secure support tickets and chat directly with applications engineers and draftsmen.</p>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Secure Username</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-505" size={16} />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="client@kork.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-650"
-                />
+        {/* RIGHT SIDE: Login Form (Light Mode) */}
+        <div className="relative w-full md:w-1/2 lg:w-[45%] h-full bg-white flex flex-col justify-center items-center p-6 sm:p-12">
+          
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="w-full max-w-sm space-y-5"
+          >
+            {/* Logo */}
+            <div className="flex flex-col items-center text-center space-y-4 pb-1">
+              <Link href="/">
+                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-9 w-auto object-contain cursor-pointer" />
+              </Link>
+              <div>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">Welcome Back</h2>
+                <p className="text-[11px] text-slate-500 font-semibold mt-0.5">Sign in to your client portal</p>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Secure Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-505" size={16} />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-655"
-                />
+            <form onSubmit={handleLoginSubmit} className="space-y-4 text-sm">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">Secure Username</label>
+                <div className="relative group">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent transition-colors" size={16} />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="client@kork.com"
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-slate-900 focus:outline-none placeholder-slate-400 transition-all shadow-sm text-xs"
+                  />
+                </div>
               </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">Secure Password</label>
+                <div className="relative group">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent transition-colors" size={16} />
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-slate-900 focus:outline-none placeholder-slate-400 transition-all shadow-sm text-xs"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-secondary to-accent hover:opacity-95 text-white font-black tracking-wide shadow-lg shadow-blue-500/20 disabled:opacity-50 flex items-center justify-center transition-all transform hover:-translate-y-0.5 text-xs"
+              >
+                {loading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    Authenticating Port...
+                  </>
+                ) : (
+                  'Secure Authentication Login'
+                )}
+              </button>
+            </form>
+
+            <div className="relative flex py-1 items-center">
+              <div className="flex-grow border-t border-slate-200" />
+              <span className="flex-shrink mx-4 text-[9px] text-slate-400 font-bold uppercase tracking-widest">Or</span>
+              <div className="flex-grow border-t border-slate-200" />
             </div>
 
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-secondary to-accent hover:opacity-95 text-white font-bold shadow-lg shadow-blue-500/10 disabled:opacity-50 flex items-center justify-center"
+              onClick={enterSandboxMode}
+              className="w-full py-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 font-bold text-xs transition-all flex justify-center items-center gap-2 group shadow-sm"
             >
-              {loading ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  Authenticating Port...
-                </>
-              ) : (
-                'Secure Authentication Login'
-              )}
+              Access Sandbox Mode <ArrowUpRight size={14} className="text-slate-400 group-hover:text-accent transition-colors" />
             </button>
-          </form>
-
-          <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-slate-800" />
-            <span className="flex-shrink mx-4 text-[10px] text-slate-500 font-bold uppercase">Or</span>
-            <div className="flex-grow border-t border-slate-800" />
-          </div>
-
-          <button
-            onClick={enterSandboxMode}
-            className="w-full py-3 rounded-xl border border-slate-850 bg-slate-950/40 hover:bg-slate-950 text-slate-300 hover:text-white font-bold text-xs transition-colors"
-          >
-            Access Sandbox Mode
-          </button>
+            
+            <div className="text-center pt-2">
+              <Link href="/" className="text-[9px] text-slate-500 hover:text-accent font-bold uppercase tracking-wider transition-colors">
+                &larr; Return to Homepage
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     );

@@ -186,7 +186,14 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Without Coordination */}
-            <div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-850 rounded-2xl p-8 space-y-6 text-left">
+            <motion.div 
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="shine-card bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-850 rounded-2xl p-8 space-y-6 text-left"
+            >
               <div className="flex items-center gap-2 text-rose-500 font-bold">
                 <XCircle size={22} />
                 <span>The Legacy Fragmented Pipeline</span>
@@ -205,10 +212,17 @@ export default function ServicesPage() {
                   <p><strong>Escalated Costs:</strong> Inconsistencies force attorneys to rewrite specifications, resulting in duplicate hourly bills and missed priority deadlines.</p>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
             {/* With KORK */}
-            <div className="bg-slate-900 text-white border border-slate-800 rounded-2xl p-8 space-y-6 relative overflow-hidden text-left">
+            <motion.div 
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="shine-card bg-slate-900 text-white border border-slate-800 rounded-2xl p-8 space-y-6 relative overflow-hidden text-left"
+            >
               <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
               <div className="flex items-center gap-2 text-accent font-bold relative z-10">
                 <CheckCircle size={22} />
@@ -228,28 +242,30 @@ export default function ServicesPage() {
                   <p><strong>Transparent Pricing:</strong> Upfront fixed-cost inventor packages replace open-ended attorney billable hours, saving thousands.</p>
                 </li>
               </ul>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Tabs Layout */}
       <section className="py-20 bg-light-gray dark:bg-slate-900 transition-colors duration-300">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="container-custom space-y-12">
           
-          {/* Left Tab Buttons */}
-          <div className="lg:col-span-4 space-y-3 text-left">
-            <h3 className="text-xs font-bold text-accent uppercase tracking-widest pl-2 mb-4">
+          {/* Top Tab Buttons */}
+          <div className="space-y-4 text-center">
+            <h3 className="text-xs font-bold text-accent uppercase tracking-widest mb-4">
               Core Pillars
             </h3>
-            <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 scrollbar-none shrink-0">
+            <div className="flex flex-wrap justify-center gap-3">
               {servicesData.map((svc) => {
                 const Icon = svc.icon;
                 const isSelected = svc.id === activeTab;
                 return (
-                  <button
+                  <motion.button
                     key={svc.id}
                     onClick={() => setActiveTab(svc.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-bold transition-all whitespace-nowrap lg:whitespace-normal shrink-0 border ${
                       isSelected
                         ? 'bg-gradient-to-r from-secondary to-blue-700 text-white border-transparent shadow-lg shadow-blue-500/10'
@@ -258,14 +274,14 @@ export default function ServicesPage() {
                   >
                     <Icon size={18} className={isSelected ? 'text-white' : 'text-slate-400'} />
                     <span>{svc.title}</span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
           </div>
 
-          {/* Right Active Tab Content */}
-          <div className="lg:col-span-8 text-left">
+          {/* Full Width Active Tab Content */}
+          <div className="text-left w-full">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -293,9 +309,12 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Benefits & Process side-by-side */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Benefits */}
-                  <div className="space-y-4">
+                  <motion.div 
+                    whileHover={{ y: -6, scale: 1.02 }}
+                    className="shine-card space-y-4 p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-sm"
+                  >
                     <h3 className="text-lg font-bold text-primary dark:text-white flex items-center gap-2">
                       <CheckCircle size={18} className="text-emerald-500" />
                       Key Benefits
@@ -308,10 +327,13 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
 
                   {/* Process */}
-                  <div className="space-y-4">
+                  <motion.div 
+                    whileHover={{ y: -6, scale: 1.02 }}
+                    className="shine-card space-y-4 p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-sm"
+                  >
                     <h3 className="text-lg font-bold text-primary dark:text-white flex items-center gap-2">
                       <Workflow size={18} className="text-accent" />
                       Coordination Workflow
@@ -326,33 +348,45 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ol>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Features Tagged */}
-                <div className="space-y-4 p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850">
-                  <h3 className="text-sm font-bold text-primary dark:text-white uppercase tracking-wider">
-                    Pillar Deliverables & Formats
+                <motion.div 
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className="shine-card relative overflow-hidden flex flex-col items-center text-center space-y-5 p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-950 text-white border border-slate-800 shadow-xl"
+                >
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+                  <h3 className="relative z-10 text-sm font-black uppercase tracking-widest flex items-center justify-center gap-2">
+                    <Sparkles size={16} className="text-cyan-400" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                      Pillar Deliverables & Formats
+                    </span>
+                    <Sparkles size={16} className="text-blue-400" />
                   </h3>
-                  <div className="flex flex-wrap gap-2.5">
+                  <div className="relative z-10 flex flex-wrap justify-center gap-3">
                     {currentService.features.map((feat) => (
                       <span
                         key={feat}
-                        className="text-[11px] font-bold px-3 py-1 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300"
+                        className="text-xs font-bold px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur-md border border-cyan-400/30 text-cyan-50 shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2 hover:bg-cyan-400/20 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all cursor-default"
                       >
+                        <CheckCircle size={14} className="text-cyan-400" />
                         {feat}
                       </span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Service Inquiry Form */}
-                <div className="bg-slate-900 text-white rounded-3xl p-8 md:p-10 relative overflow-hidden border border-slate-800">
+                <motion.div 
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className="shine-card bg-slate-900 text-white rounded-3xl p-8 md:p-10 relative overflow-hidden border border-slate-800 shadow-xl max-w-3xl mx-auto mt-16"
+                >
                   <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
                   
-                  <div className="relative z-10 space-y-6">
+                  <div className="relative z-10 space-y-6 text-center">
                     <div>
-                      <h3 className="text-xl font-bold tracking-tight">
+                      <h3 className="text-2xl font-bold tracking-tight">
                         Consultation Request
                       </h3>
                       <p className="text-xs text-slate-400 mt-1">
@@ -360,8 +394,8 @@ export default function ServicesPage() {
                       </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-1">
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+                      <div className="space-y-1.5">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Full Name</label>
                         <input
                           type="text"
@@ -413,7 +447,7 @@ export default function ServicesPage() {
                         </select>
                       </div>
 
-                      <div className="sm:col-span-2 space-y-1">
+                      <div className="sm:col-span-2 space-y-1.5 pt-2">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Invention / Drawing Specifications</label>
                         <textarea
                           name="message"
@@ -463,7 +497,7 @@ export default function ServicesPage() {
                       </div>
                     </form>
                   </div>
-                </div>
+                  </motion.div>
 
               </motion.div>
             </AnimatePresence>

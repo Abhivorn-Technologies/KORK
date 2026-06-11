@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { HeroAnimation } from '../components/HeroAnimation';
 import { 
   FileText,
   Search,
@@ -74,7 +75,14 @@ export default function HomePage() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveServiceIndex((prev) => (prev + 1) % 4);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -174,12 +182,12 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen dark:bg-slate-950 transition-colors duration-300">
       
       {/* 1. HERO SECTION */}
-      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-slate-50 text-slate-900">
-        {/* Beautiful Light Mesh Overlay */}
-        <div className="absolute inset-0 bg-white" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.08)_1.5px,transparent_1.5px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] opacity-80" />
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-200/40 to-blue-100/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-cyan-200/30 to-emerald-100/20 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: '1s' }} />
+      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-x-clip overflow-y-visible bg-slate-950 text-white">
+        {/* Beautiful Dark Mesh Overlay */}
+        <div className="absolute inset-0 bg-slate-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.1)_1.5px,transparent_1.5px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] opacity-80" />
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-600/30 to-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-cyan-600/20 to-emerald-500/10 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: '1s' }} />
 
         <div className="container-custom relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Hero Content */}
@@ -188,9 +196,9 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-secondary text-xs font-bold uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider"
             >
-              <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse-glow" />
+              <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse-glow" />
               Integrated IP & Patent Support Platform
             </motion.div>
             
@@ -198,19 +206,30 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-white"
             >
               From Idea to<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">
+              <motion.span 
+                key={activeServiceIndex}
+                initial={{ opacity: 0.5, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8 }}
+                className={`text-transparent bg-clip-text bg-gradient-to-r ${
+                  activeServiceIndex === 0 ? 'from-cyan-400 to-blue-500' :
+                  activeServiceIndex === 1 ? 'from-emerald-400 to-teal-500' :
+                  activeServiceIndex === 2 ? 'from-purple-400 to-pink-500' :
+                  'from-amber-400 to-orange-500'
+                }`}
+              >
                 Intellectual Property™
-              </span>
+              </motion.span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-slate-600 leading-relaxed max-w-2xl"
+              className="text-lg text-slate-300 leading-relaxed max-w-2xl"
             >
               One platform coordinating patent searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.
             </motion.p>
@@ -223,107 +242,23 @@ export default function HomePage() {
             >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-base font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/15 transition-all transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/20 transition-all transform hover:-translate-y-0.5"
               >
                 Schedule Consultation
                 <ArrowRight size={18} />
               </Link>
               <Link
                 href="/client-portal"
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-base font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-base font-bold text-white bg-slate-800/80 border border-slate-700 hover:bg-slate-700 backdrop-blur-sm transition-colors"
               >
                 Submit Your Invention
               </Link>
             </motion.div>
           </div>
 
-          {/* Hero Graphic - Smooth Continuous Floating Animation */}
-          <div className="lg:col-span-5 relative h-[400px] md:h-[500px] w-full flex items-center justify-center [perspective:1200px]">
-            <motion.div
-              animate={{ 
-                y: [-20, 20, -20],
-                rotateX: [15, 20, 15],
-                rotateY: [-15, -10, -15]
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 6, 
-                ease: "easeInOut" 
-              }}
-              style={{ transformStyle: "preserve-3d" }}
-              className="relative w-4/5 md:w-full max-w-md mx-auto"
-            >
-              {/* Main Floating Object (Simulated 3D Blueprint/Document) */}
-              <div className="relative rounded-2xl border border-white/40 bg-white/60 p-3 backdrop-blur-xl shadow-2xl overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/40 before:to-transparent before:pointer-events-none">
-                <div className="relative rounded-xl overflow-hidden bg-slate-50 border border-slate-200">
-                  {/* We use the blueprint image but style it cleanly as a floating document */}
-                  <img 
-                    src="/blueprint-1.png" 
-                    alt="Patent Blueprint View" 
-                    className="w-full h-auto object-cover opacity-90"
-                    style={{ filter: 'brightness(1.05) contrast(1.1)' }}
-                  />
-                  
-                  {/* Shimmer/Reflection effect on the document */}
-                  <motion.div 
-                    animate={{ 
-                      x: ['-100%', '200%'],
-                      opacity: [0, 0.5, 0]
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 4,
-                      ease: "linear",
-                      delay: 1
-                    }}
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent skew-x-12"
-                  />
-                </div>
-              </div>
-
-              {/* Decorative Floating Elements (Seals/Badges) around the main object */}
-              <motion.div
-                animate={{ y: [10, -10, 10], rotate: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -top-6 -right-6 bg-white border border-slate-100 shadow-xl rounded-2xl p-4 flex items-center gap-3 backdrop-blur-md"
-              >
-                <div className="bg-emerald-100 text-emerald-600 p-2 rounded-full">
-                  <ShieldCheck size={24} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-slate-800">Protected</span>
-                  <span className="text-[10px] text-slate-500">IP Secured</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [-15, 15, -15], rotate: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-8 -left-6 bg-white border border-slate-100 shadow-xl rounded-2xl p-4 flex items-center gap-3 backdrop-blur-md"
-              >
-                <div className="bg-blue-100 text-secondary p-2 rounded-full">
-                  <Award size={24} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-slate-800">USPTO Ready</span>
-                  <span className="text-[10px] text-slate-500">100% Compliant</span>
-                </div>
-              </motion.div>
-
-              {/* Dynamic Shadow under the floating object */}
-              <motion.div
-                animate={{ 
-                  scale: [1, 0.8, 1],
-                  opacity: [0.3, 0.1, 0.3]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 6, 
-                  ease: "easeInOut" 
-                }}
-                className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-blue-900/30 blur-2xl rounded-full"
-              />
-            </motion.div>
+          {/* 3D Animated Hero Graphics Cluster */}
+          <div className="lg:col-span-5 relative w-full flex items-center justify-center">
+            <HeroAnimation activeIndex={activeServiceIndex} />
           </div>
         </div>
       </section>
@@ -331,7 +266,13 @@ export default function HomePage() {
       {/* 2. STATS SECTION */}
       <section className="bg-gradient-to-r from-primary to-slate-900 py-12 border-y border-slate-800">
         <div className="container-custom">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
+          >
             
             <div className="flex flex-col items-center text-center p-4 border-r border-slate-800 last:border-0 max-sm:border-r-0">
               <Counter value={1200} suffix="+" />
@@ -361,14 +302,20 @@ export default function HomePage() {
               </span>
             </div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 3. THE CHALLENGE FACING INVENTORS */}
       <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div className="container-custom space-y-16">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto space-y-3"
+          >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold uppercase tracking-wider">
               The Path to Protection
             </div>
@@ -378,13 +325,18 @@ export default function HomePage() {
             <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
               Navigating the complex, fragmented patent system can feel overwhelming. Independent inventors face these critical questions at every step:
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {challenges.map((challenge, idx) => (
-              <div
+              <motion.div
                 key={challenge.q}
-                className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 hover:border-slate-200 dark:hover:border-slate-800 transition-all duration-300 flex flex-col justify-between"
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                whileHover={{ y: -8, scale: 1.06 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="shine-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-shadow duration-300"
               >
                 <div className="space-y-4 text-left">
                   <div className="h-8 w-8 rounded-full bg-slate-250/70 dark:bg-slate-800 text-slate-600 dark:text-slate-350 flex items-center justify-center font-bold font-mono text-sm">
@@ -397,7 +349,7 @@ export default function HomePage() {
                     {challenge.a}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -406,7 +358,13 @@ export default function HomePage() {
       {/* 4. THE KORK INTEGRATED SOLUTION */}
       <section className="py-24 bg-light-gray dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-900 transition-colors duration-300">
         <div className="container-custom space-y-16">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto space-y-3"
+          >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 text-secondary dark:text-accent text-xs font-bold uppercase tracking-wider">
               An End-to-End System
             </div>
@@ -416,17 +374,18 @@ export default function HomePage() {
             <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
               We consolidate the complex, fragmented intellectual property process into a single coordinated platform.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {solutions.map((sol, idx) => (
               <motion.div
                 key={sol.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="group flex flex-col justify-between p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-card hover:shadow-card-hover hover:border-accent/40 transform hover:-translate-y-1 transition-all duration-300 animate-fade-in"
+                className="shine-card group flex flex-col justify-between p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-card"
               >
                 <div className="space-y-4 text-left">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 text-secondary dark:text-accent group-hover:scale-110 transition-transform duration-300">
@@ -453,7 +412,13 @@ export default function HomePage() {
           </div>
 
           {/* Coordination Value Box */}
-          <div className="bg-slate-950 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden border border-slate-850 shadow-2xl">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+            className="bg-slate-950 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden border border-slate-850 shadow-2xl"
+          >
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[80px] pointer-events-none" />
             <div className="relative z-10 max-w-4xl space-y-6 text-left">
               <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
@@ -489,13 +454,19 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 5. AFFILIATIONS BAR */}
       <section className="bg-slate-50 dark:bg-slate-950 py-16 border-y border-slate-200/50 dark:border-slate-900 transition-colors duration-300">
-        <div className="container-custom max-w-4xl text-center space-y-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom max-w-4xl text-center space-y-6"
+        >
           <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
             Coordinating with Registered Patent Professionals & Serving Members of
           </span>
@@ -518,14 +489,20 @@ export default function HomePage() {
               <span className="text-[9px] text-slate-500 font-bold uppercase mt-2.5 font-mono">Intellectual Property Owners Association</span>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 6. FEATURED INVENTOR PACKAGES */}
       <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div className="container-custom space-y-12">
           
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+          >
             <div className="space-y-3 max-w-xl text-left">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-secondary dark:text-accent text-xs font-bold uppercase tracking-wider">
                 Clear Packages
@@ -546,7 +523,7 @@ export default function HomePage() {
                 <ArrowRight size={16} />
               </Link>
             </div>
-          </div>
+          </motion.div>
 
           {loadingProducts ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -563,10 +540,15 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredProducts.map((product) => (
-                <div
+              {featuredProducts.map((product, idx) => (
+                <motion.div
                   key={product.id}
-                  className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card hover:shadow-card-hover hover:border-accent/30 transition-all duration-300"
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="shine-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card"
                 >
                   <div className="relative h-52 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
                     <img
@@ -599,7 +581,7 @@ export default function HomePage() {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
@@ -611,7 +593,13 @@ export default function HomePage() {
       {testimonials.length > 0 && (
         <section className="py-24 bg-light-gray dark:bg-slate-900/60 border-t border-slate-150/50 dark:border-slate-900 transition-colors duration-300 overflow-hidden">
           <div className="container-custom space-y-12">
-            <div className="text-center max-w-2xl mx-auto space-y-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-2xl mx-auto space-y-3"
+            >
               <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-500/10 text-secondary dark:text-accent">
                 <MessageSquare size={20} />
               </div>
@@ -621,66 +609,55 @@ export default function HomePage() {
               <p className="text-slate-600 dark:text-slate-400">
                 Read feedback from inventors and startup coordinators who built their patent roadmaps using our portal services.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="max-w-4xl mx-auto relative px-4">
-              <div className="bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 p-8 md:p-12 rounded-3xl relative shadow-md">
-                {/* Quote details */}
-                <div className="absolute top-6 left-6 text-slate-200 dark:text-slate-850 text-7xl font-serif leading-none pointer-events-none select-none">
-                  “
-                </div>
-
-                <div className="relative z-10 space-y-6 text-left">
-                  {/* Rating */}
-                  <div className="flex gap-1">
-                    {Array.from({ length: testimonials[activeTestimonial].rating }).map((_, i) => (
-                      <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
-                    ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, idx) => (
+                <motion.div 
+                  key={testimonial.id || idx}
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="shine-card bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 p-8 rounded-3xl relative shadow-md flex flex-col justify-between"
+                >
+                  {/* Quote details */}
+                  <div className="absolute top-4 left-6 text-slate-200 dark:text-slate-850 text-7xl font-serif leading-none pointer-events-none select-none">
+                    “
                   </div>
 
-                  <p className="text-base md:text-lg text-slate-700 dark:text-slate-300 italic leading-relaxed">
-                    "{testimonials[activeTestimonial].review}"
-                  </p>
+                  <div className="relative z-10 space-y-5 text-left flex-1 flex flex-col">
+                    {/* Rating */}
+                    <div className="flex gap-1">
+                      {Array.from({ length: testimonial.rating }).map((_, i) => (
+                        <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
 
-                  {/* Profile info */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-850">
-                    <img
-                      src={testimonials[activeTestimonial].photo}
-                      alt={testimonials[activeTestimonial].clientName}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-accent"
-                    />
-                    <div>
-                      <h4 className="text-sm font-bold text-primary dark:text-white">
-                        {testimonials[activeTestimonial].clientName}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {testimonials[activeTestimonial].companyName}
-                      </p>
+                    <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 italic leading-relaxed flex-1">
+                      "{testimonial.review}"
+                    </p>
+
+                    {/* Profile info */}
+                    <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-850 mt-auto">
+                      <img
+                        src={testimonial.photo}
+                        alt={testimonial.clientName}
+                        className="w-12 h-12 rounded-full object-cover border-2 border-accent"
+                      />
+                      <div>
+                        <h4 className="text-sm font-bold text-primary dark:text-white">
+                          {testimonial.clientName}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                          {testimonial.companyName}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Testimonial slider navigation */}
-              <div className="flex justify-center items-center gap-4 mt-6">
-                <button
-                  onClick={prevTestimonial}
-                  className="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-400 hover:bg-slate-50 hover:text-primary dark:hover:bg-slate-850 transition-colors"
-                  aria-label="Previous testimonial"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <span className="text-xs text-slate-500 font-bold">
-                  {activeTestimonial + 1} / {testimonials.length}
-                </span>
-                <button
-                  onClick={nextTestimonial}
-                  className="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-400 hover:bg-slate-50 hover:text-primary dark:hover:bg-slate-850 transition-colors"
-                  aria-label="Next testimonial"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -690,22 +667,33 @@ export default function HomePage() {
       <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div className="container-custom max-w-4xl space-y-12">
           
-          <div className="text-center space-y-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
+            className="text-center space-y-3"
+          >
             <h2 className="text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight">
               Frequently Asked Questions
             </h2>
             <p className="text-slate-600 dark:text-slate-400">
               Clear answers regarding our support platform, illustration standards, and attorney network.
             </p>
-          </div>
+          </motion.div>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="border border-slate-150/70 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/40 rounded-xl overflow-hidden text-left"
               >
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveFaq(activeFaq === index ? null : index)}
                   className="w-full text-left px-6 py-4.5 font-bold text-slate-900 dark:text-white flex items-center justify-between gap-4 transition-colors hover:text-secondary dark:hover:text-accent"
                 >
@@ -720,7 +708,7 @@ export default function HomePage() {
                     {faq.a}
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -728,25 +716,33 @@ export default function HomePage() {
       </section>
 
       {/* 9. CONTACT CTA SECTION */}
-      <section className="relative py-20 bg-slate-950 overflow-hidden text-center text-white border-t border-slate-900">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-3xl space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight">
-            Protect Your Innovation Today
-          </h2>
-          <p className="text-lg text-slate-350 max-w-xl mx-auto leading-relaxed">
-            Coordinate with our specialists to review your idea, generate patent drawings, or connect with a registered practitioner.
-          </p>
-          <div className="pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Protect Your Innovation Today
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Coordinate with our specialists to review your idea, generate patent drawings, or connect with a registered practitioner.
+            </p>
+          </div>
+          <div className="flex-shrink-0">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-xl hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
             >
               Start Free Consult
               <ArrowRight size={18} />
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

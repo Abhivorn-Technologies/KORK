@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   ShieldCheck, 
   FileText, 
@@ -73,18 +74,28 @@ export default function InventorServicesPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-24 md:py-32 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
+        <div className="absolute inset-0 bg-slate-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.08)_1.5px,transparent_1.5px)] bg-[size:32px_32px] opacity-80" />
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider"
+          >
             Guided Inventor Pathway
-          </div>
+          </motion.div>
           
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight"
+          >
             Turn Your Idea Into Protected <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Intellectual Property</span>
-          </h1>
+          </motion.h1>
           
           <p className="text-base md:text-lg text-slate-350 leading-relaxed max-w-2xl mx-auto">
             Whether you are a first-time inventor, startup founder, researcher, or product developer, KORK provides a structured pathway from invention evaluation through patent protection and intellectual property management.
@@ -202,10 +213,15 @@ export default function InventorServicesPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {packages.map((pkg) => (
-                <div
+              {packages.map((pkg, idx) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -8, scale: 1.03 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
                   key={pkg.id}
-                  className="group flex flex-col justify-between overflow-hidden rounded-3xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card hover:shadow-card-hover hover:border-accent/30 transition-all duration-300"
+                  className="shine-card group flex flex-col justify-between overflow-hidden rounded-3xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-shadow duration-300"
                 >
                   <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
                     <img
@@ -250,7 +266,7 @@ export default function InventorServicesPage() {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
@@ -326,17 +342,27 @@ export default function InventorServicesPage() {
           </div>
 
           <div className="relative border-l-2 border-accent/35 ml-4 md:ml-6 space-y-8">
-            {steps.map((step) => (
-              <div key={step.num} className="relative pl-6 md:pl-10">
+            {steps.map((step, idx) => (
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                key={step.num} 
+                className="relative pl-6 md:pl-10"
+              >
                 {/* Step Marker */}
-                <div className="absolute -left-[17px] top-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-white font-extrabold text-xs shadow shadow-blue-500/10">
+                <div className="absolute -left-[17px] top-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-white font-extrabold text-xs shadow shadow-blue-500/20 ring-4 ring-slate-50 dark:ring-slate-900/40">
                   {step.num}
                 </div>
-                <div className="space-y-1">
+                <motion.div 
+                  whileHover={{ x: 5, scale: 1.01 }}
+                  className="shine-card space-y-2 p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-sm"
+                >
                   <h3 className="text-sm font-bold text-primary dark:text-white">{step.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">{step.desc}</p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -361,6 +387,7 @@ export default function InventorServicesPage() {
                 className="border border-slate-200/60 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm"
               >
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full text-left px-5 py-4 font-bold text-xs md:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:text-secondary dark:hover:text-accent transition-colors"
                 >

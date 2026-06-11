@@ -30,11 +30,11 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-3 md:top-5 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
-      <div className="container-custom flex h-20 items-center justify-between px-4 md:px-6">
+    <header id="main-header" className="sticky top-3 md:top-5 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
+      <div className="container-custom flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
-          <img src="/kork_logo.jpg" alt="KORK InventReX Logo" className="h-11 w-auto max-w-[160px] logo-light-theme" />
+          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-10 w-auto max-w-[160px]" />
         </Link>
 
         {/* Desktop Navigation */}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight,
   Shield,
@@ -73,9 +74,10 @@ export default function HowItWorksPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-20 md:py-32 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#1e3a8a_0%,transparent_70%)] opacity-40" />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
@@ -125,7 +127,10 @@ export default function HowItWorksPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-4">
+          <motion.div 
+            whileHover={{ y: -6, scale: 1.02 }}
+            className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-4 shadow-lg"
+          >
             <h3 className="text-sm font-bold text-primary dark:text-white uppercase tracking-wider">Independent Tasks to Coordinate:</h3>
             <div className="grid grid-cols-2 gap-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
               <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Searches</span>
@@ -138,13 +143,13 @@ export default function HowItWorksPage() {
             <p className="text-[10px] text-slate-400 leading-relaxed pt-2 border-t border-slate-200 dark:border-slate-800">
               KORK eliminates this friction by unifying technical drafting, searches, and agent filings under a single portal.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* SECTION 2: THE 10 STEP TIMELINE */}
       <section className="py-20 bg-slate-50 dark:bg-slate-900/40 transition-colors">
-        <div className="container-custom space-y-16">
+        <div className="container-custom space-y-20">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
               The KORK Process
@@ -154,24 +159,53 @@ export default function HowItWorksPage() {
             </p>
           </div>
 
-          {/* Visual Vertical Roadmap */}
-          <div className="relative border-l-2 border-accent/30 max-w-3xl mx-auto pl-6 md:pl-10 space-y-10">
-            {steps.map((step) => (
-              <div key={step.num} className="relative group">
-                {/* Step circle */}
-                <div className="absolute -left-[39px] md:-left-[55px] top-1 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 dark:bg-slate-950 border border-slate-700 text-white font-mono text-xs font-bold group-hover:bg-gradient-to-r group-hover:from-secondary group-hover:to-accent group-hover:border-transparent transition-all shadow">
-                  {step.num}
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-sm font-bold text-primary dark:text-white group-hover:text-secondary dark:group-hover:text-accent transition-colors">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-                    {step.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+          {/* Visual Alternating Timeline */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Glowing Center Line (Hidden on mobile) */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/20 via-accent/50 to-transparent -translate-x-1/2 rounded-full" />
+            
+            <div className="space-y-8 md:space-y-12">
+              {steps.map((step, idx) => {
+                const isEven = idx % 2 === 0;
+                return (
+                  <div key={step.num} className={`relative flex flex-col md:flex-row items-center ${isEven ? 'md:flex-row-reverse' : ''}`}>
+                    
+                    {/* Mobile Line & Circle (Visible only on mobile) */}
+                    <div className="md:hidden absolute left-4 top-0 bottom-[-2rem] w-0.5 bg-accent/20" />
+                    <div className="md:hidden absolute left-4 top-6 w-3 h-3 rounded-full bg-accent -translate-x-1/2 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+
+                    {/* Empty Space for Alternating Layout */}
+                    <div className="hidden md:block md:w-1/2" />
+
+                    {/* Center Node (Visible only on desktop) */}
+                    <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-950 border-2 border-accent items-center justify-center z-10 shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+                      <span className="text-white font-black text-xs">{step.num}</span>
+                    </div>
+
+                    {/* Content Card */}
+                    <motion.div 
+                      initial={{ opacity: 0, x: isEven ? 30 : -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      className={`w-full md:w-1/2 pl-12 md:pl-0 ${isEven ? 'md:pr-16 text-left md:text-right' : 'md:pl-16 text-left'}`}
+                    >
+                      <div className="shine-card p-6 md:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                        <h3 className="text-lg font-black text-primary dark:text-white mb-2 flex items-center gap-2 justify-start md:justify-normal">
+                          <span className="md:hidden text-accent text-sm">#{step.num}</span>
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </motion.div>
+                    
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -189,29 +223,29 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-xs font-bold">
-            <div className="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2 shadow-sm">
               <Upload size={20} className="mx-auto text-accent" />
               <h4 className="text-primary dark:text-white">Secure Uploads</h4>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-normal">Submit photos, CAD files, or sketches safely.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2 shadow-sm">
               <MessageSquare size={20} className="mx-auto text-accent" />
               <h4 className="text-primary dark:text-white">Direct Messages</h4>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-normal">Communicate with yourassigned illustrators and agents.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2 shadow-sm">
               <Clock size={20} className="mx-auto text-accent" />
               <h4 className="text-primary dark:text-white">Milestone Tracking</h4>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-normal">Track draft sheets, approvals, and filing dates.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150/60 dark:border-slate-850 space-y-2 shadow-sm">
               <FileCheck size={20} className="mx-auto text-accent" />
               <h4 className="text-primary dark:text-white">Deliverables</h4>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-normal">Download print-ready vector figures and reports.</p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -267,20 +301,20 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-xs font-normal">
-            <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 shadow-sm">
               <h4 className="font-bold text-primary dark:text-white flex items-center gap-1.5"><CheckCircle size={16} className="text-emerald-500" /> Complete Visibility</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">No guesswork. Know exactly what views have been drafted and when files are scheduled for attorney review.</p>
-            </div>
+            </motion.div>
             
-            <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 shadow-sm">
               <h4 className="font-bold text-primary dark:text-white flex items-center gap-1.5"><CheckCircle size={16} className="text-emerald-500" /> Lower Overhead</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Avoid managing separate CAD draftsmen, search portals, and legal intake boards independently.</p>
-            </div>
+            </motion.div>
 
-            <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="shine-card p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 shadow-sm">
               <h4 className="font-bold text-primary dark:text-white flex items-center gap-1.5"><CheckCircle size={16} className="text-emerald-500" /> Data Security</h4>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">All files are transferred and stored under encrypted connections, safeguarding proprietary innovation designs.</p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -328,31 +362,39 @@ export default function HowItWorksPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative py-20 bg-slate-950 text-white overflow-hidden text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-3xl font-black tracking-tight text-white">
-            Ready to Protect Your Innovation?
-          </h2>
-          <p className="text-sm text-slate-350 leading-relaxed max-w-xl mx-auto">
-            From patent searches and illustrations to filing support and portfolio management, KORK provides a structured pathway through the intellectual property lifecycle.
-          </p>
-          <div className="flex justify-center gap-4 pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Ready to Protect Your Innovation?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              From patent searches and illustrations to filing support and portfolio management, KORK provides a structured pathway through the intellectual property lifecycle.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact?type=start"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
             >
               Start My Assessment
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 transform hover:-translate-y-0.5 transition-all"
             >
-              Schedule Consultation
+              Consultation
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

@@ -351,3 +351,44 @@ main.bg-slate-950, main[class*="bg-slate-955"], main[class*="bg-slate-950"] {
   filter: invert(1) hue-rotate(180deg);
   mix-blend-mode: multiply;
 }
+
+/* 8. Card Shine & Smooth Hover Effects */
+.shine-card {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease;
+}
+
+.shine-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(6, 182, 212, 0.2) 50%, /* Accent color shine */
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.shine-card:hover::after {
+  left: 200%;
+}
+
+.shine-card:hover {
+  box-shadow: 0 10px 20px -5px rgba(6, 182, 212, 0.15), 0 5px 8px -5px rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.35) !important;
+}
+
+/* Hide global nav/footer when in dashboard */
+.portal-dashboard-active #main-header,
+.portal-dashboard-active #main-footer {
+  display: none !important;
+}

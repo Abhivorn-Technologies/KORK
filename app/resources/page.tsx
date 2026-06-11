@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   BookOpen, 
   Download, 
@@ -89,9 +90,8 @@ export default function ResourcesHubPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-20 bg-slate-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35" />
 
         <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
@@ -138,16 +138,21 @@ export default function ResourcesHubPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {learningTopics.map((topic, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-850 space-y-3 hover:border-accent/20 transition-colors"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-3 hover:border-accent/30 shadow-sm transition-shadow transition-colors"
               >
                 <span className="text-[9px] font-extrabold text-accent bg-accent/10 px-2 py-0.5 rounded uppercase tracking-wider">
                   {topic.category}
                 </span>
                 <h3 className="text-sm font-bold text-primary dark:text-white pt-1">{topic.title}</h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">{topic.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -167,9 +172,14 @@ export default function ResourcesHubPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {downloads.map((doc, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 flex items-start gap-4 shadow-sm"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 flex items-start gap-4 shadow-sm"
               >
                 <div className="h-12 w-12 shrink-0 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 text-secondary dark:text-accent flex items-center justify-center">
                   <FileText size={22} />
@@ -189,7 +199,7 @@ export default function ResourcesHubPage() {
                     Download File
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -209,13 +219,21 @@ export default function ResourcesHubPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {inventorGuides.map((guide, idx) => (
-              <div key={idx} className="flex gap-3.5">
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="shine-card flex gap-3.5 p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm"
+              >
                 <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h3 className="text-sm font-bold text-primary dark:text-white">{guide.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">{guide.detail}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -246,10 +264,15 @@ export default function ResourcesHubPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {blogs.map((b) => (
-                <div 
+              {blogs.map((b, idx) => (
+                <motion.div 
                   key={b.id} 
-                  className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm hover:shadow hover:border-accent/20 transition-all duration-300"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className="shine-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm hover:shadow-lg hover:border-accent/30 transition-shadow transition-colors duration-300"
                 >
                   <div className="relative h-44 w-full bg-slate-100 dark:bg-slate-900 overflow-hidden">
                     <img src={b.thumbnail} alt={b.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
@@ -276,7 +299,7 @@ export default function ResourcesHubPage() {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -327,31 +350,39 @@ export default function ResourcesHubPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative py-20 bg-slate-950 text-white overflow-hidden text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-3xl font-black tracking-tight text-white">
-            Looking for a Specific Guide?
-          </h2>
-          <p className="text-sm text-slate-350 leading-relaxed max-w-xl mx-auto">
-            Contact our applications team to request custom templates, coordinate drawing guides, or schedule an initial filing assessment.
-          </p>
-          <div className="flex justify-center gap-4 pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Looking for a Specific Guide?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Contact our applications team to request custom templates, coordinate drawing guides, or schedule an initial filing assessment.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact?type=assessment"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
             >
               Start Free Assessment
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 transform hover:-translate-y-0.5 transition-all"
             >
               Contact Support
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>
