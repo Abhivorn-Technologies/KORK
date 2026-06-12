@@ -151,8 +151,7 @@ export default function AboutPage() {
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Mission */}
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-            whileHover={{ y: -6, scale: 1.02 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
             className="shine-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-all duration-300 flex gap-5"
           >
             <div className="w-14 h-14 shrink-0 rounded-xl bg-blue-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center">
@@ -168,8 +167,7 @@ export default function AboutPage() {
 
           {/* Vision */}
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-            whileHover={{ y: -6, scale: 1.02 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
             className="shine-card p-8 rounded-2xl bg-[#0f172a] border border-slate-800 hover:shadow-2xl hover:border-blue-500/50 transition-all duration-300 flex gap-5"
           >
             <div className="w-14 h-14 shrink-0 rounded-xl bg-blue-800/20 text-blue-400 flex items-center justify-center">
@@ -189,14 +187,14 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="container-custom max-w-4xl">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center space-y-3 mb-12"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center space-y-3 mb-12"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Why We Exist</h2>
             <p className="text-lg text-slate-600">The intellectual property process can be overwhelming.</p>
           </motion.div>
           
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ scale: 1.01 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ scale: 1.01 }}
             className="bg-slate-50 p-8 rounded-2xl border border-slate-200 shadow-sm transition-transform"
           >
             <p className="text-base font-semibold text-slate-900 mb-6">Many innovators face challenges such as:</p>
@@ -231,7 +229,7 @@ export default function AboutPage() {
       <section className="py-20 bg-slate-50 border-t border-b border-slate-200">
         <div className="container-custom">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center space-y-3 mb-12"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center space-y-3 mb-12"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">What Makes KORK Different</h2>
           </motion.div>
@@ -240,8 +238,7 @@ export default function AboutPage() {
             {differences.map((diff, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ y: -6, scale: 1.03 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.03 }}
                 className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-blue-900 dark:text-blue-400 flex items-center justify-center mb-4">
@@ -259,7 +256,7 @@ export default function AboutPage() {
       <section className="py-20 bg-slate-50">
         <div className="container-custom max-w-6xl">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center space-y-3 mb-12"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center space-y-3 mb-12"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Our Approach</h2>
           </motion.div>
@@ -268,8 +265,7 @@ export default function AboutPage() {
             {approach.map((step, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ y: -5, scale: 1.05 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -5, scale: 1.05 }}
                 className="shine-card p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col items-center text-center relative hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-all duration-300"
               >
                 {idx !== approach.length - 1 && (
@@ -290,7 +286,7 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="container-custom">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center space-y-3 mb-12"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center space-y-3 mb-12"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Who We Serve</h2>
           </motion.div>
@@ -299,8 +295,7 @@ export default function AboutPage() {
             {whoWeServe.map((serve, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ y: -6, scale: 1.03 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.03 }}
                 className="shine-card relative overflow-hidden group p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-all duration-300 cursor-default"
               >
                 {/* Ambient Background Splashes */}
@@ -324,7 +319,7 @@ export default function AboutPage() {
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
             {/* Left side: Content */}
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="flex-1 space-y-4 text-center"
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="flex-1 space-y-4 text-center"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 mx-auto">
                 <Award size={24} />
@@ -339,7 +334,7 @@ export default function AboutPage() {
 
             {/* Right side: Card */}
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -4, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -4, scale: 1.02 }}
               className="w-full md:w-[420px] shrink-0 shine-card p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all"
             >
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
@@ -365,7 +360,7 @@ export default function AboutPage() {
       <section className="py-20 bg-slate-50">
         <div className="container-custom">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center max-w-3xl mx-auto space-y-3 mb-12"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center max-w-3xl mx-auto space-y-3 mb-12"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Our Core Values</h2>
             <p className="text-base text-slate-600">
@@ -377,8 +372,7 @@ export default function AboutPage() {
             {values.map((val, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ y: -6, scale: 1.02 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                 className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-all duration-300"
               >
                 <h3 className="text-lg font-bold text-slate-900 mb-2">{val.title}</h3>
@@ -393,7 +387,7 @@ export default function AboutPage() {
       <section className="py-20 bg-white border-t border-slate-100">
         <div className="container-custom max-w-4xl text-center space-y-12">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="space-y-4"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="space-y-4"
           >
             <h2 className="text-3xl font-extrabold text-slate-900">Our Commitment</h2>
             <p className="text-lg text-slate-600 leading-relaxed">
@@ -402,7 +396,7 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ scale: 1.02 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ scale: 1.02 }}
             className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 shadow-md hover:shadow-xl hover:border-blue-300 transition-all"
           >
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">
@@ -434,7 +428,7 @@ export default function AboutPage() {
       <section className="py-20 bg-slate-50 border-t border-slate-200">
         <div className="container-custom max-w-3xl">
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="text-center space-y-3 mb-10"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center space-y-3 mb-10"
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
           </motion.div>

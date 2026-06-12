@@ -18,18 +18,28 @@ const navItems = [
       { label: 'Patent Filing Support', href: '/services/patent-filing-support' }
     ]
   },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Industries', href: '/industries' },
-  { label: 'Resources', href: '/resources' },
+  { 
+    label: 'Resources', 
+    href: '/resources',
+    subItems: [
+      { label: 'Industries We Serve', href: '/resources/industries' }
+    ]
+  },
+  { 
+    label: 'About Us', 
+    href: '/about',
+    subItems: [
+      { label: 'How It Works', href: '/about/how-it-works' }
+    ]
+  },
   { label: 'Client Portal', href: '/client-portal' },
-  { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
 
 export default function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [openMobileSubmenu, setOpenMobileSubmenu] = useState<string | null>(null);
 
   // Hide header on the admin portal
   if (pathname.startsWith('/admin')) return null;
@@ -152,15 +162,15 @@ export default function Header() {
                           {item.label}
                         </Link>
                         <button 
-                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          onClick={() => setOpenMobileSubmenu(openMobileSubmenu === item.label ? null : item.label)}
                           className="p-2 mr-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
                         >
-                          <ChevronDown size={20} className={cn("transition-transform duration-300", mobileServicesOpen && "rotate-180")} />
+                          <ChevronDown size={20} className={cn("transition-transform duration-300", openMobileSubmenu === item.label && "rotate-180")} />
                         </button>
                       </div>
                       
                       <AnimatePresence>
-                        {(mobileServicesOpen || isActive(item.href)) && (
+                        {(openMobileSubmenu === item.label || isActive(item.href)) && (
                           <motion.div 
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}

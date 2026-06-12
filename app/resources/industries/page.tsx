@@ -170,7 +170,7 @@ export default function IndustriesPage() {
             </p>
           </div>
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
           >
             <img 
               src="/assets/images/engineering_blueprint.png" 
@@ -197,8 +197,7 @@ export default function IndustriesPage() {
             {industries.map((ind, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ y: -6, scale: 1.02 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                 className="shine-card group p-8 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 hover:border-accent/30 shadow-sm hover:shadow-xl transition-shadow transition-colors duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-4">
@@ -246,7 +245,7 @@ export default function IndustriesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-normal">
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -4, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -4, scale: 1.02 }}
               className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
             >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -257,7 +256,7 @@ export default function IndustriesPage() {
             </motion.div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -4, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -4, scale: 1.02 }}
               className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
             >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -268,7 +267,7 @@ export default function IndustriesPage() {
             </motion.div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -4, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -4, scale: 1.02 }}
               className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
             >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -279,7 +278,7 @@ export default function IndustriesPage() {
             </motion.div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -4, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -4, scale: 1.02 }}
               className="shine-card p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm rounded-2xl flex items-start gap-3"
             >
               <CheckCircle size={18} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -306,7 +305,7 @@ export default function IndustriesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs font-normal">
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
               className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
             >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Inventors</h4>
@@ -314,7 +313,7 @@ export default function IndustriesPage() {
             </motion.div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
               className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
             >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Startups</h4>
@@ -322,7 +321,7 @@ export default function IndustriesPage() {
             </motion.div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
               className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm space-y-2"
             >
               <h4 className="font-bold text-primary dark:text-white text-sm">For Attorneys & Agents</h4>

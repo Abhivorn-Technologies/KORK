@@ -245,27 +245,27 @@ Our Client Portal tracks these deadlines and keeps you connected to our register
 const initialTestimonials: Testimonial[] = [
   {
     id: 't-1',
-    clientName: 'Jonathan Miller',
+    clientName: 'Rahul Sharma',
     companyName: 'Apex Medical Systems',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
+    photo: '',
     review: 'KORK coordinated our prior art search and utility drawings in record time. Their secure client portal made collaboration with our assigned patent attorney completely seamless.',
     rating: 5,
     createdAt: new Date().toISOString()
   },
   {
     id: 't-2',
-    clientName: 'Elena Rostova',
+    clientName: 'Priya Patel',
     companyName: 'SmartGlow Technologies',
-    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    photo: '',
     review: 'We selected KORK\'s Design Patent Package. The surface shading and perspectives prepared by their illustrators were absolutely flawless, getting us filed without a single USPTO objection.',
     rating: 5,
     createdAt: new Date().toISOString()
   },
   {
     id: 't-3',
-    clientName: 'David Vance',
+    clientName: 'Vikram Desai',
     companyName: 'EcoAg Equipment Systems',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+    photo: '',
     review: 'KORK\'s coordination on our USPTO Office Action drawing revisions saved our application. They updated our mechanical figures within 48 hours to satisfy examiner requirements.',
     rating: 5,
     createdAt: new Date().toISOString()
@@ -317,7 +317,7 @@ export const mockDb = {
   getBlogs: (): Blog[] => getStoredData<Blog[]>('mock_blogs', initialBlogs),
   saveBlogs: (blogs: Blog[]) => setStoredData('mock_blogs', blogs),
 
-  getTestimonials: (): Testimonial[] => getStoredData<Testimonial[]>('mock_testimonials', initialTestimonials),
+  getTestimonials: (): Testimonial[] => getStoredData<Testimonial[]>('mock_testimonials_v3', initialTestimonials),
   
   getSettings: (): Settings => getStoredData<Settings>('mock_settings', initialSettings),
   saveSettings: (settings: Settings) => setStoredData('mock_settings', settings),

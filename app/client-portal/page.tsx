@@ -88,16 +88,16 @@ export default function ClientPortalPage() {
 
   // Hide the global header and footer ONLY when logged into the dashboard
   useEffect(() => {
-    if (typeof document !== 'undefined') {
-      if (isAuthenticated) {
-        document.body.classList.add('portal-dashboard-active');
-      } else {
-        document.body.classList.remove('portal-dashboard-active');
-      }
-      return () => {
-        document.body.classList.remove('portal-dashboard-active');
-      };
+    if (typeof document === 'undefined') return;
+
+    if (isAuthenticated) {
+      document.body.classList.add('portal-dashboard-active');
+    } else {
+      document.body.classList.remove('portal-dashboard-active');
     }
+    return () => {
+      document.body.classList.remove('portal-dashboard-active');
+    };
   }, [isAuthenticated]);
 
   const handleLoginSubmit = (e: React.FormEvent) => {

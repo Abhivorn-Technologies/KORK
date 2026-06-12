@@ -32,6 +32,7 @@ export default function GeneralInquiryForm() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        company: '',
         message: `[General Inquiry] [Subject: ${formData.subject}] ${formData.message}`
       });
       setSuccessMode(true);

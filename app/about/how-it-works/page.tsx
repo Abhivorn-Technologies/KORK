@@ -218,7 +218,7 @@ export default function HowItWorksPage() {
           </div>
 
           <motion.div 
-            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 group"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 group"
           >
             <div className="absolute inset-0 bg-accent/20 mix-blend-overlay z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-500" />
             <img 
@@ -324,7 +324,16 @@ export default function HowItWorksPage() {
                 </div>
               </div>
 
-              {/* Interactive Node Grid */}
+              <div className="flex flex-col gap-6 w-full">
+                {/* Instructional Helper */}
+                <div className="flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-500 dark:text-slate-400 animate-pulse shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-accent" />
+                    Click on any phase number to explore details
+                  </div>
+                </div>
+
+                {/* Interactive Node Grid */}
               <div className="relative w-full max-w-4xl mx-auto">
                 {/* Connecting Vector Line (Desktop) */}
                 <div className="absolute top-[28px] left-6 right-6 h-px bg-slate-200 dark:bg-slate-800 hidden sm:block pointer-events-none">
@@ -373,6 +382,7 @@ export default function HowItWorksPage() {
                     );
                   })}
                 </div>
+              </div>
               </div>
 
             </div>

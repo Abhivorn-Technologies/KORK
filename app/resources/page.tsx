@@ -727,9 +727,10 @@ export default function ResourcesHubPage() {
               <div className="sticky top-28 space-y-1.5">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">Categories</h3>
                 {faqCategories.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabChange(tab.id)}
+                <button
+                  key={tab.id}
+                  suppressHydrationWarning
+                  onClick={() => handleTabChange(tab.id)}
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-bold transition-all duration-200 group",
                       activeFaqTab === tab.id

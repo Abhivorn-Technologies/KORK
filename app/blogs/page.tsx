@@ -129,7 +129,7 @@ export default function BlogsPage() {
                     {filteredBlogs.map((blog) => (
                       <motion.article
                         key={blog.id}
-                        variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="group flex flex-col md:flex-row gap-6 p-5 rounded-2xl border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:shadow-card transition-all"
+                        variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="group flex flex-col md:flex-row gap-6 p-5 rounded-2xl border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:shadow-card transition-all"
                       >
                         {/* Thumbnail */}
                         <div className="w-full md:w-1/3 aspect-[16/10] md:h-44 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 shrink-0">

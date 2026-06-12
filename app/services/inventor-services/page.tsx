@@ -219,7 +219,7 @@ export default function InventorServicesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {packages.map((pkg, idx) => (
                 <motion.div
-                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -8, scale: 1.03 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -8, scale: 1.03 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   key={pkg.id}

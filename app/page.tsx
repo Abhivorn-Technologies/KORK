@@ -21,7 +21,8 @@ import {
   ChevronLeft,
   ChevronRight,
   MessageSquare,
-  Award
+  Award,
+  User
 } from 'lucide-react';
 import { getFeaturedProducts, getTestimonials } from '@/lib/firebase';
 import { Product, Testimonial } from '@/types';
@@ -363,7 +364,7 @@ export default function HomePage() {
             {challenges.map((challenge, idx) => (
               <motion.div
                 key={challenge.q}
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -8, scale: 1.06 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -8, scale: 1.06 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-shadow duration-300"
@@ -407,7 +408,7 @@ export default function HomePage() {
             {solutions.map((sol, idx) => (
               <motion.div
                 key={sol.title}
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card group flex flex-col justify-between p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-card"
@@ -559,7 +560,7 @@ export default function HomePage() {
               {featuredProducts.map((product, idx) => (
                 <motion.div
                   key={product.id}
-                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card"
@@ -626,7 +627,7 @@ export default function HomePage() {
               {testimonials.map((testimonial, idx) => (
                 <motion.div 
                   key={testimonial.id || idx}
-                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 p-8 rounded-3xl relative shadow-md flex flex-col justify-between"
@@ -637,24 +638,17 @@ export default function HomePage() {
                   </div>
 
                   <div className="relative z-10 space-y-5 text-left flex-1 flex flex-col">
-                    {/* Rating */}
-                    <div className="flex gap-1">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
+                    {/* Rating Removed */}
 
-                    <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 italic leading-relaxed flex-1">
+                    <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 italic leading-relaxed flex-1 pt-6">
                       "{testimonial.review}"
                     </p>
 
                     {/* Profile info */}
                     <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-850 mt-auto">
-                      <img
-                        src={testimonial.photo}
-                        alt={testimonial.clientName}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-accent"
-                      />
+                      <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400">
+                        <User size={24} />
+                      </div>
                       <div>
                         <h4 className="text-sm font-bold text-primary dark:text-white">
                           {testimonial.clientName}

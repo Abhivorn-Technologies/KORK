@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { saveEnquiry } from '@/lib/firebase';
 import { useToast } from '@/components/common/Toast';
@@ -78,16 +78,19 @@ export default function PartnerForm() {
         <input required type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address" className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all" />
         <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number" className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all" />
       </div>
-      <select required name="partnershipInterest" value={formData.partnershipInterest} onChange={handleChange} className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all appearance-none cursor-pointer">
-        <option value="" disabled>Partnership Interest...</option>
-        <option>Patent Attorneys</option>
-        <option>Patent Agents</option>
-        <option>Law Firms</option>
-        <option>Universities</option>
-        <option>Innovation Consultants</option>
-        <option>Research Organizations</option>
-        <option>Industry Associations</option>
-      </select>
+      <div className="relative">
+        <select required name="partnershipInterest" value={formData.partnershipInterest} onChange={handleChange} className="w-full p-3 pr-10 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all appearance-none cursor-pointer">
+          <option value="" disabled>Partnership Interest...</option>
+          <option>Patent Attorneys</option>
+          <option>Patent Agents</option>
+          <option>Law Firms</option>
+          <option>Universities</option>
+          <option>Innovation Consultants</option>
+          <option>Research Organizations</option>
+          <option>Industry Associations</option>
+        </select>
+        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+      </div>
       <textarea required name="message" value={formData.message} onChange={handleChange} placeholder="How can we collaborate?" rows={4} className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm resize-none focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all" />
       <button suppressHydrationWarning disabled={loading} type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-700 to-cyan-500 text-white font-bold text-sm hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
         {loading ? 'Sending...' : 'Become A Partner'} <Send size={14} />

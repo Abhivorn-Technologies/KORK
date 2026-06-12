@@ -257,7 +257,7 @@ export default function PatentFilingSupportPage() {
             </div>
 
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
             >
               <div className="absolute inset-0 bg-accent/10 mix-blend-overlay z-10 pointer-events-none" />
               <img 
