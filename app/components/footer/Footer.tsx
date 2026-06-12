@@ -2,15 +2,20 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Send, Phone, Mail, MapPin, Linkedin, Facebook, Twitter, Shield, ArrowUp } from 'lucide-react';
 import { saveEnquiry } from '@/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/firebase/config';
 
 export default function Footer() {
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Hide footer on the admin portal
+  if (pathname.startsWith('/admin')) return null;
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -268,11 +273,17 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} KORK InventReX. All rights reserved.
           </p>
           <div className="flex items-center space-x-6">
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">
+            <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="hover:text-white transition-colors">
+            <Link href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
               Terms of Service
+            </Link>
+            <Link href="/nda-policy" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              NDA Policy
+            </Link>
+            <Link href="/accessibility" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              Accessibility
             </Link>
             <button
               suppressHydrationWarning

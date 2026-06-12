@@ -12,7 +12,10 @@ import {
   LogOut, 
   User,
   Menu,
-  X
+  X,
+  Briefcase,
+  MessageSquare,
+  Folder
 } from 'lucide-react';
 import { cn } from '@/utils/helpers';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -96,6 +99,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Products Management', href: '/admin/products', icon: Package },
     { label: 'Blog Articles', href: '/admin/blogs', icon: FileText },
     { label: 'Inquiries & Leads', href: '/admin/enquiries', icon: Inbox },
+    { label: 'Client Projects', href: '/admin/client-projects', icon: Briefcase },
+    { label: 'Client Messages', href: '/admin/messages', icon: MessageSquare },
+    { label: 'Document Control', href: '/admin/documents', icon: Folder },
     { label: 'Website Settings', href: '/admin/settings', icon: SettingsIcon },
   ];
 
@@ -106,10 +112,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Mobile Header */}
         <div className="flex lg:hidden items-center justify-between w-full h-16 bg-slate-900 border-b border-slate-850 px-4 absolute top-0 z-30">
           <Link href="/admin/dashboard" className="flex items-center space-x-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-accent text-white font-black text-sm">
-              KI
-            </div>
-            <span className="text-sm font-bold text-white tracking-tight">KORK CONTROL</span>
+            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-10 w-auto object-contain" />
           </Link>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -128,12 +131,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         >
           <div className="space-y-8">
             {/* Logo Header */}
-            <div className="hidden lg:flex items-center space-x-2.5 pb-4 border-b border-slate-800">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-accent text-white font-black text-lg shadow-md shadow-blue-500/15">
-                KI
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-white leading-none tracking-tight">KORK INVENTREX</span>
+            <div className="hidden lg:flex flex-col items-center pb-6 border-b border-slate-800">
+              <Link href="/admin/dashboard">
+                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
+              </Link>
+              <div className="flex flex-col text-center">
                 <span className="text-[9px] font-semibold text-accent uppercase mt-1 leading-none tracking-wider">Control Panel</span>
               </div>
             </div>

@@ -331,12 +331,9 @@ export default function ClientPortalPage() {
       {/* Sidebar navigation */}
       <aside className="w-full lg:w-64 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
         <div className="space-y-8">
-          <div className="flex items-center space-x-2.5 pb-4 border-b border-slate-800">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-accent text-white font-black text-base shadow">
-              KI
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold text-white leading-none tracking-tight">KORK CONTROL</span>
+          <div className="flex flex-col items-center pb-6 border-b border-slate-800">
+            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
+            <div className="flex flex-col text-center">
               <span className="text-[8px] font-semibold text-accent uppercase mt-1 leading-none tracking-wider font-mono">Workspace v1.2</span>
             </div>
           </div>
@@ -746,8 +743,7 @@ export default function ClientPortalPage() {
               <div className="space-y-2 text-xs font-normal">
                 {portalFaqs.map((faq, idx) => (
                   <div key={idx} className="border border-slate-850 rounded-xl overflow-hidden bg-slate-955/20">
-                    <button
-                      onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                    <button suppressHydrationWarning                       onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                       className="w-full text-left px-4 py-2.5 font-bold text-[11px] text-slate-300 flex items-center justify-between gap-3 hover:text-white transition-colors"
                     >
                       <span className="flex items-center gap-1.5"><QuestionIcon size={14} className="text-accent" /> {faq.q}</span>

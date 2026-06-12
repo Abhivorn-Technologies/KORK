@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 import { saveEnquiry } from '@/lib/firebase';
 import { useToast } from '@/components/common/Toast';
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
 
 interface ServiceDetail {
   id: string;
@@ -159,15 +161,51 @@ export default function ServicesPage() {
     <div className="flex flex-col min-h-screen dark:bg-slate-950 transition-colors duration-300">
       
       {/* Banner */}
-      <section className="relative py-20 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight">
-            Our Service Pillars
-          </h1>
-          <p className="text-lg text-slate-350 max-w-2xl mx-auto">
-            Democratizing patent protection with coordinated searches, high-precision drawings, and filing support.
-          </p>
+      <section className="relative pt-32 pb-20 bg-slate-900 text-white overflow-hidden border-b border-slate-800">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35 pointer-events-none" />
+        <div className="container-custom relative z-10 flex flex-col items-center justify-center text-center space-y-6 py-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6 max-w-4xl mx-auto"
+          >
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+              Intellectual Property Services <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">Designed Around Inventors</span>
+            </h1>
+            <p className="text-base md:text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
+              KORK InventReX simplifies the intellectual property journey by bringing patent support services, technical illustrations, filing coordination, and patent professionals together through one structured platform.
+            </p>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed max-w-3xl mx-auto mt-2">
+              Whether you are exploring an idea, preparing a patent application, or managing an existing portfolio, our services are designed to support every stage of the innovation lifecycle.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Elite Protection 2-Column Section */}
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div className="container-custom max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+          <div className="space-y-6 flex flex-col justify-center text-left">
+            <span className="text-xs font-black text-secondary uppercase tracking-widest block">Premium Intellectual Property Services</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight">
+              Elite Protection <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">At Every Step</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm md:text-base">
+              Our elite drafting illustrators, dedicated search analysts, and specialized filing agents operate in complete synergy to lock down your most valuable ideas. 
+              By directly integrating these workflows, we eliminate the costly redundancies and communication gaps that plague the traditional disjointed patent pipeline.
+            </p>
+          </div>
+          <motion.div 
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
+          >
+            <img 
+              src="/assets/images/premium_services_hero.png" 
+              alt="Premium Intellectual Property Services" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </motion.div>
         </div>
       </section>
 
@@ -187,9 +225,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Without Coordination */}
             <motion.div 
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="shine-card bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-850 rounded-2xl p-8 space-y-6 text-left"
@@ -216,9 +252,7 @@ export default function ServicesPage() {
 
             {/* With KORK */}
             <motion.div 
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="shine-card bg-slate-900 text-white border border-slate-800 rounded-2xl p-8 space-y-6 relative overflow-hidden text-left"
@@ -262,18 +296,19 @@ export default function ServicesPage() {
                 const isSelected = svc.id === activeTab;
                 return (
                   <motion.button
+                    suppressHydrationWarning
                     key={svc.id}
                     onClick={() => setActiveTab(svc.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-bold transition-all whitespace-nowrap lg:whitespace-normal shrink-0 border ${
+                    className={`group flex items-center gap-3 px-5 py-3.5 rounded-xl text-left text-sm font-bold transition-all duration-300 whitespace-nowrap lg:whitespace-normal shrink-0 border ${
                       isSelected
-                        ? 'bg-gradient-to-r from-secondary to-blue-700 text-white border-transparent shadow-lg shadow-blue-500/10'
-                        : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 border-slate-150/60 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-900'
+                        ? 'bg-gradient-to-r from-secondary to-accent border-transparent shadow-[0_0_20px_rgba(34,211,238,0.4)]'
+                        : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-accent/50 hover:text-secondary dark:hover:text-accent hover:shadow-[0_0_15px_rgba(34,211,238,0.15)]'
                     }`}
                   >
-                    <Icon size={18} className={isSelected ? 'text-white' : 'text-slate-400'} />
-                    <span>{svc.title}</span>
+                    <Icon size={18} className={`transition-colors duration-300 ${isSelected ? 'drop-shadow-md' : 'text-slate-400 group-hover:text-secondary dark:group-hover:text-accent'}`} />
+                    <div className={isSelected ? 'drop-shadow-sm' : ''}>{svc.title}</div>
                   </motion.button>
                 );
               })}
@@ -398,6 +433,7 @@ export default function ServicesPage() {
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Full Name</label>
                         <input
+                          suppressHydrationWarning
                           type="text"
                           name="name"
                           required
@@ -411,6 +447,7 @@ export default function ServicesPage() {
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Email Address</label>
                         <input
+                          suppressHydrationWarning
                           type="email"
                           name="email"
                           required
@@ -424,6 +461,7 @@ export default function ServicesPage() {
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Phone (Optional)</label>
                         <input
+                          suppressHydrationWarning
                           type="text"
                           name="phone"
                           value={formData.phone}
@@ -436,6 +474,7 @@ export default function ServicesPage() {
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Select IP Service</label>
                         <select
+                          suppressHydrationWarning
                           name="servicePillar"
                           value={formData.servicePillar}
                           onChange={handleInputChange}
@@ -450,6 +489,7 @@ export default function ServicesPage() {
                       <div className="sm:col-span-2 space-y-1.5 pt-2">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Invention / Drawing Specifications</label>
                         <textarea
+                          suppressHydrationWarning
                           name="message"
                           required
                           rows={4}
@@ -478,6 +518,7 @@ export default function ServicesPage() {
 
                       <div className="sm:col-span-2 pt-2">
                         <button
+                          suppressHydrationWarning
                           type="submit"
                           disabled={loading}
                           className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10 disabled:opacity-50 transition-opacity"
@@ -504,6 +545,39 @@ export default function ServicesPage() {
           </div>
 
         </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Ready to Start Your Intellectual Property Journey?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Use KORK’s guided project assessment to identify the services best suited for your invention, business, or intellectual property goals.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/contact?type=assessment"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
+            >
+              Start Assessment
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/services"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 transform hover:-translate-y-0.5 transition-all"
+            >
+              Explore Services
+            </Link>
+          </div>
+        </motion.div>
       </section>
 
     </div>

@@ -1,7 +1,9 @@
 'use client';
 
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   FileCheck, 
   Globe, 
@@ -78,20 +80,30 @@ export default function PatentFilingSupportPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-16 md:py-20 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#1e3a8a_0%,transparent_70%)] opacity-40" />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
+        <div className="container-custom relative z-10 flex flex-col items-center justify-center text-center space-y-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider mb-2"
+          >
             Attorney & Agent Coordinated Services
-          </div>
+          </motion.div>
           
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-5xl"
+          >
             Patent Filing & <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Prosecution Support</span>
-          </h1>
+          </motion.h1>
           
-          <p className="text-base md:text-lg text-slate-350 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
             From provisional applications to international filings and office action support, KORK coordinates the resources required to move patent applications efficiently through the protection process.
           </p>
 
@@ -106,17 +118,17 @@ export default function PatentFilingSupportPage() {
             </div>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
               href="/contact?type=filing"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 transition-all"
             >
               Start Project Assessment
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border-2 border-white/20 hover:bg-white/20 shadow-sm transform hover:-translate-y-1 transition-all"
             >
               Schedule Consultation
             </Link>
@@ -174,9 +186,10 @@ export default function PatentFilingSupportPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {officeActionServices.map((svc, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className="flex gap-4 p-5 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm"
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="shine-card flex gap-4 p-5 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm"
               >
                 <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-secondary to-accent text-white flex items-center justify-center shadow-md shadow-blue-500/10">
                   <RotateCcw size={18} />
@@ -185,34 +198,37 @@ export default function PatentFilingSupportPage() {
                   <h3 className="text-sm font-bold text-primary dark:text-white">{svc.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">{svc.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* MAINTENANCE FEE TRACKING */}
-      <section className="py-20 bg-white dark:bg-slate-950 transition-colors">
-        <div className="container-custom max-w-3xl space-y-8 text-center bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-8 md:p-12 border border-slate-850 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-xl pointer-events-none" />
-          <h3 className="text-xl font-bold tracking-tight text-white">Patent Maintenance & Portfolio Management</h3>
-          <p className="text-xs text-slate-350 leading-relaxed font-normal max-w-xl mx-auto">
-            Stay protected for the long term after issuance. We track mandatory maintenance fee deadlines at 3.5, 7.5, and 11.5 years, handle trademark renewals, and store all documents securely in your portal.
-          </p>
-          <div className="pt-2">
-            <Link
-              href="/contact?type=portfolio"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-bold text-slate-900 bg-accent hover:bg-white transition-colors"
-            >
-              Request Portfolio Review
-            </Link>
+      <section className="py-6 bg-white dark:bg-slate-950 transition-colors">
+        <div className="container-custom max-w-4xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-6 md:p-8 shadow-sm">
+            <div className="flex-1 space-y-2 text-center md:text-left">
+              <h3 className="text-lg font-bold tracking-tight text-primary dark:text-white">Patent Maintenance & Portfolio Management</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+                Stay protected for the long term after issuance. We track mandatory maintenance fee deadlines at 3.5, 7.5, and 11.5 years, handle trademark renewals, and store all documents securely in your portal.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <Link
+                href="/contact?type=portfolio"
+                className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10 transition-all transform hover:-translate-y-0.5"
+              >
+                Request Portfolio Review
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* WHY USE KORK FOR FILING */}
       <section className="py-20 bg-slate-50 dark:bg-slate-900/40 transition-colors">
-        <div className="container-custom max-w-4xl space-y-12">
+        <div className="container-custom max-w-6xl space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
               Integrated Project Staging
@@ -222,21 +238,41 @@ export default function PatentFilingSupportPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-xs font-normal">
-            <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
-              <h4 className="font-bold text-primary dark:text-white">One Central Platform</h4>
-              <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Prior art searches, design vector figures, claims support, and e-filings, all managed in one secure workspace dashboard.</p>
-            </div>
-            
-            <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
-              <h4 className="font-bold text-primary dark:text-white">Milestone Tracking</h4>
-              <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Every document revision, invoice, attorney authorization, and submission ID is tracked clearly on the client portal timeline.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+            <div className="space-y-6 text-xs font-normal flex flex-col justify-center">
+              <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 hover:shadow-md transition-shadow">
+                <h4 className="font-bold text-primary dark:text-white text-sm">One Central Platform</h4>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Prior art searches, design vector figures, claims support, and e-filings, all managed in one secure workspace dashboard.</p>
+              </div>
+              
+              <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 hover:shadow-md transition-shadow">
+                <h4 className="font-bold text-primary dark:text-white text-sm">Milestone Tracking</h4>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Every document revision, invoice, attorney authorization, and submission ID is tracked clearly on the client portal timeline.</p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2 hover:shadow-md transition-shadow">
+                <h4 className="font-bold text-primary dark:text-white text-sm">Strict NDA Compliance</h4>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Encrypted document transfers, secure vault storage, and strict confidentiality agreements to protect trade secrets prior to publication.</p>
+              </div>
             </div>
 
-            <div className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850 space-y-2">
-              <h4 className="font-bold text-primary dark:text-white">Attorney/Agent Network</h4>
-              <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Direct matching with registered practitioners selected specifically based on the technical category of your invention.</p>
-            </div>
+            <motion.div 
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800"
+            >
+              <div className="absolute inset-0 bg-accent/10 mix-blend-overlay z-10 pointer-events-none" />
+              <img 
+                src="/assets/images/patent_portfolio_secure.png" 
+                alt="Secure Patent Portfolio" 
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/20 to-transparent z-10 pointer-events-none" />
+              <div className="absolute bottom-8 left-8 right-8 z-20 image-overlay-text">
+                <p className="text-white text-lg font-bold tracking-tight">Enterprise-Grade Security</p>
+                <p className="text-slate-300 text-xs leading-relaxed mt-2">
+                  Your intellectual property is secured with state-of-the-art encryption protocols from the moment of disclosure to official USPTO issuance.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -260,6 +296,7 @@ export default function PatentFilingSupportPage() {
                 className="border border-slate-200/60 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm"
               >
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full text-left px-5 py-4 font-bold text-xs md:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:text-secondary dark:hover:text-accent transition-colors"
                 >
@@ -284,31 +321,36 @@ export default function PatentFilingSupportPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative py-20 bg-slate-950 text-white overflow-hidden text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-3xl font-black tracking-tight text-white">
-            Ready to Protect Your Innovation?
-          </h2>
-          <p className="text-sm text-slate-350 leading-relaxed max-w-xl mx-auto">
-            Speak with an applications manager to coordinate your patent search, designs packaging, and attorney assignment today.
-          </p>
-          <div className="flex justify-center gap-4 pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Ready to Secure Your Filing?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Speak with an applications manager to coordinate your patent search, designs packaging, and attorney assignment today.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact?type=assessment"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 transition-all"
             >
               Start Free Assessment
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 shadow-sm transform hover:-translate-y-1 transition-all"
             >
               Schedule Consultation
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

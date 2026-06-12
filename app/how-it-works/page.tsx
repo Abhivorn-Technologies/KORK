@@ -1,8 +1,10 @@
 'use client';
 
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/utils/helpers';
 import { 
   ArrowRight,
   Shield,
@@ -19,16 +21,86 @@ import {
 } from 'lucide-react';
 
 const steps = [
-  { num: '1', title: 'Submit Your Invention', desc: 'Provide description, sketches, photos, CAD models, or existing materials in our portal.' },
-  { num: '2', title: 'Confidential Review', desc: 'Secure intake roadmap setup. Optional NDA execution before sharing detailed files.' },
-  { num: '3', title: 'Patent Search & Evaluation', desc: 'Prior art, patentability, and trademark screening coordination to evaluate landscape.' },
-  { num: '4', title: 'Strategy Planning', desc: 'Identify optimal pathways: utility patent, design, plant, trademark, or international filings.' },
-  { num: '5', title: 'Application Preparation', desc: 'Coordinate draft specifications, technical documentation sheets, and disclosure files.' },
-  { num: '6', title: 'Patent Drawings', desc: 'Drafting of USPTO-compliant figures (utility line drawings, design surface shading).' },
-  { num: '7', title: 'Attorney Coordination', desc: 'Assigned registered patent attorney or agent reviews claims, specifications, and issues authorization.' },
-  { num: '8', title: 'Filing & Submission', desc: 'Application is officially submitted to the USPTO, PCT, or target international offices.' },
-  { num: '9', title: 'Examination & Office Actions', desc: 'Deadlines tracking, drawing updates, and claim amendment coordination during patent prosecution.' },
-  { num: '10', title: 'Portfolio Management', desc: 'Post-issuance maintenance fee monitoring, trademark renewals, and long-term asset tracking.' }
+  { 
+    num: '1', 
+    title: 'Submit Your Invention', 
+    desc: 'Provide a description of your invention, innovation, product, design, or brand.',
+    listTitle: 'Upload:',
+    listItems: ['Sketches', 'Photos', 'CAD files', 'Technical documents', 'Existing patent materials'],
+    outcome: null
+  },
+  { 
+    num: '2', 
+    title: 'Confidential Review', 
+    desc: 'Our team reviews project requirements.',
+    listTitle: 'Available Services:',
+    listItems: ['NDA Requests', 'Secure Intake', 'Initial Assessment'],
+    outcome: 'Project roadmap created.'
+  },
+  { 
+    num: '3', 
+    title: 'Patent Search & Evaluation', 
+    desc: 'Coordinate professional search services.',
+    listTitle: 'Includes:',
+    listItems: ['Prior Art Search', 'Patentability Search', 'Landscape Search', 'Trademark Screening'],
+    outcome: 'Determine potential protection pathways.'
+  },
+  { 
+    num: '4', 
+    title: 'Strategy & Protection Planning', 
+    desc: 'Identify the most appropriate path:',
+    listTitle: '',
+    listItems: ['Utility Patent', 'Design Patent', 'Plant Patent', 'Trademark', 'Trade Dress', 'International Filing'],
+    outcome: 'Recommended protection strategy.'
+  },
+  { 
+    num: '5', 
+    title: 'Application Preparation', 
+    desc: 'Coordinate preparation of filing materials.',
+    listTitle: 'May include:',
+    listItems: ['Patent Specifications', 'Technical Documentation', 'Disclosure Materials', 'Supporting Information'],
+    outcome: 'Application package development begins.'
+  },
+  { 
+    num: '6', 
+    title: 'Patent Drawings & Illustrations', 
+    desc: '',
+    listTitle: 'KORK prepares:',
+    listItems: ['Utility Patent Drawings', 'Design Patent Drawings', 'Plant Patent Illustrations', 'Trademark Illustrations', 'Trade Dress Illustrations'],
+    outcome: 'USPTO-compliant figures ready for submission.'
+  },
+  { 
+    num: '7', 
+    title: 'Attorney & Agent Coordination', 
+    desc: 'Applications requiring professional representation are coordinated through trusted patent attorneys and registered patent agents.',
+    listTitle: 'May include:',
+    listItems: ['Filing Review', 'Claims Review', 'Legal Analysis', 'Filing Authorization'],
+    outcome: 'Application prepared for filing.'
+  },
+  { 
+    num: '8', 
+    title: 'Filing & Submission', 
+    desc: 'Patent professionals complete submission activities.',
+    listTitle: 'May include:',
+    listItems: ['USPTO Filing', 'Trademark Filing', 'PCT Filing', 'National Phase Filing'],
+    outcome: 'Application officially submitted.'
+  },
+  { 
+    num: '9', 
+    title: 'Examination & Office Actions', 
+    desc: '',
+    listTitle: 'During USPTO review:',
+    listItems: ['Office Action Tracking', 'Drawing Updates', 'Amendment Coordination', 'Response Coordination'],
+    outcome: 'Application continues through examination.'
+  },
+  { 
+    num: '10', 
+    title: 'Protection & Portfolio Management', 
+    desc: '',
+    listTitle: 'After registration or issuance:',
+    listItems: ['Portfolio Tracking', 'Maintenance Monitoring', 'Trademark Renewals', 'Patent Maintenance Support'],
+    outcome: 'Long-term IP management.'
+  }
 ];
 
 const timelineRanges = [
@@ -69,44 +141,45 @@ const faqs = [
 
 export default function HowItWorksPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-20 md:py-32 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
+      <section className="relative py-16 md:py-20 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#1e3a8a_0%,transparent_70%)] opacity-40" />
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider">
+        <div className="container-custom relative z-10 flex flex-col items-center justify-center text-center space-y-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider mb-2">
             Structured Workflow Lifecycle
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-5xl">
             From Idea to <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Intellectual Property™</span>
           </h1>
           
-          <p className="text-base md:text-lg text-slate-350 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
             A structured, transparent workflow that guides inventors from invention disclosure through patent protection, trademark registration, and long-term intellectual property management.
           </p>
 
-          <p className="text-sm text-slate-400 leading-relaxed max-w-2xl mx-auto font-light">
+          <p className="text-sm text-slate-400 leading-relaxed max-w-5xl mx-auto">
             Whether you are protecting your first invention or managing a growing portfolio, KORK coordinates the services, professionals, and project milestones required to move your innovation forward.
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
               href="/contact?type=start"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 transition-all"
             >
               Start Your Project
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border-2 border-white/20 hover:bg-white/20 shadow-sm transform hover:-translate-y-1 transition-all"
             >
               Schedule Consultation
             </Link>
@@ -116,40 +189,58 @@ export default function HowItWorksPage() {
 
       {/* SECTION 1: THE TRADITIONAL PROCESS IS FRAGMENTED */}
       <section className="py-20 bg-white dark:bg-slate-950 transition-colors">
-        <div className="container-custom max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-4">
-            <span className="text-xs font-black text-rose-500 uppercase tracking-widest block">The Problem</span>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-primary dark:text-white tracking-tight">
-              The Traditional Process Is Fragmented
-            </h2>
-            <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Most inventors struggle to manage their IP projects because they must coordinate multiple independent providers independently, resulting in communication delays, format errors, and mounting costs.
-            </p>
+        <div className="container-custom max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+          <div className="space-y-8 flex flex-col justify-center">
+            <div className="space-y-4">
+              <span className="text-xs font-black text-rose-500 uppercase tracking-widest block">The Problem</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-primary dark:text-white tracking-tight">
+                The Traditional Process Is Fragmented
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+                Most inventors struggle to manage their IP projects because they must coordinate multiple independent providers independently, resulting in communication delays, format errors, and mounting costs.
+              </p>
+            </div>
+
+            <motion.div 
+              whileHover={{ y: -4 }}
+              className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-4 shadow-sm"
+            >
+              <h3 className="text-sm font-bold text-primary dark:text-white uppercase tracking-wider">Independent Tasks to Coordinate:</h3>
+              <div className="grid grid-cols-2 gap-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Searches</span>
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Drawings</span>
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Attorneys</span>
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Trademark Files</span>
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> USPTO Deadlines</span>
+                <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Office Actions</span>
+              </div>
+            </motion.div>
           </div>
 
           <motion.div 
-            whileHover={{ y: -6, scale: 1.02 }}
-            className="shine-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 space-y-4 shadow-lg"
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}className="relative h-full min-h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 group"
           >
-            <h3 className="text-sm font-bold text-primary dark:text-white uppercase tracking-wider">Independent Tasks to Coordinate:</h3>
-            <div className="grid grid-cols-2 gap-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Searches</span>
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Drawings</span>
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Patent Attorneys</span>
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Trademark Files</span>
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> USPTO Deadlines</span>
-              <span className="flex items-center gap-1.5"><AlertTriangle size={14} className="text-rose-500 shrink-0" /> Office Actions</span>
+            <div className="absolute inset-0 bg-accent/20 mix-blend-overlay z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-500" />
+            <img 
+              src="/assets/images/how_it_works_blueprint.png" 
+              alt="Workflow Blueprint Concept" 
+              className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 pointer-events-none z-10" />
+            <div className="absolute bottom-6 left-6 right-6 z-20 image-overlay-text">
+              <p className="text-white text-xs font-bold tracking-widest uppercase">The Solution: KORK Unified Pathway</p>
+              <p className="text-slate-300 text-[10px] leading-relaxed mt-1">
+                KORK eliminates friction by unifying technical drafting, searches, and agent filings under a single structured portal.
+              </p>
             </div>
-            <p className="text-[10px] text-slate-400 leading-relaxed pt-2 border-t border-slate-200 dark:border-slate-800">
-              KORK eliminates this friction by unifying technical drafting, searches, and agent filings under a single portal.
-            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* SECTION 2: THE 10 STEP TIMELINE */}
-      <section className="py-20 bg-slate-50 dark:bg-slate-900/40 transition-colors">
-        <div className="container-custom space-y-20">
+      {/* SECTION 2: THE BLUEPRINT SCHEMATIC */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors">
+        <div className="container-custom max-w-6xl mx-auto space-y-12">
+          
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
               The KORK Process
@@ -159,52 +250,131 @@ export default function HowItWorksPage() {
             </p>
           </div>
 
-          {/* Visual Alternating Timeline */}
-          <div className="relative max-w-5xl mx-auto">
-            {/* Glowing Center Line (Hidden on mobile) */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/20 via-accent/50 to-transparent -translate-x-1/2 rounded-full" />
+          {/* Blueprint Container */}
+          <div className="relative w-full bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 md:p-12 shadow-xl overflow-hidden group">
+            {/* Grid Background */}
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-10 pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #64748b 1px, transparent 1px), linear-gradient(to bottom, #64748b 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             
-            <div className="space-y-8 md:space-y-12">
-              {steps.map((step, idx) => {
-                const isEven = idx % 2 === 0;
-                return (
-                  <div key={step.num} className={`relative flex flex-col md:flex-row items-center ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                    
-                    {/* Mobile Line & Circle (Visible only on mobile) */}
-                    <div className="md:hidden absolute left-4 top-0 bottom-[-2rem] w-0.5 bg-accent/20" />
-                    <div className="md:hidden absolute left-4 top-6 w-3 h-3 rounded-full bg-accent -translate-x-1/2 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+            {/* Corner Crosshairs */}
+            <div className="absolute top-6 left-6 w-6 h-6 border-t-2 border-l-2 border-slate-300 dark:border-slate-700 pointer-events-none" />
+            <div className="absolute top-6 right-6 w-6 h-6 border-t-2 border-r-2 border-slate-300 dark:border-slate-700 pointer-events-none" />
+            <div className="absolute bottom-6 left-6 w-6 h-6 border-b-2 border-l-2 border-slate-300 dark:border-slate-700 pointer-events-none" />
+            <div className="absolute bottom-6 right-6 w-6 h-6 border-b-2 border-r-2 border-slate-300 dark:border-slate-700 pointer-events-none" />
 
-                    {/* Empty Space for Alternating Layout */}
-                    <div className="hidden md:block md:w-1/2" />
-
-                    {/* Center Node (Visible only on desktop) */}
-                    <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-950 border-2 border-accent items-center justify-center z-10 shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                      <span className="text-white font-black text-xs">{step.num}</span>
-                    </div>
-
-                    {/* Content Card */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: isEven ? 30 : -30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: '-50px' }}
-                      whileHover={{ y: -6, scale: 1.02 }}
-                      className={`w-full md:w-1/2 pl-12 md:pl-0 ${isEven ? 'md:pr-16 text-left md:text-right' : 'md:pl-16 text-left'}`}
-                    >
-                      <div className="shine-card p-6 md:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                        <h3 className="text-lg font-black text-primary dark:text-white mb-2 flex items-center gap-2 justify-start md:justify-normal">
-                          <span className="md:hidden text-accent text-sm">#{step.num}</span>
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                          {step.desc}
-                        </p>
-                      </div>
-                    </motion.div>
-                    
+            <div className="relative z-10 flex flex-col gap-16">
+              
+              {/* Top HUD (Heads Up Display) */}
+              <div className="w-full bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-2xl p-8 min-h-[220px] flex flex-col justify-center relative overflow-hidden shadow-sm">
+                <div className="absolute top-0 right-0 p-4 opacity-[0.03] dark:opacity-5 pointer-events-none">
+                  <span className="text-[150px] font-black font-mono leading-none text-slate-900 dark:text-white">
+                    {steps[activeStep].num.padStart(2, '0')}
+                  </span>
+                </div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent text-[10px] font-mono tracking-widest uppercase rounded shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+                      Phase {steps[activeStep].num.padStart(2, '0')}
+                    </span>
+                    <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono tracking-widest uppercase flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-pulse" />
+                      System Status: Online
+                    </span>
                   </div>
-                );
-              })}
+                  <motion.h3 
+                    key={`title-${activeStep}`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
+                  >
+                    {steps[activeStep].title}
+                  </motion.h3>
+                  <motion.div 
+                    key={`content-${activeStep}`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="max-w-3xl"
+                  >
+                    {steps[activeStep].desc && (
+                      <p className="text-slate-700 dark:text-slate-300 font-medium text-sm md:text-base leading-snug mb-3">
+                        {steps[activeStep].desc}
+                      </p>
+                    )}
+                    
+                    {(steps[activeStep].listTitle || steps[activeStep].listItems?.length > 0) && (
+                      <div className="mb-4">
+                        {steps[activeStep].listTitle && (
+                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mr-2">
+                            {steps[activeStep].listTitle}
+                          </span>
+                        )}
+                        <span className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                          {steps[activeStep].listItems.join(' • ')}
+                        </span>
+                      </div>
+                    )}
+
+                    {steps[activeStep].outcome && (
+                      <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-md border border-emerald-200 dark:border-emerald-500/20">
+                        <CheckCircle size={14} className="shrink-0" />
+                        Outcome: {steps[activeStep].outcome}
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Interactive Node Grid */}
+              <div className="relative w-full max-w-4xl mx-auto">
+                {/* Connecting Vector Line (Desktop) */}
+                <div className="absolute top-[28px] left-6 right-6 h-px bg-slate-200 dark:bg-slate-800 hidden sm:block pointer-events-none">
+                  <div 
+                    className="h-full bg-accent transition-all duration-500 ease-out shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                    style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-y-12 sm:gap-y-0 relative z-10">
+                  {steps.map((step, idx) => {
+                    const isActive = activeStep === idx;
+                    const isPassed = idx <= activeStep;
+                    return (
+                      <div 
+                        key={step.num}
+                        className="flex flex-col items-center relative cursor-pointer group"
+                        onMouseEnter={() => setActiveStep(idx)}
+                        onClick={() => setActiveStep(idx)}
+                      >
+                        {/* Node */}
+                        <div className={cn(
+                          "w-14 h-14 rounded-lg bg-white dark:bg-slate-900 border-2 flex items-center justify-center transition-all duration-300 relative z-10 shadow-sm",
+                          isActive 
+                            ? "border-accent shadow-[0_0_20px_rgba(34,211,238,0.3)] scale-110 rotate-45" 
+                            : isPassed 
+                              ? "border-slate-400 dark:border-slate-500" 
+                              : "border-slate-200 dark:border-slate-800 group-hover:border-slate-400"
+                        )}>
+                          <span className={cn(
+                            "font-mono font-bold transition-all duration-300",
+                            isActive ? "text-accent dark:text-white text-lg -rotate-45" : isPassed ? "text-slate-600 dark:text-slate-300" : "text-slate-400 dark:text-slate-600 group-hover:text-slate-600 dark:group-hover:text-slate-400"
+                          )}>
+                            {step.num.padStart(2, '0')}
+                          </span>
+                        </div>
+                        
+                        {/* Node Label */}
+                        <span className={cn(
+                          "mt-6 text-[10px] md:text-xs font-mono text-center leading-tight px-2 transition-all duration-300 uppercase tracking-widest",
+                          isActive ? "text-accent font-bold" : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
+                        )}>
+                          {step.title}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -338,6 +508,7 @@ export default function HowItWorksPage() {
                 className="border border-slate-200/60 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm"
               >
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full text-left px-5 py-4 font-bold text-xs md:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:text-secondary dark:hover:text-accent transition-colors"
                 >
@@ -365,10 +536,7 @@ export default function HowItWorksPage() {
       <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.5 }}
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
           className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
         >
           <div className="flex-1 space-y-3 text-left">

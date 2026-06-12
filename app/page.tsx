@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { getFeaturedProducts, getTestimonials } from '@/lib/firebase';
 import { Product, Testimonial } from '@/types';
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
 
 // Custom Counter Hook/Component for animated counters
 function Counter({ value, suffix = '' }: { value: number; suffix?: string }) {
@@ -182,84 +183,121 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen dark:bg-slate-950 transition-colors duration-300">
       
       {/* 1. HERO SECTION */}
-      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-x-clip overflow-y-visible bg-slate-950 text-white">
-        {/* Beautiful Dark Mesh Overlay */}
-        <div className="absolute inset-0 bg-slate-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.1)_1.5px,transparent_1.5px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] opacity-80" />
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-600/30 to-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-cyan-600/20 to-emerald-500/10 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: '1s' }} />
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-24 overflow-hidden bg-[#020617] text-[#ffffff]">
+        
+        {/* Subtle bright background gradient based on active index */}
+        <motion.div 
+          className="absolute inset-0 opacity-[0.15] mix-blend-screen"
+          animate={{
+            background: activeServiceIndex === 0 ? 'radial-gradient(circle at center, #06b6d4 0%, transparent 60%)' :
+                        activeServiceIndex === 1 ? 'radial-gradient(circle at center, #10b981 0%, transparent 60%)' :
+                        activeServiceIndex === 2 ? 'radial-gradient(circle at center, #d946ef 0%, transparent 60%)' :
+                        'radial-gradient(circle at center, #f59e0b 0%, transparent 60%)'
+          }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
 
-        <div className="container-custom relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Hero Content */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider"
+        {/* 3D Animated Hero Graphics - Absolute Background Core */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-[0.35] mix-blend-screen pointer-events-none z-0">
+          <HeroAnimation activeIndex={activeServiceIndex} />
+        </div>
+
+        <div className="container-custom relative z-10 flex flex-col items-center justify-center text-center space-y-8 mt-12">
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/50 border border-white/10 text-[#ffffff] text-xs font-bold uppercase tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+          >
+            <motion.div 
+              className="w-2 h-2 rounded-full shadow-[0_0_10px_currentColor]"
+              animate={{
+                backgroundColor: activeServiceIndex === 0 ? '#67e8f9' : // Cyan 300
+                                 activeServiceIndex === 1 ? '#6ee7b7' : // Emerald 300
+                                 activeServiceIndex === 2 ? '#f0abfc' : // Fuchsia 300
+                                 '#fcd34d',                             // Amber 300
+                color: activeServiceIndex === 0 ? '#67e8f9' :
+                       activeServiceIndex === 1 ? '#6ee7b7' :
+                       activeServiceIndex === 2 ? '#f0abfc' :
+                       '#fcd34d'
+              }}
+              transition={{ duration: 1 }}
+            />
+            Integrated IP & Patent Support Platform
+          </motion.div>
+          
+          <motion.div
+            role="heading" aria-level={1}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black tracking-tighter leading-[1.05] text-[#ffffff] max-w-5xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
+          >
+            From Idea to<br />
+            <motion.div 
+              className="inline-block"
+              animate={{
+                color: activeServiceIndex === 0 ? '#67e8f9' : // Cyan 300
+                       activeServiceIndex === 1 ? '#6ee7b7' : // Emerald 300
+                       activeServiceIndex === 2 ? '#f0abfc' : // Fuchsia 300
+                       '#fcd34d'                              // Amber 300
+              }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
             >
-              <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse-glow" />
-              Integrated IP & Patent Support Platform
+              Intellectual Property™
             </motion.div>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-white"
-            >
-              From Idea to<br />
-              <motion.span 
-                key={activeServiceIndex}
-                initial={{ opacity: 0.5, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 0.8 }}
-                className={`text-transparent bg-clip-text bg-gradient-to-r ${
-                  activeServiceIndex === 0 ? 'from-cyan-400 to-blue-500' :
-                  activeServiceIndex === 1 ? 'from-emerald-400 to-teal-500' :
-                  activeServiceIndex === 2 ? 'from-purple-400 to-pink-500' :
-                  'from-amber-400 to-orange-500'
-                }`}
-              >
-                Intellectual Property™
-              </motion.span>
-            </motion.h1>
+          </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-slate-300 leading-relaxed max-w-2xl"
-            >
-              One platform coordinating patent searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.
-            </motion.p>
-
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-xl md:text-3xl leading-relaxed max-w-4xl drop-shadow-[0_5px_10px_rgba(0,0,0,0.9)] font-semibold"
+          >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-wrap gap-4 pt-2"
+              animate={{
+                color: activeServiceIndex === 0 ? '#67e8f9' : // Cyan 300
+                       activeServiceIndex === 1 ? '#6ee7b7' : // Emerald 300
+                       activeServiceIndex === 2 ? '#f0abfc' : // Fuchsia 300
+                       '#fcd34d'                              // Amber 300
+              }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
             >
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/20 transition-all transform hover:-translate-y-0.5"
-              >
-                Schedule Consultation
-                <ArrowRight size={18} />
-              </Link>
-              <Link
-                href="/client-portal"
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-base font-bold text-white bg-slate-800/80 border border-slate-700 hover:bg-slate-700 backdrop-blur-sm transition-colors"
-              >
-                Submit Your Invention
-              </Link>
+              One platform coordinating patent searches, patent illustrations, patent filing support, and intellectual property professionals.
             </motion.div>
-          </div>
+          </motion.div>
 
-          {/* 3D Animated Hero Graphics Cluster */}
-          <div className="lg:col-span-5 relative w-full flex items-center justify-center">
-            <HeroAnimation activeIndex={activeServiceIndex} />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-5 pt-8 w-full sm:w-auto"
+          >
+            <Link
+              href="/contact"
+              className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-bold text-[#ffffff] border backdrop-blur-lg shadow-2xl transition-all duration-700 transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto ${
+                activeServiceIndex === 0 ? 'bg-cyan-500/20 border-cyan-400/50 hover:bg-cyan-500/30 shadow-cyan-500/20' :
+                activeServiceIndex === 1 ? 'bg-emerald-500/20 border-emerald-400/50 hover:bg-emerald-500/30 shadow-emerald-500/20' :
+                activeServiceIndex === 2 ? 'bg-fuchsia-500/20 border-fuchsia-400/50 hover:bg-fuchsia-500/30 shadow-fuchsia-500/20' :
+                'bg-amber-500/20 border-amber-400/50 hover:bg-amber-500/30 shadow-amber-500/20'
+              }`}
+            >
+              Schedule Consultation
+              <ArrowRight size={20} />
+            </Link>
+            <Link
+              href="/client-portal"
+              className={`inline-flex items-center justify-center px-8 py-4 rounded-xl text-lg font-bold bg-[#ffffff] shadow-xl transition-all duration-700 transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto ${
+                activeServiceIndex === 0 ? 'text-cyan-950 hover:bg-cyan-50 hover:shadow-cyan-500/20' :
+                activeServiceIndex === 1 ? 'text-emerald-950 hover:bg-emerald-50 hover:shadow-emerald-500/20' :
+                activeServiceIndex === 2 ? 'text-fuchsia-950 hover:bg-fuchsia-50 hover:shadow-fuchsia-500/20' :
+                'text-amber-950 hover:bg-amber-50 hover:shadow-amber-500/20'
+              }`}
+            >
+              Submit Your Invention
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -267,10 +305,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-r from-primary to-slate-900 py-12 border-y border-slate-800">
         <div className="container-custom">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
           >
             
@@ -310,10 +345,7 @@ export default function HomePage() {
       <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div className="container-custom space-y-16">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="text-center max-w-3xl mx-auto space-y-3"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold uppercase tracking-wider">
@@ -331,9 +363,7 @@ export default function HomePage() {
             {challenges.map((challenge, idx) => (
               <motion.div
                 key={challenge.q}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                whileHover={{ y: -8, scale: 1.06 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -8, scale: 1.06 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-shadow duration-300"
@@ -359,10 +389,7 @@ export default function HomePage() {
       <section className="py-24 bg-light-gray dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-900 transition-colors duration-300">
         <div className="container-custom space-y-16">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="text-center max-w-3xl mx-auto space-y-3"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 text-secondary dark:text-accent text-xs font-bold uppercase tracking-wider">
@@ -380,9 +407,7 @@ export default function HomePage() {
             {solutions.map((sol, idx) => (
               <motion.div
                 key={sol.title}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                whileHover={{ y: -6, scale: 1.02 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card group flex flex-col justify-between p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-card"
@@ -413,10 +438,7 @@ export default function HomePage() {
 
           {/* Coordination Value Box */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="bg-slate-950 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden border border-slate-850 shadow-2xl"
           >
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[80px] pointer-events-none" />
@@ -461,16 +483,13 @@ export default function HomePage() {
       {/* 5. AFFILIATIONS BAR */}
       <section className="bg-slate-50 dark:bg-slate-950 py-16 border-y border-slate-200/50 dark:border-slate-900 transition-colors duration-300">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.5 }}
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
           className="container-custom max-w-4xl text-center space-y-6"
         >
           <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
             Coordinating with Registered Patent Professionals & Serving Members of
           </span>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 opacity-75 grayscale hover:grayscale-0 transition-all">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 transition-all">
             <div className="flex flex-col items-center">
               <img
                 src="/napp_logo.jpg"
@@ -497,10 +516,7 @@ export default function HomePage() {
         <div className="container-custom space-y-12">
           
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
           >
             <div className="space-y-3 max-w-xl text-left">
@@ -543,9 +559,7 @@ export default function HomePage() {
               {featuredProducts.map((product, idx) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card"
@@ -594,10 +608,7 @@ export default function HomePage() {
         <section className="py-24 bg-light-gray dark:bg-slate-900/60 border-t border-slate-150/50 dark:border-slate-900 transition-colors duration-300 overflow-hidden">
           <div className="container-custom space-y-12">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
               className="text-center max-w-2xl mx-auto space-y-3"
             >
               <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-500/10 text-secondary dark:text-accent">
@@ -615,9 +626,7 @@ export default function HomePage() {
               {testimonials.map((testimonial, idx) => (
                 <motion.div 
                   key={testimonial.id || idx}
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 p-8 rounded-3xl relative shadow-md flex flex-col justify-between"
@@ -668,10 +677,7 @@ export default function HomePage() {
         <div className="container-custom max-w-4xl space-y-12">
           
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5 }}
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="text-center space-y-3"
           >
             <h2 className="text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight">
@@ -686,10 +692,7 @@ export default function HomePage() {
             {faqs.map((faq, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
                 className="border border-slate-150/70 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/40 rounded-xl overflow-hidden text-left"
               >
                 <button
@@ -719,10 +722,7 @@ export default function HomePage() {
       <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.5 }}
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
           className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
         >
           <div className="flex-1 space-y-3 text-left">

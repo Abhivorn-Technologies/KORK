@@ -17,6 +17,7 @@ import {
 import { getProducts } from '@/lib/firebase';
 import { Product } from '@/types';
 import { useToast } from '@/components/common/Toast';
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
 
 const faqs = [
   {
@@ -74,16 +75,16 @@ export default function InventorServicesPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-24 md:py-32 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
-        <div className="absolute inset-0 bg-slate-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.08)_1.5px,transparent_1.5px)] bg-[size:32px_32px] opacity-80" />
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-16 md:py-20 bg-slate-950 text-white overflow-hidden border-b border-slate-900">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#1e3a8a_0%,transparent_70%)] opacity-40" />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
         
-        <div className="container-custom relative z-10 max-w-4xl text-center space-y-6">
+        <div className="container-custom relative z-10 flex flex-col items-center justify-center text-center space-y-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent text-xs font-bold uppercase tracking-wider mb-2"
           >
             Guided Inventor Pathway
           </motion.div>
@@ -92,30 +93,30 @@ export default function InventorServicesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight"
+            className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-5xl"
           >
             Turn Your Idea Into Protected <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Intellectual Property</span>
           </motion.h1>
           
-          <p className="text-base md:text-lg text-slate-350 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
             Whether you are a first-time inventor, startup founder, researcher, or product developer, KORK provides a structured pathway from invention evaluation through patent protection and intellectual property management.
           </p>
 
-          <p className="text-sm text-slate-400 leading-relaxed max-w-2xl mx-auto font-light">
+          <p className="text-sm text-slate-400 leading-relaxed max-w-5xl mx-auto">
             Navigate the patent process with confidence through coordinated searches, illustrations, filing support, trademark services, and access to trusted patent professionals.
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
               href="/contact?type=start"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/15 transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 transition-all"
             >
               Start My IP Journey
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border-2 border-white/20 hover:bg-white/20 shadow-sm transform hover:-translate-y-1 transition-all"
             >
               Schedule Consultation
             </Link>
@@ -175,7 +176,10 @@ export default function InventorServicesPage() {
               </ul>
             </div>
             
-            <div className="p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 text-white border border-slate-800 space-y-4">
+            <motion.div 
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 text-white border border-slate-800 space-y-4 shadow-lg"
+            >
               <h4 className="text-lg font-bold text-accent">The KORK Solution</h4>
               <p className="text-xs text-slate-350 leading-relaxed font-normal">
                 We simplify the journey by offering one centralized platform. We handle prior art searches, prepare USPTO-compliant drawings, and coordinate application assemblies through our professional attorney and agent network. You get full visibility and a single point of contact.
@@ -188,7 +192,7 @@ export default function InventorServicesPage() {
                   Start Guided Assessment <ArrowRight size={14} />
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -215,9 +219,7 @@ export default function InventorServicesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {packages.map((pkg, idx) => (
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -8, scale: 1.03 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -8, scale: 1.03 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   key={pkg.id}
@@ -344,10 +346,7 @@ export default function InventorServicesPage() {
           <div className="relative border-l-2 border-accent/35 ml-4 md:ml-6 space-y-8">
             {steps.map((step, idx) => (
               <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
                 key={step.num} 
                 className="relative pl-6 md:pl-10"
               >
@@ -412,31 +411,36 @@ export default function InventorServicesPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative py-20 bg-slate-950 text-white overflow-hidden text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-3xl font-black tracking-tight text-white">
-            Ready to Take the First Step?
-          </h2>
-          <p className="text-sm text-slate-300 leading-relaxed max-w-xl mx-auto">
-            Whether you need patent search coordination, drawings support, trademark filings, or complete lifecycle management, KORK helps identify the right path forward.
-          </p>
-          <div className="flex justify-center gap-4 pt-4">
+      <section className="relative py-12 bg-blue-950 overflow-hidden text-white border-t border-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,#1e40af_0%,transparent_60%)] opacity-40" />
+        <motion.div 
+          variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+          className="container-custom relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
+        >
+          <div className="flex-1 space-y-3 text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+              Ready to Secure Your Idea?
+            </h2>
+            <p className="text-base text-slate-300 max-w-xl leading-relaxed">
+              Whether you need patent search coordination, drawings support, trademark filings, or complete lifecycle management, KORK helps identify the right path forward.
+            </p>
+          </div>
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact?type=start"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 transition-all"
             >
               Start My IP Journey
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/contact?type=meeting"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-extrabold text-white bg-white/10 border border-white/20 hover:bg-white/20 shadow-sm transform hover:-translate-y-1 transition-all"
             >
               Schedule Consultation
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

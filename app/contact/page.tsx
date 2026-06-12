@@ -1,340 +1,309 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   Phone, 
   Mail, 
   MapPin, 
-  Send, 
   CheckCircle,
-  Clock,
-  Lock,
-  UploadCloud,
-  File,
-  X
+  HelpCircle as QuestionIcon,
+  Layers,
+  Users,
+  ShieldCheck,
+  Eye,
+  Zap,
+  FolderLock,
+  Clock
 } from 'lucide-react';
-import { saveEnquiry } from '@/lib/firebase';
-import { useToast } from '@/components/common/Toast';
+import AssessmentWizard from './components/AssessmentWizard';
+import GeneralInquiryForm from './components/GeneralInquiryForm';
+import PartnerForm from './components/PartnerForm';
+import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
+
+const faqs = [
+  {
+    q: 'How quickly will someone contact me?',
+    a: 'Most inquiries receive a response within one business day.'
+  },
+  {
+    q: 'Is my invention confidential?',
+    a: 'Yes. KORK follows confidentiality-focused workflows and NDA-supported engagement options are available.'
+  },
+  {
+    q: 'Can I request an NDA before discussing my invention?',
+    a: 'Yes. NDA information may be requested during project intake or consultation scheduling.'
+  },
+  {
+    q: 'Do I need a completed invention before contacting KORK?',
+    a: 'No. Many inventors contact us during the concept, prototype, or development stages.'
+  },
+  {
+    q: 'What services does KORK provide?',
+    a: 'KORK supports inventors and businesses through patent search coordination, patent illustrations, trademark support, patent filing coordination, office action support, and intellectual property project management.'
+  },
+  {
+    q: 'Does KORK provide legal advice?',
+    a: 'No. Legal advice and legal representation are provided by licensed patent attorneys and registered patent agents.'
+  },
+  {
+    q: 'Can KORK file my patent?',
+    a: 'Patent filing services are coordinated through trusted patent attorneys and registered patent agents.'
+  },
+  {
+    q: 'What types of patent drawings do you provide?',
+    a: 'We provide utility patent drawings, design patent drawings, plant patent illustrations, trademark illustrations, and trade dress illustrations.'
+  },
+  {
+    q: 'Can I upload sketches or photos instead of formal drawings?',
+    a: 'Yes. Sketches, photographs, CAD files, and written descriptions can often be used as starting materials.'
+  },
+  {
+    q: 'Do you work with first-time inventors?',
+    a: 'Yes. Many of our clients are navigating the intellectual property process for the first time.'
+  },
+  {
+    q: 'Do you work with startups and businesses?',
+    a: 'Yes. We support independent inventors, startups, universities, research institutions, and established businesses.'
+  },
+  {
+    q: 'Do you support international clients?',
+    a: 'Yes. KORK supports clients throughout the United States and internationally.'
+  },
+  {
+    q: 'What happens after I submit my information?',
+    a: 'Our team reviews your submission, evaluates project requirements, and contacts you regarding next steps or recommended services.'
+  },
+  {
+    q: 'How can I track my project?',
+    a: 'Active clients receive access to the KORK Workspace where project information, files, communications, and deliverables can be managed.'
+  },
+  {
+    q: 'Can I use only one service?',
+    a: 'Yes. Clients may use individual services or engage KORK for broader intellectual property support.'
+  },
+  {
+    q: 'What if I’m not sure which service I need?',
+    a: 'Use the assessment tool on this page and we will help identify the most appropriate pathway for your project.'
+  }
+];
 
 export default function ContactPage() {
-  const { success, error: toastError } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [files, setFiles] = useState<{ name: string; size: string }[]>([]);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    servicePillar: 'inventor-services',
-    message: '',
-    ndaRequired: true
-  });
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: checked }));
-  };
-
-  // Mock file selector change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files).map(f => ({
-        name: f.name,
-        size: (f.size / (1024 * 1024)).toFixed(2) + ' MB'
-      }));
-      setFiles(prev => [...prev, ...selectedFiles]);
-    }
-  };
-
-  const removeFile = (idx: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== idx));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      toastError('Validation Error', 'Please complete the Name, Email, and Message description.');
-      return;
-    }
-    setLoading(true);
-
-    try {
-      const fileNames = files.map(f => f.name).join(', ');
-      await saveEnquiry({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        message: `[Service Pillar: ${formData.servicePillar}] [NDA Required: ${formData.ndaRequired}] [Attached Files: ${fileNames || 'None'}] ${formData.message}`
-      });
-      success('Inquiry Received!', 'Our IP support desk has received your request. We will contact you within 24 hours under confidentiality safeguards.');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        servicePillar: 'inventor-services',
-        message: '',
-        ndaRequired: true
-      });
-      setFiles([]);
-    } catch (err) {
-      console.error(err);
-      toastError('Submission Failed', 'An error occurred while transmitting your request.');
-    } finally {
-      setLoading(false);
+  const scrollToAssessment = () => {
+    const el = document.getElementById('assessment');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen dark:bg-slate-950 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
-      {/* Banner */}
-      <section className="relative py-16 bg-slate-900 text-white overflow-hidden">
+      {/* SECTION 1 - HERO */}
+      <section className="relative py-24 bg-slate-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35" />
-        <div className="container-custom relative z-10 text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight">
-            Contact & Consultation
-          </h1>
-          <p className="text-base md:text-lg text-slate-350 max-w-2xl mx-auto">
-            Get in touch to review prior art, format patent drawings, or coordinate filings with registered practitioners.
-          </p>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="container-custom relative z-10 max-w-4xl text-center space-y-6"
+        >
+          <motion.h1 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight"
+          >
+            Let’s Turn Your Innovation Into Protected <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Intellectual Property™</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-sm md:text-base text-slate-350 leading-relaxed max-w-3xl mx-auto"
+          >
+            Whether you’re exploring a new invention, preparing a patent application, protecting a brand, or seeking intellectual property support, KORK InventReX is here to help guide your next steps.
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="pt-2"
+          >
+            <button
+              suppressHydrationWarning
+              onClick={scrollToAssessment}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-extrabold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all"
+            >
+              Start Assessment
+            </button>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 2 - INTELLIGENT PROJECT ASSESSMENT */}
+      <section id="assessment" className="py-20 bg-slate-100 dark:bg-slate-900/40 relative">
+        <div className="container-custom relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
+              Intelligent Project Assessment
+            </div>
+            <p className="text-slate-500 dark:text-slate-400">
+              Guide us into the appropriate intake form based on your needs.
+            </p>
+          </div>
+          <AssessmentWizard />
         </div>
       </section>
 
-      {/* Grid container */}
-      <section className="py-20 bg-white dark:bg-slate-950 flex-1 transition-colors duration-300">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      {/* SECTION 3 - CONTACT INFORMATION */}
+      <section className="py-16 bg-white dark:bg-slate-950 border-t border-b border-slate-200 dark:border-slate-800">
+        <div className="container-custom">
+          <motion.div 
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            <div className="flex flex-col items-center text-center p-5 space-y-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group border border-transparent hover:border-accent">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all">
+                <Mail size={20} />
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">Email</h4>
+              <p className="text-xs font-mono text-slate-600 dark:text-slate-400 group-hover:text-accent transition-colors">contact@korkinventrex.com</p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 space-y-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group border border-transparent hover:border-accent">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all">
+                <Phone size={20} />
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">Phone</h4>
+              <p className="text-xs font-mono text-slate-600 dark:text-slate-400 group-hover:text-accent transition-colors">330-353-9850</p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 space-y-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group border border-transparent hover:border-accent">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all">
+                <MapPin size={20} />
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">Service Area</h4>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                Supporting inventors, startups, businesses, patent professionals, and innovation teams throughout the United States and internationally.
+              </p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 space-y-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group border border-transparent hover:border-accent">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all">
+                <Clock size={20} />
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">Business Hours</h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400">Monday – Friday<br/>9:00 AM – 6:00 PM (EST)</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 4 & 5 - GENERAL INQUIRY & PARTNER */}
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/40">
+        <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12">
           
-          {/* Info Details (Left) */}
-          <div className="lg:col-span-5 space-y-8 text-left">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-extrabold text-primary dark:text-white tracking-tight">
-                Support & Consultation
-              </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Connect with our coordinators under safe NDA guidelines. We coordinate drawing updates, novelty database screenings, and matched attorney drafting sequences.
+          {/* SECTION 4 - GENERAL INQUIRY */}
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">Still Have Questions?</h2>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                Need assistance with something not covered in our assessment process? Contact us regarding services, partnerships, intellectual property support, or general inquiries.
               </p>
             </div>
-
-            {/* List */}
-            <div className="space-y-6 text-sm">
-              
-              <div className="flex gap-4">
-                <div className="h-10 w-10 shrink-0 bg-blue-500/10 text-secondary dark:text-accent rounded-xl flex items-center justify-center">
-                  <Clock size={20} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-primary dark:text-white">Business Hours</h4>
-                  <p className="text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                    Support: 24 Hours | Consultation: 9 AM–6 PM ET
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="h-10 w-10 shrink-0 bg-blue-500/10 text-secondary dark:text-accent rounded-xl flex items-center justify-center">
-                  <Phone size={20} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-primary dark:text-white">Call Platform Support</h4>
-                  <p className="text-slate-500 dark:text-slate-400 mt-1 font-mono">
-                    330-353-9850
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="h-10 w-10 shrink-0 bg-blue-500/10 text-secondary dark:text-accent rounded-xl flex items-center justify-center">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-primary dark:text-white">Email Address</h4>
-                  <p className="text-slate-500 dark:text-slate-400 mt-1 font-mono">
-                    contact@korkinventrex.com
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
-            {/* Legal Notice Sidecard */}
-            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-850 p-6 rounded-2xl space-y-3">
-              <span className="font-bold text-xs text-slate-800 dark:text-white flex items-center gap-1.5 uppercase tracking-wider">
-                <Lock size={14} className="text-accent" />
-                NDA Protected Inbound
-              </span>
-              <p className="text-xs text-slate-500 dark:text-slate-450 leading-relaxed">
-                All incoming submissions are processed in strict confidence. If you prefer to review and sign our standard Mutual Non-Disclosure Agreement (MNDA) before sharing drawings, please select the NDA requirement box in the form.
-              </p>
-            </div>
+            <GeneralInquiryForm />
           </div>
 
-          {/* Contact Form (Right) */}
-          <div className="lg:col-span-7 bg-light-gray dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-850 shadow-sm text-left">
-            <div className="space-y-4 mb-6">
-              <h3 className="text-xl font-bold text-primary dark:text-white tracking-tight">
-                Submit an Inquiry
-              </h3>
-              <p className="text-xs text-slate-550 dark:text-slate-400">
-                Please complete the form details. A platform coordinator will follow up to review options.
+          {/* SECTION 5 - PARTNER WITH KORK */}
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">Partner With KORK</h2>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                We welcome opportunities to collaborate with intellectual property professionals, law firms, universities, research organizations, and innovation ecosystems.
               </p>
             </div>
+            <PartnerForm />
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Your Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Full Name"
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-accent text-primary dark:text-white"
-                  />
+        </div>
+      </section>
+
+      {/* SECTION 6 - WHY WORK WITH KORK */}
+      <section className="py-20 bg-white dark:bg-slate-950">
+        <div className="container-custom space-y-12">
+          <motion.div 
+            variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+            className="text-center max-w-2xl mx-auto space-y-4"
+          >
+            <h2 className="text-3xl font-black text-primary dark:text-white tracking-tight">
+              Why Work With KORK
+            </h2>
+            <div className="w-16 h-1.5 bg-gradient-to-r from-secondary to-accent mx-auto rounded-full" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: Layers, title: 'One Platform', desc: 'Access multiple intellectual property services through one structured workflow.' },
+              { icon: Users, title: 'Trusted Professional Network', desc: 'Work with patent attorneys, patent agents, illustrators, and intellectual property specialists.' },
+              { icon: FolderLock, title: 'KORK Workspace', desc: 'Secure project tracking, communication, file management, and deliverable access.' },
+              { icon: ShieldCheck, title: 'Confidentiality & Trust', desc: 'Secure handling of intellectual property information with NDA-supported workflows.' },
+              { icon: Eye, title: 'Transparency', desc: 'Project visibility through milestones, updates, and centralized communication.' },
+              { icon: Zap, title: 'Innovation-Focused', desc: 'Supporting inventors, startups, businesses, and innovation teams throughout the intellectual property lifecycle.' }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+                className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-accent hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300 group flex flex-col items-start"
+              >
+                <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-accent group-hover:bg-accent transition-all duration-300 shadow-sm">
+                  <item.icon className="text-accent group-hover:text-white transition-colors" size={20} />
                 </div>
+                <h4 className="text-base font-bold text-slate-900 dark:text-white mb-2 tracking-tight group-hover:text-accent transition-colors">{item.title}</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="name@example.com"
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-accent text-primary dark:text-white"
-                  />
-                </div>
+      {/* SECTION 7 - FREQUENTLY ASKED QUESTIONS */}
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/40">
+        <div className="container-custom max-w-3xl space-y-10">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
+              Frequently Asked Questions
+            </h2>
+          </div>
 
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="330-353-9850"
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-accent text-primary dark:text-white"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">IP Pillar Interest</label>
-                  <select
-                    name="servicePillar"
-                    value={formData.servicePillar}
-                    onChange={handleInputChange}
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-accent text-primary dark:text-white font-bold"
-                  >
-                    <option value="inventor-services">Inventor Services & Roadmaps</option>
-                    <option value="patent-illustrations">Patent Illustration drawings</option>
-                    <option value="patent-filing-support">Filing & Prosecution Support</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Invention & Project Details</label>
-                <textarea
-                  name="message"
-                  required
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  placeholder="Describe your design, patent drawing needs, or filing targets. Avoid sharing raw claims before signing the mutual NDA."
-                  className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-accent text-primary dark:text-white resize-none"
-                />
-              </div>
-
-              {/* Styled File Upload Zone */}
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Attachment Files (Optional)</label>
-                <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg p-6 bg-white dark:bg-slate-950 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-all flex flex-col items-center justify-center cursor-pointer relative group">
-                  <input
-                    type="file"
-                    multiple
-                    onChange={handleFileChange}
-                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                  />
-                  <UploadCloud size={28} className="text-slate-400 group-hover:text-accent transition-colors" />
-                  <span className="text-xs font-bold text-primary dark:text-white mt-2">
-                    Drag & drop files or click to browse
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="border border-slate-200/60 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm"
+              >
+                <button
+                  suppressHydrationWarning
+                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                  className="w-full text-left px-5 py-4 font-bold text-xs md:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:text-secondary dark:hover:text-accent transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <QuestionIcon size={16} className="text-accent shrink-0" />
+                    {faq.q}
                   </span>
-                  <span className="text-[10px] text-slate-450 mt-1">
-                    Upload CAD sheets, technical sketches, or blueprints (PDF, JPG, DXF up to 20MB)
+                  <span className="shrink-0 text-slate-400">
+                    {activeFaq === idx ? '−' : '+'}
                   </span>
-                </div>
-
-                {/* File checklist */}
-                {files.length > 0 && (
-                  <div className="mt-3 space-y-1.5">
-                    {files.map((file, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg text-xs">
-                        <div className="flex items-center gap-2 text-slate-650 dark:text-slate-350">
-                          <File size={14} className="text-accent" />
-                          <span className="font-bold truncate max-w-[200px]">{file.name}</span>
-                          <span className="text-[10px] text-slate-400 font-mono">({file.size})</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(idx)}
-                          className="text-slate-400 hover:text-rose-500 transition-colors p-1"
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    ))}
+                </button>
+                
+                {activeFaq === idx && (
+                  <div className="px-5 pb-4 pt-1 text-[11px] md:text-xs text-slate-500 dark:text-slate-400 border-t border-slate-50 dark:border-slate-855 leading-relaxed font-normal">
+                    {faq.a}
                   </div>
                 )}
               </div>
-
-              {/* NDA Checkbox */}
-              <div className="flex items-center gap-2 py-1">
-                <input
-                  type="checkbox"
-                  id="ndaRequired"
-                  name="ndaRequired"
-                  checked={formData.ndaRequired}
-                  onChange={handleCheckboxChange}
-                  className="rounded bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-850 text-accent focus:ring-0 focus:outline-none w-4 h-4"
-                />
-                <label htmlFor="ndaRequired" className="text-xs text-slate-550 dark:text-slate-400 cursor-pointer flex items-center gap-1.5 selection:bg-transparent">
-                  <Lock size={12} className="text-accent" />
-                  Require mutual NDA review prior to full technical disclosure
-                </label>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-secondary to-accent hover:opacity-95 shadow-md shadow-blue-500/10 disabled:opacity-50 transition-opacity"
-                >
-                  {loading ? (
-                    <>
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Sending Request...
-                    </>
-                  ) : (
-                    <>
-                      Send secure message
-                      <Send size={14} />
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
+            ))}
           </div>
-
         </div>
       </section>
 
