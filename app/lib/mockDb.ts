@@ -1,4 +1,4 @@
-import { Product, Blog, Enquiry, Testimonial, Settings } from '@/types';
+import { Product, Blog, Enquiry, Testimonial, Settings, SupportTicket } from '@/types';
 
 // Static seed data for products
 // Static seed data for products (Inventor Packages)
@@ -338,5 +338,65 @@ export const mockDb = {
     const enquiries = getStoredData<Enquiry[]>('mock_enquiries', initialEnquiries);
     const filtered = enquiries.filter(e => e.id !== id);
     setStoredData('mock_enquiries', filtered);
+  },
+
+  getSupportTickets: (): SupportTicket[] => getStoredData<SupportTicket[]>('mock_support_tickets', initialSupportTickets),
+  saveSupportTicket: (ticket: Omit<SupportTicket, 'id' | 'createdAt'>) => {
+    const tickets = getStoredData<SupportTicket[]>('mock_support_tickets', initialSupportTickets);
+    const newTicket: SupportTicket = {
+      ...ticket,
+      id: `ticket-${Math.random().toString(36).substr(2, 9)}`,
+      createdAt: new Date().toISOString()
+    };
+    tickets.unshift(newTicket);
+    setStoredData('mock_support_tickets', tickets);
+    return newTicket;
+  },
+  updateSupportTicketStatus: (id: string, status: 'Open' | 'In Progress' | 'Resolved') => {
+    const tickets = getStoredData<SupportTicket[]>('mock_support_tickets', initialSupportTickets);
+    const updated = tickets.map(t => t.id === id ? { ...t, status } : t);
+    setStoredData('mock_support_tickets', updated);
+  },
+  deleteSupportTicket: (id: string) => {
+    const tickets = getStoredData<SupportTicket[]>('mock_support_tickets', initialSupportTickets);
+    const filtered = tickets.filter(t => t.id !== id);
+    setStoredData('mock_support_tickets', filtered);
   }
 };
+
+const initialSupportTickets: SupportTicket[] = [
+  {
+    id: 'ticket-1',
+    ticketId: '482910',
+    clientId: '1',
+    clientName: 'Acme Corp',
+    clientEmail: 'contact@acme.com',
+    subject: 'Objections on claims drawing',
+    message: 'We noticed a small error in the perspective view of figure 4. The valve inlet connector should be angled at 45 degrees, but it looks perpendicular in the current draft. Please revise.',
+    status: 'Open',
+    createdAt: '2026-06-12T14:30:00.000Z'
+  },
+  {
+    id: 'ticket-2',
+    ticketId: '772918',
+    clientId: '2',
+    clientName: 'Global Innovations',
+    clientEmail: 'info@globalinnovations.com',
+    subject: 'Prior Art Search Report Question',
+    message: "Thank you for the prior art search report. Regarding reference US9876543B2, does the examiner's interpretation of \"flexible coupling\" cover our magnetic link mechanism?",
+    status: 'In Progress',
+    createdAt: '2026-06-11T09:15:00.000Z'
+  },
+  {
+    id: 'ticket-3',
+    ticketId: '109283',
+    clientId: '3',
+    clientName: 'Nexus Tech',
+    clientEmail: 'ceo@nexustech.io',
+    subject: 'Provisional Filing Receipt Request',
+    message: 'Could you please upload the official USPTO filing receipt for our provisional application filed last Tuesday? We need it for internal audit.',
+    status: 'Resolved',
+    createdAt: '2026-06-10T16:45:00.000Z'
+  }
+];
+

@@ -23,20 +23,27 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      if (isFirebaseConfigured()) {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const token = await userCredential.user.getIdToken();
-        login(token);
-        success('Access Authorized', 'Successfully authenticated using Firebase Security.');
-      } else {
-        // Mock credentials check
-        if (email === 'admin@kork.com' && password === 'adminpassword') {
-          login('mock-token');
-          success('Access Authorized', 'Mock authentication matched successfully.');
-        } else {
-          toastError('Access Denied', 'Invalid credentials. Hint: use admin@kork.com / adminpassword');
-        }
+      if (!isFirebaseConfigured()) {
+        setLoading(false);
+        toastError('System Offline', 'Firebase is not configured. Admin authentication is unavailable.');
+        return;
       }
+
+      // Enforce admin email authorization list
+      const allowedAdmins = ['contact@korkinventrex.com', 'admin@kork.com'];
+      const normalizedEmail = email.toLowerCase().trim();
+      
+      if (!allowedAdmins.includes(normalizedEmail)) {
+        toastError('Access Denied', 'This email is not authorized as an administrator.');
+        setLoading(false);
+        return;
+      }
+
+      const userCredential = await signInWithEmailAndPassword(auth, normalizedEmail, password);
+      const user = userCredential.user;
+      const token = await user.getIdToken();
+      login(token);
+      success('Access Authorized', 'Successfully authenticated using Firebase Security.');
     } catch (err: any) {
       console.error(err);
       toastError('Auth Error', err.message || 'Failed to authenticate.');
@@ -67,20 +74,7 @@ export default function AdminLoginPage() {
           </p>
         </div>
 
-        {/* Security Notification if Mock mode */}
-        {!isFirebaseConfigured() && (
-          <div className="bg-amber-950/20 border border-amber-900/40 rounded-xl p-4 flex gap-3 text-xs text-amber-500">
-            <ShieldAlert size={20} className="shrink-0" />
-            <div>
-              <span className="font-bold block">Developer / Demo Mode</span>
-              <span className="mt-0.5 leading-relaxed text-slate-400 block">
-                Firebase is not configured. Access dashboard using default credentials:
-                <br />
-                <strong className="text-white">admin@kork.com</strong> / <strong className="text-white">adminpassword</strong>
-              </span>
-            </div>
-          </div>
-        )}
+
 
         {/* Form */}
         <form onSubmit={handleLoginSubmit} className="space-y-4">
@@ -136,3 +130,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

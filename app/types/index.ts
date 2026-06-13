@@ -29,8 +29,11 @@ export interface Enquiry {
   name: string;
   email: string;
   phone: string;
-  company: string;
+  company?: string;
   message: string;
+  type?: 'general' | 'partner';
+  partnershipInterest?: string;
+  subject?: string;
   createdAt: string;
 }
 
@@ -80,3 +83,16 @@ export interface AdminUser {
   role: 'admin' | 'editor';
   createdAt: string;
 }
+
+export interface SupportTicket {
+  id: string;
+  ticketId: string; // 6-digit reference number
+  clientId: string;
+  clientName: string;
+  clientEmail: string;
+  subject: string;
+  message: string;
+  status: 'Open' | 'In Progress' | 'Resolved';
+  createdAt: string;
+}
+

@@ -363,7 +363,7 @@ export default function HomePage() {
             {challenges.map((challenge, idx) => (
               <motion.div
                 key={challenge.q}
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -8, scale: 1.06 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -8, scale: 1.06 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 flex flex-col justify-between hover:shadow-2xl hover:border-blue-500/30 dark:hover:border-cyan-500/30 transition-shadow duration-300"
@@ -407,7 +407,7 @@ export default function HomePage() {
             {solutions.map((sol, idx) => (
               <motion.div
                 key={sol.title}
-                variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="shine-card group flex flex-col justify-between p-8 rounded-2xl bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 shadow-card"
@@ -559,7 +559,7 @@ export default function HomePage() {
               {featuredProducts.map((product, idx) => (
                 <motion.div
                   key={product.id}
-                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-card"
@@ -626,7 +626,7 @@ export default function HomePage() {
               {testimonials.map((testimonial, idx) => (
                 <motion.div 
                   key={testimonial.id || idx}
-                  variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+                  variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="shine-card bg-white dark:bg-slate-950 border border-slate-150/60 dark:border-slate-850 p-8 rounded-3xl relative shadow-md flex flex-col justify-between"

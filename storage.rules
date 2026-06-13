@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if the logged-in user is an administrator
+    function isAdmin() {
+      return request.auth != null && 
+        (request.auth.token.email == 'contact@korkinventrex.com' || 
+         request.auth.token.email == 'admin@kork.com');
+    }
+
+    match /project_documents/{clientId}/{allPaths=**} {
+      // Allow read/write if the user is an admin, or if they are the owner of the client folder
+      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == clientId);
+    }
+  }
+}

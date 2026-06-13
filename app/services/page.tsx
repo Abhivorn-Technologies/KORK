@@ -225,7 +225,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Without Coordination */}
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="shine-card bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-850 rounded-2xl p-8 space-y-6 text-left"
@@ -252,7 +252,7 @@ export default function ServicesPage() {
 
             {/* With KORK */}
             <motion.div 
-              variants={fadeUpReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}whileHover={{ y: -6, scale: 1.02 }}
+              variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ y: -6, scale: 1.02 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="shine-card bg-slate-900 text-white border border-slate-800 rounded-2xl p-8 space-y-6 relative overflow-hidden text-left"

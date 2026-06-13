@@ -13,7 +13,7 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebase/config';
-import { Product, Blog, Enquiry, Testimonial, Settings } from '@/types';
+import { Product, Blog, Enquiry, Testimonial, Settings, SupportTicket } from '@/types';
 import { mockDb } from './mockDb';
 
 // Utility helper to check if Firebase is fully initialized and configured
@@ -372,5 +372,44 @@ export const deleteEnquiry = async (id: string): Promise<void> => {
     return;
   }
   const docRef = doc(db, 'enquiries', id);
+  await deleteDoc(docRef);
+};
+
+// ==========================================
+// SUPPORT TICKETS QUERIES & CRUD
+// ==========================================
+
+export const getSupportTickets = async (): Promise<SupportTicket[]> => {
+  if (!isFirebaseConfigured()) {
+    return mockDb.getSupportTickets();
+  }
+  try {
+    const q = query(collection(db, 'support_tickets'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as SupportTicket[];
+  } catch (error) {
+    console.error('Firebase getSupportTickets error, falling back to mock:', error);
+    return mockDb.getSupportTickets();
+  }
+};
+
+export const updateTicketStatus = async (id: string, status: 'Open' | 'In Progress' | 'Resolved'): Promise<void> => {
+  if (!isFirebaseConfigured()) {
+    mockDb.updateSupportTicketStatus(id, status);
+    return;
+  }
+  const docRef = doc(db, 'support_tickets', id);
+  await updateDoc(docRef, { status });
+};
+
+export const deleteTicket = async (id: string): Promise<void> => {
+  if (!isFirebaseConfigured()) {
+    mockDb.deleteSupportTicket(id);
+    return;
+  }
+  const docRef = doc(db, 'support_tickets', id);
   await deleteDoc(docRef);
 };

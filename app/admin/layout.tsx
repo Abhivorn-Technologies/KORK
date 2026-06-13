@@ -36,7 +36,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isFirebaseConfigured()) {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          setIsAuthenticated(true);
+          const allowedAdmins = ['contact@korkinventrex.com', 'admin@kork.com'];
+          const userEmail = user.email?.toLowerCase().trim() || '';
+          
+          if (allowedAdmins.includes(userEmail)) {
+            setIsAuthenticated(true);
+          } else {
+            // Logged in user is not an authorized administrator. Sign them out.
+            auth.signOut().then(() => {
+              setIsAuthenticated(false);
+              if (!isLoginPage) {
+                router.push('/admin/login');
+              }
+            });
+          }
         } else {
           setIsAuthenticated(false);
           if (!isLoginPage) {

@@ -1,68 +1,182 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Upload, Download, FileText, FolderOpen, ArrowDownToLine, Trash2 } from 'lucide-react';
 import { cn } from '@/utils/helpers';
-
-// Mock data
-const CLIENTS = [
-  { id: '1', name: 'Acme Corp', project: 'Smart Thermostat V2' },
-  { id: '2', name: 'Global Innovations', project: 'Drone Delivery System' },
-  { id: '3', name: 'Nexus Tech', project: 'Quantum Encrypter' },
-];
-
-const MOCK_FILES = [
-  { id: 'f1', clientId: '1', fileName: 'Acme_Thermostat_Sketches.pdf', type: 'inbound', date: 'Oct 12, 2023', size: '2.4 MB' },
-  { id: 'f2', clientId: '1', fileName: 'Housing_Assembly.step', type: 'inbound', date: 'Oct 14, 2023', size: '15.1 MB' },
-  { id: 'f3', clientId: '1', fileName: 'Prior_Art_Search_Results.pdf', type: 'outbound', date: 'Oct 20, 2023', size: '1.2 MB' },
-  
-  { id: 'f4', clientId: '2', fileName: 'Rotor_Specs.docx', type: 'inbound', date: 'Nov 02, 2023', size: '800 KB' },
-  { id: 'f5', clientId: '2', fileName: 'Drone_V1_Draft_Claims.pdf', type: 'outbound', date: 'Nov 10, 2023', size: '3.5 MB' },
-];
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage, db } from '@/firebase/config';
+import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
+import { isFirebaseConfigured } from '@/lib/firebase';
 
 export default function DocumentsPage() {
-  const [activeClient, setActiveClient] = useState(CLIENTS[0].id);
-  const [files, setFiles] = useState(MOCK_FILES);
+  const [clients, setClients] = useState<any[]>([]);
+  const [activeClient, setActiveClient] = useState<string>('');
+  const [files, setFiles] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  // 1. Sync client project profiles
+  useEffect(() => {
+    if (!isFirebaseConfigured()) {
+      const mockClients = [
+        { id: '1', name: 'Acme Corp', project: 'Smart Thermostat V2' },
+        { id: '2', name: 'Global Innovations', project: 'Drone Delivery System' },
+        { id: '3', name: 'Nexus Tech', project: 'Quantum Encrypter' },
+      ];
+      setClients(mockClients);
+      setActiveClient('1');
+      setLoading(false);
+      return;
+    }
+
+    const q = query(collection(db, 'client_projects'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const projects = snapshot.docs.map(doc => ({
+        id: doc.id,
+        name: doc.data().name || 'Unnamed Client',
+        project: doc.data().projectName || 'Active Project'
+      }));
+      setClients(projects);
+      if (projects.length > 0 && !activeClient) {
+        setActiveClient(projects[0].id);
+      }
+      setLoading(false);
+    }, (err) => {
+      console.error('Error fetching project clients, falling back to mock:', err);
+      const mockClients = [
+        { id: '1', name: 'Acme Corp', project: 'Smart Thermostat V2' },
+        { id: '2', name: 'Global Innovations', project: 'Drone Delivery System' },
+        { id: '3', name: 'Nexus Tech', project: 'Quantum Encrypter' },
+      ];
+      setClients(mockClients);
+      if (mockClients.length > 0 && !activeClient) {
+        setActiveClient(mockClients[0].id);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Sync document files
+  useEffect(() => {
+    if (!isFirebaseConfigured()) {
+      const mockFiles = [
+        { id: 'f1', clientId: '1', fileName: 'Acme_Thermostat_Sketches.pdf', type: 'inbound', date: 'Oct 12, 2023', size: '2.4 MB' },
+        { id: 'f2', clientId: '1', fileName: 'Housing_Assembly.step', type: 'inbound', date: 'Oct 14, 2023', size: '15.1 MB' },
+        { id: 'f3', clientId: '1', fileName: 'Prior_Art_Search_Results.pdf', type: 'outbound', date: 'Oct 20, 2023', size: '1.2 MB' },
+        { id: 'f4', clientId: '2', fileName: 'Rotor_Specs.docx', type: 'inbound', date: 'Nov 02, 2023', size: '800 KB' },
+        { id: 'f5', clientId: '2', fileName: 'Drone_V1_Draft_Claims.pdf', type: 'outbound', date: 'Nov 10, 2023', size: '3.5 MB' },
+      ];
+      setFiles(mockFiles);
+      return;
+    }
+
+    const q = query(collection(db, 'documents'), orderBy('date', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const docsList = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setFiles(docsList);
+    }, (err) => {
+      console.error('Error syncing documents metadata, falling back to mock:', err);
+      const mockFiles = [
+        { id: 'f1', clientId: '1', fileName: 'Acme_Thermostat_Sketches.pdf', type: 'inbound', date: 'Oct 12, 2023', size: '2.4 MB' },
+        { id: 'f2', clientId: '1', fileName: 'Housing_Assembly.step', type: 'inbound', date: 'Oct 14, 2023', size: '15.1 MB' },
+        { id: 'f3', clientId: '1', fileName: 'Prior_Art_Search_Results.pdf', type: 'outbound', date: 'Oct 20, 2023', size: '1.2 MB' },
+        { id: 'f4', clientId: '2', fileName: 'Rotor_Specs.docx', type: 'inbound', date: 'Nov 02, 2023', size: '800 KB' },
+        { id: 'f5', clientId: '2', fileName: 'Drone_V1_Draft_Claims.pdf', type: 'outbound', date: 'Nov 10, 2023', size: '3.5 MB' },
+      ];
+      setFiles(mockFiles);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const clientFiles = files.filter(f => f.clientId === activeClient);
   const inboundFiles = clientFiles.filter(f => f.type === 'inbound');
   const outboundFiles = clientFiles.filter(f => f.type === 'outbound');
 
-  const activeClientName = CLIENTS.find(c => c.id === activeClient)?.name || '';
+  const activeClientName = clients.find(c => c.id === activeClient)?.name || '';
 
   const handleUploadClick = () => {
-    // In a real app, this would open a file picker
+    if (!activeClient) {
+      alert('Please select a client account first.');
+      return;
+    }
+
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = '.pdf,.doc,.docx,.zip';
-    fileInput.onchange = (e) => {
+    fileInput.accept = '.pdf,.doc,.docx,.zip,.step,.iges';
+    fileInput.onchange = async (e) => {
       const target = e.target as HTMLInputElement;
       if (target.files && target.files.length > 0) {
-        const newFile = target.files[0];
-        // Mock upload
-        const fileObj = {
-          id: Date.now().toString(),
-          clientId: activeClient,
-          fileName: newFile.name,
-          type: 'outbound',
-          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-          size: `${(newFile.size / (1024 * 1024)).toFixed(1)} MB`
-        };
-        setFiles([...files, fileObj]);
-        alert(`Successfully uploaded ${newFile.name} to ${activeClientName}. Client will be notified.`);
+        const file = target.files[0];
+        
+        if (!isFirebaseConfigured()) {
+          const fileObj = {
+            id: Date.now().toString(),
+            clientId: activeClient,
+            fileName: file.name,
+            type: 'outbound',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+          };
+          setFiles(prev => [...prev, fileObj]);
+          alert(`Successfully uploaded ${file.name} to ${activeClientName} (Staging Demo Mode).`);
+          return;
+        }
+
+        try {
+          alert(`Uploading "${file.name}" to secure Firebase Storage...`);
+          // 1. Upload file binary
+          const fileRef = ref(storage, `project_documents/${activeClient}/${file.name}`);
+          const snapshot = await uploadBytes(fileRef, file);
+          const fileUrl = await getDownloadURL(snapshot.ref);
+
+          // 2. Add description entry in firestore collection
+          await addDoc(collection(db, 'documents'), {
+            clientId: activeClient,
+            fileName: file.name,
+            fileUrl,
+            type: 'outbound', // Admin uploads are outbound deliverables
+            size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          });
+
+          alert(`Successfully uploaded and registered "${file.name}".`);
+        } catch (err: any) {
+          console.error(err);
+          alert('Upload Failed: ' + err.message);
+        }
       }
     };
     fileInput.click();
   };
 
-  const handleDownload = (fileName: string) => {
-    alert(`Downloading ${fileName}...`);
+  const handleDownload = (file: any) => {
+    if (file.fileUrl) {
+      window.open(file.fileUrl, '_blank');
+    } else {
+      alert(`Downloading ${file.fileName}...`);
+    }
   };
 
-  const handleDelete = (id: string, fileName: string) => {
-    if (confirm(`Are you sure you want to delete ${fileName}?`)) {
+  const handleDelete = async (id: string, fileName: string) => {
+    if (!confirm(`Are you sure you want to delete ${fileName}?`)) return;
+
+    if (!isFirebaseConfigured()) {
       setFiles(files.filter(f => f.id !== id));
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, 'documents', id));
+      alert(`Deleted ${fileName} successfully.`);
+    } catch (err: any) {
+      console.error(err);
+      alert('Delete Failed: ' + err.message);
     }
   };
 
@@ -94,7 +208,9 @@ export default function DocumentsPage() {
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-2 space-y-1">
-              {CLIENTS.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).map(client => (
+              {loading ? (
+                <div className="text-center text-xs text-slate-400 py-8 animate-pulse">Syncing client profiles...</div>
+              ) : clients.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).map(client => (
                 <button
                   key={client.id}
                   onClick={() => setActiveClient(client.id)}
@@ -154,7 +270,7 @@ export default function DocumentsPage() {
                       <td className="px-6 py-3 whitespace-nowrap text-sm text-slate-500">{file.date}</td>
                       <td className="px-6 py-3 whitespace-nowrap text-sm text-slate-500">{file.size}</td>
                       <td className="px-6 py-3 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                        <button onClick={() => handleDownload(file.fileName)} className="text-slate-400 hover:text-accent transition-colors p-1" title="Download">
+                        <button onClick={() => handleDownload(file)} className="text-slate-400 hover:text-accent transition-colors p-1" title="Download">
                           <ArrowDownToLine size={16} />
                         </button>
                         <button onClick={() => handleDelete(file.id, file.fileName)} className="text-slate-400 hover:text-rose-500 transition-colors p-1" title="Delete">
@@ -206,7 +322,7 @@ export default function DocumentsPage() {
                       <td className="px-6 py-3 whitespace-nowrap text-sm text-slate-500">{file.date}</td>
                       <td className="px-6 py-3 whitespace-nowrap text-sm text-slate-500">{file.size}</td>
                       <td className="px-6 py-3 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                        <button onClick={() => handleDownload(file.fileName)} className="text-slate-400 hover:text-accent transition-colors p-1" title="Download">
+                        <button onClick={() => handleDownload(file)} className="text-slate-400 hover:text-accent transition-colors p-1" title="Download">
                           <ArrowDownToLine size={16} />
                         </button>
                       </td>
