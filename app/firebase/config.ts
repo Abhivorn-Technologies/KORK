@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 const isConfigured = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
 
-const app = isConfigured 
+const app = isConfigured
   ? (getApps().length === 0 ? initializeApp(firebaseConfig) : getApp())
   : null;
 

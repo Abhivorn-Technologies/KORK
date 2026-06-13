@@ -31,6 +31,7 @@
     "embla-carousel-autoplay": "^8.0.0-rc.22",
     "embla-carousel-react": "^8.0.0-rc.22",
     "firebase": "^10.7.0",
+    "firebase-admin": "^14.0.0",
     "framer-motion": "^10.16.16",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.344.0",
@@ -38,6 +39,7 @@
     "next-seo": "^6.4.0",
     "next-sitemap": "^1.6.203",
     "nextjs-toploader": "^3.9.17",
+    "nodemailer": "^8.0.11",
     "postcss": "^8.4.32",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -52,6 +54,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@types/nodemailer": "^8.0.1",
     "eslint": "^8.56.0",
     "eslint-config-next": "^15.0.0"
   }

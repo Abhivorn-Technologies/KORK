@@ -34,7 +34,9 @@ export default function PartnerForm() {
         email: formData.email,
         phone: formData.phone,
         company: formData.organization,
-        message: `[Partner Inquiry] [Interest: ${formData.partnershipInterest}] ${formData.message}`
+        message: `[Partner Inquiry] [Interest: ${formData.partnershipInterest}] ${formData.message}`,
+        type: 'partner',
+        partnershipInterest: formData.partnershipInterest
       });
       setSuccessMode(true);
       setFormData({ name: '', organization: '', email: '', phone: '', partnershipInterest: '', message: '' });
