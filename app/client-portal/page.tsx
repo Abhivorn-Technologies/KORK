@@ -18,7 +18,8 @@ import {
   ArrowUpRight,
   Send,
   CheckCircle,
-  HelpCircle as QuestionIcon
+  HelpCircle as QuestionIcon,
+  LogOut
 } from 'lucide-react';
 import { useToast } from '@/components/common/Toast';
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from 'firebase/auth';
@@ -780,9 +781,10 @@ export default function ClientPortalPage() {
           </div>
           <button 
             onClick={handleLogout}
-            className="w-full text-left font-bold text-rose-500 hover:text-rose-455 transition-colors"
+            className="w-full text-left font-bold text-rose-500 hover:text-rose-455 transition-colors flex items-center gap-2"
           >
-            Disconnect Portal Workspace
+            <LogOut size={14} />
+            <span>Log Out</span>
           </button>
         </div>
       </aside>
@@ -797,8 +799,17 @@ export default function ClientPortalPage() {
               <h2 className="text-xl font-extrabold text-white tracking-tight uppercase font-mono text-accent">KORK CLIENT CONSOLE</h2>
               <p className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase mt-0.5">Secure Workspace Session</p>
             </div>
-            <div className="px-3 py-1 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-400 font-mono">
-              IP PORT STATUS: SECURE_SYNC
+            <div className="flex items-center gap-3">
+              <div className="px-3 py-1 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-400 font-mono">
+                IP PORT STATUS: SECURE_SYNC
+              </div>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5"
+              >
+                <LogOut size={12} />
+                <span>Log Out</span>
+              </button>
             </div>
           </div>
 
