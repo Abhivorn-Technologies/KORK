@@ -56,7 +56,7 @@ export default function Header() {
       <div className="container-custom flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
-          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-10 w-auto max-w-[160px]" />
+          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-10 w-auto max-w-[160px]" />
         </Link>
 
         {/* Desktop Navigation */}

@@ -84,7 +84,7 @@ export default function ClientPortalPage() {
             setIsAuthenticated(false);
             setClientProfile(null);
             const userEmail = user.email?.toLowerCase().trim() || '';
-            const isAdminEmail = ['contact@korkinventrex.com', 'admin@kork.com'].includes(userEmail);
+            const isAdminEmail = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'].includes(userEmail);
             
             if (isAdminEmail) {
               toastError('Access Denied', 'Administrator accounts cannot log in to the Client Portal. Please use a client account.');
@@ -546,7 +546,7 @@ export default function ClientPortalPage() {
             {/* Logo */}
             <div className="flex flex-col items-center text-center space-y-4 pb-1">
               <Link href="/">
-                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-9 w-auto object-contain cursor-pointer" />
+                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-9 w-auto object-contain cursor-pointer" />
               </Link>
               <div>
                 <h2 className="text-xl font-black text-slate-900 tracking-tight">Welcome Back</h2>
@@ -633,7 +633,7 @@ export default function ClientPortalPage() {
           className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-xl relative z-10"
         >
           <div className="flex flex-col items-center text-center space-y-4 pb-2">
-            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-10 w-auto object-contain" />
+            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-10 w-auto object-contain" />
             <div>
               <h2 className="text-sm font-black text-white uppercase tracking-tight font-mono text-accent">Security Reset Required</h2>
               <p className="text-[10px] text-slate-400 mt-1 leading-relaxed font-semibold">
@@ -711,7 +711,7 @@ export default function ClientPortalPage() {
       <aside className="w-full lg:w-64 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
         <div className="space-y-8">
           <div className="flex flex-col items-center pb-6 border-b border-slate-800">
-            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
+            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
             <div className="flex flex-col text-center">
               <span className="text-[8px] font-semibold text-accent uppercase mt-1 leading-none tracking-wider font-mono">Workspace v1.2</span>
             </div>

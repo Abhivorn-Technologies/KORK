@@ -114,7 +114,7 @@ export default function PatentIllustrationsPage() {
           </motion.h1>
           
           <p className="text-base text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
-            Accurate illustrations are an essential component of many intellectual property filings. KORK InventReX provides technical illustration services prepared to support utility, design, plant, trademark, and trade dress applications.
+            Accurate illustrations are an essential component of many intellectual property filings. KORK InventRex provides technical illustration services prepared to support utility, design, plant, trademark, and trade dress applications.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 pt-4">

@@ -8,7 +8,7 @@ export default function NDAPolicyPage() {
         
         <div className="space-y-6 text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
           <p>
-            KORK InventReX understands that many inventors, entrepreneurs, startups, researchers, and businesses wish to discuss innovative concepts before intellectual property protection has been secured. Protecting confidential information is an important component of our operational philosophy.
+            KORK InventRex understands that many inventors, entrepreneurs, startups, researchers, and businesses wish to discuss innovative concepts before intellectual property protection has been secured. Protecting confidential information is an important component of our operational philosophy.
           </p>
 
           <p>
@@ -29,7 +29,7 @@ export default function NDAPolicyPage() {
 
           <div className="pt-12 mt-12 border-t border-slate-200 dark:border-slate-800">
             <p className="font-bold text-primary dark:text-white">Questions regarding confidentiality or NDA requests may be directed to:</p>
-            <p>KORK InventReX</p>
+            <p>KORK InventRex</p>
             <p><a href="mailto:contact@korkinventrex.com" className="text-secondary dark:text-accent hover:underline">contact@korkinventrex.com</a></p>
           </div>
         </div>

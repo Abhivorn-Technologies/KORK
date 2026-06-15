@@ -175,7 +175,7 @@ export default function ServicesPage() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">Designed Around Inventors</span>
             </h1>
             <p className="text-base md:text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto font-medium">
-              KORK InventReX simplifies the intellectual property journey by bringing patent support services, technical illustrations, filing coordination, and patent professionals together through one structured platform.
+              KORK InventRex simplifies the intellectual property journey by bringing patent support services, technical illustrations, filing coordination, and patent professionals together through one structured platform.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed max-w-3xl mx-auto mt-2">
               Whether you are exploring an idea, preparing a patent application, or managing an existing portfolio, our services are designed to support every stage of the innovation lifecycle.

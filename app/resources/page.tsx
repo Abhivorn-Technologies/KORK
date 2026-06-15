@@ -219,12 +219,12 @@ const faqCategories = [
 const faqsByTab: Record<string, { q: string; a: string | React.ReactNode }[]> = {
   general: [
     {
-      q: 'What does KORK InventReX do?',
-      a: 'KORK InventReX is an intellectual property services platform that helps inventors, entrepreneurs, startups, businesses, and innovation teams navigate the process of protecting and managing intellectual property. Our services include patent illustration services, patent search coordination, inventor support, patent filing coordination through licensed patent attorneys and registered patent agents, trademark support, office action support coordination, and intellectual property project management.'
+      q: 'What does KORK InventRex do?',
+      a: 'KORK InventRex is an intellectual property services platform that helps inventors, entrepreneurs, startups, businesses, and innovation teams navigate the process of protecting and managing intellectual property. Our services include patent illustration services, patent search coordination, inventor support, patent filing coordination through licensed patent attorneys and registered patent agents, trademark support, office action support coordination, and intellectual property project management.'
     },
     {
       q: 'How is KORK different from a patent law firm?',
-      a: 'KORK InventReX is not a law firm. We provide inventor support, project management, patent illustrations, intellectual property workflow coordination, and access to trusted patent professionals. Legal advice, patent prosecution, trademark prosecution, and legal representation are provided by licensed patent attorneys and registered patent agents.'
+      a: 'KORK InventRex is not a law firm. We provide inventor support, project management, patent illustrations, intellectual property workflow coordination, and access to trusted patent professionals. Legal advice, patent prosecution, trademark prosecution, and legal representation are provided by licensed patent attorneys and registered patent agents.'
     },
     {
       q: 'How do I get started?',
@@ -484,7 +484,7 @@ const faqsByTab: Record<string, { q: string; a: string | React.ReactNode }[]> = 
   security: [
     {
       q: 'Is my invention confidential?',
-      a: 'Yes. KORK InventReX understands that inventors and businesses often share sensitive intellectual property information. Information provided through our intake process, project communications, and client portal is handled with confidentiality and care. Clients may also request NDA-supported workflows before sharing detailed invention information.'
+      a: 'Yes. KORK InventRex understands that inventors and businesses often share sensitive intellectual property information. Information provided through our intake process, project communications, and client portal is handled with confidentiality and care. Clients may also request NDA-supported workflows before sharing detailed invention information.'
     },
     {
       q: 'How is my information protected?',
@@ -902,7 +902,7 @@ export default function ResourcesHubPage() {
                 Ready To Move From Learning To Protection?
               </h2>
               <p className="text-base text-slate-300 max-w-2xl leading-relaxed">
-                Whether you need patent illustrations, filing support, trademark assistance, or guidance through the intellectual property process, KORK InventReX is ready to help.
+                Whether you need patent illustrations, filing support, trademark assistance, or guidance through the intellectual property process, KORK InventRex is ready to help.
               </p>
             </div>
             

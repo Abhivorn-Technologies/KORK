@@ -163,8 +163,8 @@ export default function HomePage() {
 
   const faqs = [
     {
-      q: 'Is KORK InventReX a law firm?',
-      a: 'No, KORK InventReX is not a law firm, does not act as a registered patent attorney or agent, and does not provide legal advice or direct legal representation. We are an intellectual property support platform providing prior art searches, USPTO-compliant technical drawings, and documentation preparation support. All legal services, including patent application drafting, official USPTO filing, and prosecution, are facilitated through our established network of independent, registered patent attorneys and practitioners.'
+      q: 'Is KORK InventRex a law firm?',
+      a: 'No, KORK InventRex is not a law firm, does not act as a registered patent attorney or agent, and does not provide legal advice or direct legal representation. We are an intellectual property support platform providing prior art searches, USPTO-compliant technical drawings, and documentation preparation support. All legal services, including patent application drafting, official USPTO filing, and prosecution, are facilitated through our established network of independent, registered patent attorneys and practitioners.'
     },
     {
       q: 'What does USPTO stand for?',

@@ -58,6 +58,97 @@ export default function AdminEnquiriesPage() {
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [activeTab, setActiveTab] = useState<'general' | 'partner' | 'tickets'>('general');
   const [expandedClients, setExpandedClients] = useState<Record<string, boolean>>({});
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === 'general' && selectedEnquiry) {
+      setReplyText(`Hi ${selectedEnquiry.name},
+
+Thank you for reaching out to KORK InventRex regarding "${selectedEnquiry.subject}".
+
+Regarding your inquiry:
+"${selectedEnquiry.cleanMessage}"
+
+We are reviewing your request and will follow up shortly. Let us know if there is a convenient time to schedule a brief call.
+
+Best regards,
+KORK InventRex Team`);
+    } else if (activeTab === 'partner' && selectedEnquiry) {
+      setReplyText(`Hi ${selectedEnquiry.name},
+
+Thank you for contacting KORK InventRex regarding a potential partnership under "${selectedEnquiry.partnershipInterest || 'Collaboration'}".
+
+Regarding your proposal:
+"${selectedEnquiry.cleanMessage}"
+
+We are keen to evaluate opportunities with ${selectedEnquiry.company || 'your organization'}. Our team is reviewing this internally, and we will follow up with you to schedule a discussion.
+
+Best regards,
+Kork Partnerships Team`);
+    } else if (activeTab === 'tickets' && selectedTicket) {
+      setReplyText(`Hi ${selectedTicket.clientName},
+
+Thank you for submitting a support ticket. This is regarding Support Ticket #${selectedTicket.ticketId}.
+
+Ticket Details:
+Subject: ${selectedTicket.subject}
+Message:
+"${selectedTicket.message}"
+
+Our engineering team has set the ticket status to "${selectedTicket.status}". We are currently looking into this and will provide updates as soon as possible.
+
+Best regards,
+Kork Support Team`);
+    } else {
+      setReplyText('');
+    }
+  }, [selectedEnquiry, selectedTicket, activeTab]);
+
+  const handleSendEmailReply = async () => {
+    const email = activeTab === 'tickets' ? selectedTicket?.clientEmail : selectedEnquiry?.email;
+    const subject = activeTab === 'general'
+      ? `Response to KORK InventRex Inquiry - Subject: ${selectedEnquiry?.subject}`
+      : activeTab === 'partner'
+      ? `Partnership Proposal Response - KORK InventRex`
+      : `RE: Support Ticket #${selectedTicket?.ticketId} - ${selectedTicket?.subject}`;
+
+    if (!email || !replyText.trim()) {
+      toastError('Error', 'Recipient email and response message are required.');
+      return;
+    }
+
+    setSendingReply(true);
+    try {
+      const res = await fetch('/api/admin/send-reply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: email,
+          subject,
+          body: replyText,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send reply email.');
+      }
+
+      success('Email Dispatched', `Response successfully sent to "${email}".`);
+      
+      if (activeTab === 'tickets' && selectedTicket && selectedTicket.status === 'Open') {
+        handleUpdateStatus(selectedTicket.id, 'In Progress');
+      }
+    } catch (err: any) {
+      console.error(err);
+      toastError('Send Failed', err.message || 'An error occurred while sending the email.');
+    } finally {
+      setSendingReply(false);
+    }
+  };
 
   const loadData = async () => {
     setLoading(true);
@@ -697,34 +788,47 @@ export default function AdminEnquiriesPage() {
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const subject = `Response to Kork Inventrex Inquiry - Subject: ${selectedEnquiry.subject}`;
-                      const body = `Hi ${selectedEnquiry.name},
+                {/* Reply Composer */}
+                <div className="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Compose Reply Email</span>
+                  <textarea
+                    rows={5}
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all resize-y text-slate-700 dark:text-slate-300"
+                    placeholder="Write response message..."
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      disabled={sendingReply}
+                      onClick={handleSendEmailReply}
+                      className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs disabled:opacity-50"
+                    >
+                      {sendingReply ? 'Sending...' : 'Send Secure Reply'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const subject = `Response to KORK InventRex Inquiry - Subject: ${selectedEnquiry.subject}`;
+                        handleReplyEmail(selectedEnquiry.email, subject, replyText);
+                      }}
+                      className="px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold"
+                      title="Open in Local Mail Client"
+                    >
+                      Mailto Link
+                    </button>
+                  </div>
+                </div>
 
-Thank you for reaching out to Kork Inventrex Technologies regarding "${selectedEnquiry.subject}".
-
-Regarding your inquiry:
-"${selectedEnquiry.cleanMessage}"
-
-We are reviewing your request and will follow up shortly. Let us know if there is a convenient time to schedule a brief call.
-
-Best regards,
-Kork Inventrex Team`;
-                      handleReplyEmail(selectedEnquiry.email, subject, body);
-                    }}
-                    className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs"
-                  >
-                    Reply Email
-                  </button>
+                <div className="pt-4 flex justify-end">
                   <button
                     onClick={() => handleDelete(selectedEnquiry.id, selectedEnquiry.name)}
-                    className="px-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg"
+                    className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg text-xs font-bold flex items-center gap-1.5"
                     title="Delete Inquiry"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
+                    <span>Delete Inquiry</span>
                   </button>
                 </div>
               </div>
@@ -779,34 +883,47 @@ Kork Inventrex Team`;
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const subject = `Partnership Proposal Response - Kork Inventrex Technologies`;
-                      const body = `Hi ${selectedEnquiry.name},
+                {/* Reply Composer */}
+                <div className="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Compose Reply Email</span>
+                  <textarea
+                    rows={5}
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all resize-y text-slate-700 dark:text-slate-300"
+                    placeholder="Write response message..."
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      disabled={sendingReply}
+                      onClick={handleSendEmailReply}
+                      className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs disabled:opacity-50"
+                    >
+                      {sendingReply ? 'Sending...' : 'Send Secure Reply'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const subject = `Partnership Proposal Response - KORK InventRex`;
+                        handleReplyEmail(selectedEnquiry.email, subject, replyText);
+                      }}
+                      className="px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold"
+                      title="Open in Local Mail Client"
+                    >
+                      Mailto Link
+                    </button>
+                  </div>
+                </div>
 
-Thank you for contacting Kork Inventrex Technologies regarding a potential partnership under "${selectedEnquiry.partnershipInterest || 'Collaboration'}".
-
-Regarding your proposal:
-"${selectedEnquiry.cleanMessage}"
-
-We are keen to evaluate opportunities with ${selectedEnquiry.company || 'your organization'}. Our team is reviewing this internally, and we will follow up with you to schedule a discussion.
-
-Best regards,
-Kork Partnerships Team`;
-                      handleReplyEmail(selectedEnquiry.email, subject, body);
-                    }}
-                    className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs"
-                  >
-                    Reply Email
-                  </button>
+                <div className="pt-4 flex justify-end">
                   <button
                     onClick={() => handleDelete(selectedEnquiry.id, selectedEnquiry.name)}
-                    className="px-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg"
+                    className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg text-xs font-bold flex items-center gap-1.5"
                     title="Delete Proposal"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
+                    <span>Delete Proposal</span>
                   </button>
                 </div>
               </div>
@@ -864,36 +981,47 @@ Kork Partnerships Team`;
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const subject = `RE: Support Ticket #${selectedTicket.ticketId} - ${selectedTicket.subject}`;
-                      const body = `Hi ${selectedTicket.clientName},
+                {/* Reply Composer */}
+                <div className="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Compose Reply Email</span>
+                  <textarea
+                    rows={5}
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all resize-y text-slate-700 dark:text-slate-300"
+                    placeholder="Write response message..."
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      disabled={sendingReply}
+                      onClick={handleSendEmailReply}
+                      className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs disabled:opacity-50"
+                    >
+                      {sendingReply ? 'Sending...' : 'Send Secure Reply'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const subject = `RE: Support Ticket #${selectedTicket.ticketId} - ${selectedTicket.subject}`;
+                        handleReplyEmail(selectedTicket.clientEmail, subject, replyText);
+                      }}
+                      className="px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold"
+                      title="Open in Local Mail Client"
+                    >
+                      Mailto Link
+                    </button>
+                  </div>
+                </div>
 
-Thank you for submitting a support ticket. This is regarding Support Ticket #${selectedTicket.ticketId}.
-
-Ticket Details:
-Subject: ${selectedTicket.subject}
-Message:
-"${selectedTicket.message}"
-
-Our engineering team has set the ticket status to "${selectedTicket.status}". We are currently looking into this and will provide updates as soon as possible.
-
-Best regards,
-Kork Support Team`;
-                      handleReplyEmail(selectedTicket.clientEmail, subject, body);
-                    }}
-                    className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs"
-                  >
-                    Email Client Response
-                  </button>
+                <div className="pt-4 flex justify-end">
                   <button
                     onClick={() => handleDeleteTicket(selectedTicket.id, selectedTicket.ticketId)}
-                    className="px-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg"
+                    className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg text-xs font-bold flex items-center gap-1.5"
                     title="Delete Ticket"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
+                    <span>Delete Ticket</span>
                   </button>
                 </div>
               </div>

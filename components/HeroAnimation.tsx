@@ -2,7 +2,7 @@
 
 import React, { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Environment } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
 const THEMES = [
@@ -83,9 +83,9 @@ const createLightbulbGeometry = () => {
   points.push(new THREE.Vector2(0, 3)); 
   
   const spline = new THREE.SplineCurve(points);
-  const smoothPoints = spline.getPoints(100); // High density
+  const smoothPoints = spline.getPoints(24); // Reduced from 100 for performance
   
-  const geo = new THREE.LatheGeometry(smoothPoints, 64);
+  const geo = new THREE.LatheGeometry(smoothPoints, 24); // Reduced from 64 for performance
   geo.center();
   return geo;
 };
@@ -108,7 +108,7 @@ const createGearGeometry = () => {
   hole.absarc(0, 0, 1.0, 0, Math.PI * 2, false);
   shape.holes.push(hole);
 
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.8, curveSegments: 64, bevelEnabled: true, bevelSegments: 8, steps: 8, bevelSize: 0.1, bevelThickness: 0.1 });
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.6, curveSegments: 12, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 });
   geo.center();
   return geo;
 };
@@ -121,7 +121,7 @@ const createShieldGeometry = () => {
   shape.quadraticCurveTo(-2.5, -1, -2.5, 1);
   shape.quadraticCurveTo(-2, 2.5, 0, 2.5);
   
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.8, curveSegments: 64, bevelEnabled: true, bevelSegments: 8, steps: 8, bevelSize: 0.1, bevelThickness: 0.1 });
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.6, curveSegments: 12, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 });
   geo.center();
   return geo;
 };
@@ -145,7 +145,7 @@ const createDocumentGeometry = () => {
     shape.holes.push(hole);
   }
 
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.3, curveSegments: 64, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 4, steps: 8 });
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.2, curveSegments: 8, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 1, steps: 1 });
   geo.center();
   return geo;
 };
@@ -170,7 +170,6 @@ function Scene({ activeIndex }: { activeIndex: number }) {
           color={THEMES[idx].color} 
         />
       ))}
-      <Environment preset="city" />
     </group>
   );
 }

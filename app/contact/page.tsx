@@ -125,7 +125,7 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-sm md:text-base text-slate-350 leading-relaxed max-w-3xl mx-auto"
           >
-            Whether you’re exploring a new invention, preparing a patent application, protecting a brand, or seeking intellectual property support, KORK InventReX is here to help guide your next steps.
+            Whether you’re exploring a new invention, preparing a patent application, protecting a brand, or seeking intellectual property support, KORK InventRex is here to help guide your next steps.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

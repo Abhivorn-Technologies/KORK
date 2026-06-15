@@ -13,8 +13,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'KORK InventReX | Coordinated IP & Patent Services Platform',
-    template: '%s | KORK InventReX',
+    default: 'KORK InventRex | Coordinated IP & Patent Services Platform',
+    template: '%s | KORK InventRex',
   },
   description:
     'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
@@ -26,16 +26,16 @@ export const metadata: Metadata = {
     'trademark services',
     'patent filing coordination'
   ],
-  authors: [{ name: 'KORK InventReX' }],
-  creator: 'KORK InventReX',
-  publisher: 'KORK InventReX',
+  authors: [{ name: 'KORK InventRex' }],
+  creator: 'KORK InventRex',
+  publisher: 'KORK InventRex',
   robots: 'index, follow',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: 'KORK InventReX',
-    title: 'KORK InventReX | Coordinated IP & Patent Services Platform',
+    siteName: 'KORK InventRex',
+    title: 'KORK InventRex | Coordinated IP & Patent Services Platform',
     description:
       'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
     images: [
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
         url: `${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: 'KORK InventReX',
+        alt: 'KORK InventRex',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KORK InventReX',
+    title: 'KORK InventRex',
     description:
       'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
     images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`],

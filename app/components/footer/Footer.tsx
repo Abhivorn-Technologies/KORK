@@ -59,7 +59,7 @@ export default function Footer() {
           {/* Company Brief & Newsletter */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center space-x-2">
-              <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-12 w-auto max-w-[200px]" />
+              <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-12 w-auto max-w-[200px]" />
             </Link>
             
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -259,10 +259,10 @@ export default function Footer() {
               Legal Disclaimer & Attorney Network Notice
             </span>
             <p>
-              KORK InventReX is a specialized service platform providing patent illustrations, prior art searches, trademark graphics preparation, and general IP documentation support. <strong>KORK InventReX is not a law firm, does not act as a registered patent attorney or agent, and does not provide legal advice, legal opinions, or direct legal representation.</strong>
+              KORK InventRex is a specialized service platform providing patent illustrations, prior art searches, trademark graphics preparation, and general IP documentation support. <strong>KORK InventRex is not a law firm, does not act as a registered patent attorney or agent, and does not provide legal advice, legal opinions, or direct legal representation.</strong>
             </p>
             <p>
-              Any filing, prosecution, or legal activities before the United States Patent and Trademark Office (USPTO) or other international patent registries are facilitated through our established network of independent, registered patent attorneys and practitioners. The use of our website or platform does not create an attorney-client relationship between you and KORK InventReX.
+              Any filing, prosecution, or legal activities before the United States Patent and Trademark Office (USPTO) or other international patent registries are facilitated through our established network of independent, registered patent attorneys and practitioners. The use of our website or platform does not create an attorney-client relationship between you and KORK InventRex.
             </p>
           </div>
         </div>
@@ -270,7 +270,7 @@ export default function Footer() {
         {/* Footer Bottom */}
         <div className="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <p>
-            &copy; {new Date().getFullYear()} KORK InventReX. All rights reserved.
+            &copy; {new Date().getFullYear()} KORK InventRex. All rights reserved.
           </p>
           <div className="flex items-center space-x-6">
             <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">

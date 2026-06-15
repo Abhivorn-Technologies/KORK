@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isFirebaseConfigured()) {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          const allowedAdmins = ['contact@korkinventrex.com', 'admin@kork.com'];
+          const allowedAdmins = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'];
           const userEmail = user.email?.toLowerCase().trim() || '';
           
           if (allowedAdmins.includes(userEmail)) {
@@ -125,7 +125,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Mobile Header */}
         <div className="flex lg:hidden items-center justify-between w-full h-16 bg-slate-900 border-b border-slate-850 px-4 absolute top-0 z-30">
           <Link href="/admin/dashboard" className="flex items-center space-x-2">
-            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="h-10 w-auto object-contain" />
+            <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-10 w-auto object-contain" />
           </Link>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -146,7 +146,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Logo Header */}
             <div className="hidden lg:flex flex-col items-center pb-6 border-b border-slate-800">
               <Link href="/admin/dashboard">
-                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventReX Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
+                <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="w-40 h-auto max-h-16 object-contain cursor-pointer mb-2" />
               </Link>
               <div className="flex flex-col text-center">
                 <span className="text-[9px] font-semibold text-accent uppercase mt-1 leading-none tracking-wider">Control Panel</span>
@@ -185,7 +185,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <div className="overflow-hidden">
                 <h4 className="text-xs font-bold text-white truncate leading-tight">Admin Terminal</h4>
-                <span className="text-[10px] text-slate-500 font-mono tracking-tighter truncate block mt-0.5">admin@kork.com</span>
+                <span className="text-[10px] text-slate-500 font-mono tracking-tighter truncate block mt-0.5">{auth.currentUser?.email || 'kayasree@korkinventrex.com'}</span>
               </div>
             </div>
 

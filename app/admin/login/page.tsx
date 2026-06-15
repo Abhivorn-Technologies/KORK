@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
       }
 
       // Enforce admin email authorization list
-      const allowedAdmins = ['contact@korkinventrex.com', 'admin@kork.com'];
+      const allowedAdmins = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'];
       const normalizedEmail = email.toLowerCase().trim();
       
       if (!allowedAdmins.includes(normalizedEmail)) {
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
             KI
           </div>
           <h1 className="text-xl font-bold text-white tracking-tight pt-2">
-            Kork Inventrex Terminal
+            KORK InventRex Terminal
           </h1>
           <p className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold">
             Administrative Control Center
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@kork.com"
+                placeholder="kayasree@korkinventrex.com"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-600"
               />
             </div>
