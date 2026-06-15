@@ -52,7 +52,7 @@ export default function Header() {
   };
 
   return (
-    <header id="main-header" className="sticky top-3 md:top-5 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
+    <header id="main-header" className="fixed top-3 md:top-5 left-0 right-0 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
       <div className="container-custom flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
