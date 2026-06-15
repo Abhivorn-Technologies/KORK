@@ -8,7 +8,7 @@ export default function AccessibilityPage() {
         
         <div className="space-y-6 text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
           <p>
-            KORK InventReX is committed to providing a website experience that is accessible, inclusive, and usable for all visitors, including individuals with disabilities. We believe that access to information, educational resources, and intellectual property services should be available to as broad an audience as possible.
+            KORK InventRex is committed to providing a website experience that is accessible, inclusive, and usable for all visitors, including individuals with disabilities. We believe that access to information, educational resources, and intellectual property services should be available to as broad an audience as possible.
           </p>
 
           <p>
@@ -25,7 +25,7 @@ export default function AccessibilityPage() {
 
           <div className="pt-12 mt-12 border-t border-slate-200 dark:border-slate-800">
             <p className="font-bold text-primary dark:text-white">Questions regarding accessibility may be directed to:</p>
-            <p>KORK InventReX</p>
+            <p>KORK InventRex</p>
             <p><a href="mailto:contact@korkinventrex.com" className="text-secondary dark:text-accent hover:underline">contact@korkinventrex.com</a></p>
           </div>
         </div>

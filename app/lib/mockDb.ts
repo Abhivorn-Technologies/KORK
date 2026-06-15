@@ -275,7 +275,7 @@ const initialTestimonials: Testimonial[] = [
 // General settings data
 const initialSettings: Settings = {
   id: 'general',
-  companyName: 'KORK InventReX',
+  companyName: 'KORK InventRex',
   companyDescription: 'From Idea to Intellectual Property™',
   email: 'contact@korkinventrex.com',
   phone: '330-353-9850',

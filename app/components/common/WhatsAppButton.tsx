@@ -6,7 +6,7 @@ import { MessageCircle } from 'lucide-react';
 export default function WhatsAppButton() {
   // Replace with the actual client number (e.g. +91XXXXXXXXXX)
   const phoneNumber = '13303539850';
-  const message = 'Hello KORK InventReX, I would like to inquire about your patent illustration, prior art search, or filing support services.';
+  const message = 'Hello KORK InventRex, I would like to inquire about your patent illustration, prior art search, or filing support services.';
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 

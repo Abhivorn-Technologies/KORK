@@ -81,12 +81,12 @@ export async function POST(request: Request) {
 
     // 4. Send Email Notification with onboarding info & login link
     const mailOptions = {
-      from: `"${process.env.NEXT_PUBLIC_SITE_NAME || 'Kork Inventrex Support'}" <${process.env.EMAIL_USER || 'support@korkinventrex.com'}>`,
+      from: `"${process.env.NEXT_PUBLIC_SITE_NAME || 'KORK InventRex Support'}" <${process.env.EMAIL_USER || 'support@korkinventrex.com'}>`,
       to: email,
-      subject: 'Welcome to KORK Inventrex: Setup Your Client Portal Account',
+      subject: 'Welcome to KORK InventRex: Setup Your Client Portal Account',
       html: `
         <div style="font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px;">
-          <h2 style="color: #1e3a8a;">Welcome to KORK Inventrex Technologies</h2>
+          <h2 style="color: #1e3a8a;">Welcome to KORK InventRex</h2>
           <p>Dear <strong>${name}</strong>,</p>
           <p>Your secure intellectual property portal has been prepared successfully.</p>
           <p><strong>Associated Project:</strong> ${projectName}</p>

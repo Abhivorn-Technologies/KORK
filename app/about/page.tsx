@@ -51,7 +51,7 @@ export default function AboutPage() {
   ];
 
   const faqs = [
-    { q: 'Is KORK a law firm?', a: 'No. KORK InventReX is an intellectual property services platform. Legal services and representation are provided by licensed patent attorneys and registered patent agents.' },
+    { q: 'Is KORK a law firm?', a: 'No. KORK InventRex is an intellectual property services platform. Legal services and representation are provided by licensed patent attorneys and registered patent agents.' },
     { q: 'Does KORK provide legal advice?', a: 'Legal advice is provided by licensed patent attorneys and registered patent agents. KORK coordinates support services and project workflows.' },
     { q: 'What industries does KORK support?', a: 'We support inventors, startups, businesses, research institutions, and innovation teams across a wide range of industries.' },
     { q: 'Can I use only one service?', a: 'Yes. Clients may engage KORK for individual services or complete lifecycle support.' },
@@ -81,7 +81,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-4xl font-medium"
           >
-            KORK InventReX was founded with a simple goal: to make intellectual property protection more accessible, organized, and transparent for inventors, startups, businesses, and innovation teams.
+            KORK InventRex was founded with a simple goal: to make intellectual property protection more accessible, organized, and transparent for inventors, startups, businesses, and innovation teams.
           </motion.p>
 
           <motion.p
@@ -126,7 +126,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Who We Are</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>
-                KORK InventReX is an intellectual property services platform that helps innovators navigate the patent and trademark journey through coordinated support services, technical illustrations, workflow management, and access to trusted intellectual property professionals.
+                KORK InventRex is an intellectual property services platform that helps innovators navigate the patent and trademark journey through coordinated support services, technical illustrations, workflow management, and access to trusted intellectual property professionals.
               </p>
               <p>
                 Our platform brings together inventors, businesses, patent professionals, illustrators, and support teams through a centralized workflow designed to improve communication, visibility, and project management.
@@ -364,7 +364,7 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Our Core Values</h2>
             <p className="text-base text-slate-600">
-              At KORK InventReX, our values guide every client interaction, project workflow, and service we provide. We are committed to helping innovators navigate the intellectual property journey with professionalism, transparency, and confidence.
+              At KORK InventRex, our values guide every client interaction, project workflow, and service we provide. We are committed to helping innovators navigate the intellectual property journey with professionalism, transparency, and confidence.
             </p>
           </motion.div>
           
@@ -391,7 +391,7 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl font-extrabold text-slate-900">Our Commitment</h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              KORK InventReX is committed to building a trusted platform where inventors, businesses, and intellectual property professionals can collaborate confidently, protect innovation effectively, and navigate the intellectual property journey with clarity and support.
+              KORK InventRex is committed to building a trusted platform where inventors, businesses, and intellectual property professionals can collaborate confidently, protect innovation effectively, and navigate the intellectual property journey with clarity and support.
             </p>
           </motion.div>
 

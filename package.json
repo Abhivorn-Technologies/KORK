@@ -1,7 +1,7 @@
 {
   "name": "kork-inventrex-technologies",
   "version": "1.0.0",
-  "description": "Modern enterprise website for Kork Inventrex Technologies - Industrial Automation & Engineering Solutions",
+  "description": "Modern enterprise website for KORK InventRex - Industrial Automation & Engineering Solutions",
   "private": true,
   "scripts": {
     "dev": "next dev",
