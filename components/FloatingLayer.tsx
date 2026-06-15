@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, MotionValue, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, MotionValue, useTransform, useReducedMotion, Variants } from 'framer-motion';
 import { ReactNode } from 'react';
 
 interface FloatingLayerProps {
@@ -32,7 +32,7 @@ export function FloatingLayer({
   const y = useTransform(mouseY, [0, 1], [-movement, movement]);
 
   // Entrance variants - stagger based on index
-  const variants = {
+  const variants: Variants = {
     hidden: { opacity: 0, scale: 0.95, y: 30 },
     visible: { 
       opacity: 1, 

@@ -1,7 +1,7 @@
 import { Variants } from 'framer-motion';
 
 // Premium physics-based easing curve (snappy, buttery smooth)
-const EASE = [0.22, 1, 0.36, 1];
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export const fadeUpReveal: Variants = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
