@@ -175,8 +175,13 @@ function Scene({ activeIndex }: { activeIndex: number }) {
 }
 
 export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
+  // Use inline styles to guarantee the container always has height, 
+  // bypassing any Tailwind CSS caching bugs when switching branches
   return (
-    <div className="relative w-full h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center pointer-events-none">
+    <div 
+      className="relative w-full flex items-center justify-center pointer-events-none"
+      style={{ height: 'max(50vh, 400px)' }}
+    >
       
 
       {/* Dynamic Radial Glow Background */}
@@ -184,15 +189,20 @@ export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
         {THEMES.map((theme, idx) => (
           <div 
             key={idx}
-            className={`absolute w-[400px] h-[400px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] rounded-full blur-[120px] transition-opacity duration-1000 ease-in-out mix-blend-screen ${theme.glow}`}
-            style={{ opacity: activeIndex === idx ? 1 : 0 }}
+            className={`absolute rounded-full transition-opacity duration-1000 ease-in-out mix-blend-screen ${theme.glow}`}
+            style={{ 
+              opacity: activeIndex === idx ? 1 : 0,
+              width: 'max(60vw, 400px)',
+              height: 'max(60vw, 400px)',
+              filter: 'blur(120px)'
+            }}
           />
         ))}
       </div>
 
       {/* WebGL Canvas */}
       <div className="absolute inset-0 z-10">
-        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
+        <Canvas camera={{ position: [0, 0, 8.5], fov: 45 }} dpr={[1, 2]}>
           <Scene activeIndex={activeIndex} />
         </Canvas>
       </div>
