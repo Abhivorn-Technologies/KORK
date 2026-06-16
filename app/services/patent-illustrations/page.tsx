@@ -1,9 +1,9 @@
 'use client';
 
 import { fadeUpReveal, scaleReveal, staggerContainer, childFadeUp } from '@/lib/animations';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FileText, 
   Layers, 
@@ -78,10 +78,81 @@ const faqs = [
 ];
 
 const galleries = [
-  { title: 'Utility Figure Example', desc: 'Exploded mechanical assembly showing reference labels.', category: 'Utility Patent', img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=80' },
-  { title: 'Design Perspective Example', desc: 'Detailed surface shading demonstrating product contours.', category: 'Design Patent', img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop&q=80' },
-  { title: 'Trademark Specimen Example', desc: 'Composite trademark layout matching USPTO rules.', category: 'Trademark', img: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=500&auto=format&fit=crop&q=80' }
+  { 
+    title: 'Utility Figure Example', 
+    desc: 'Exploded mechanical assembly showing reference labels.', 
+    category: 'Utility Patent', 
+    images: [
+      '/assets/images/illustrations/utility-new-1.png',
+      '/assets/images/illustrations/utility-new-2.png',
+      '/assets/images/illustrations/utility-new-3.png',
+      '/assets/images/illustrations/utility-new-4.png',
+      '/assets/images/illustrations/utility-new-5.png'
+    ] 
+  },
+  { 
+    title: 'Design Perspective Example', 
+    desc: 'Detailed surface shading demonstrating product contours.', 
+    category: 'Design Patent', 
+    images: [
+      '/assets/images/illustrations/design-chair.png',
+      '/assets/images/illustrations/design-headphones.png',
+      '/assets/images/illustrations/design-drone.png'
+    ] 
+  },
+  { 
+    title: 'Trademark Specimen Example', 
+    desc: 'Composite trademark layout matching USPTO rules.', 
+    category: 'Trademark', 
+    images: [
+      '/assets/images/illustrations/tm-search.png',
+      '/assets/images/illustrations/tm-application.png',
+      '/assets/images/illustrations/tm-portfolio.png'
+    ] 
+  }
 ];
+
+function ImageCarousel({ images, category }: { images: string[], category: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000); // changes every 3 seconds
+    return () => clearInterval(interval);
+  }, [images]);
+
+  return (
+    <div className="relative aspect-[4/3] w-full bg-white overflow-hidden border-b border-slate-100 dark:border-slate-800">
+      <AnimatePresence mode="wait">
+        <motion.img 
+          key={currentIndex}
+          src={images[currentIndex]} 
+          alt={category} 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 w-full h-full object-contain bg-white p-6" 
+        />
+      </AnimatePresence>
+      {category === 'Utility Patent' && (
+        <div className="absolute top-0 left-0 right-0 h-16 bg-white z-[5] pointer-events-none" />
+      )}
+      <span className="absolute top-4 left-4 z-10 bg-slate-900/90 backdrop-blur-sm text-white text-[9px] font-extrabold uppercase px-2.5 py-1 rounded shadow-md">
+        {category}
+      </span>
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center gap-1.5">
+          {images.map((_, i) => (
+            <div key={i} className={`h-1.5 w-1.5 rounded-full transition-colors ${i === currentIndex ? 'bg-slate-900' : 'bg-slate-300'}`} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function PatentIllustrationsPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -195,12 +266,7 @@ export default function PatentIllustrationsPage() {
                 key={idx} 
                 className="overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="relative aspect-[4/3] w-full bg-slate-100 dark:bg-slate-900">
-                  <img src={gal.img} alt={gal.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-sm text-white text-[9px] font-extrabold uppercase px-2.5 py-1 rounded">
-                    {gal.category}
-                  </span>
-                </div>
+                <ImageCarousel images={gal.images} category={gal.category} />
                 <div className="p-5 space-y-1">
                   <h4 className="text-xs font-bold text-primary dark:text-white">{gal.title}</h4>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">{gal.desc}</p>

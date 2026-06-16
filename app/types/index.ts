@@ -31,7 +31,7 @@ export interface Enquiry {
   phone: string;
   company?: string;
   message: string;
-  type?: 'general' | 'partner';
+  type?: 'general' | 'partner' | 'assessment';
   partnershipInterest?: string;
   subject?: string;
   createdAt: string;

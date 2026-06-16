@@ -109,13 +109,13 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="container-custom relative z-10 max-w-4xl text-center space-y-6"
+          className="container-custom relative z-10 max-w-3xl text-center space-y-6"
         >
           <motion.h1 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight px-4 md:px-8"
           >
             Let’s Turn Your Innovation Into Protected <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">Intellectual Property™</span>
           </motion.h1>
@@ -123,7 +123,7 @@ export default function ContactPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-sm md:text-base text-slate-350 leading-relaxed max-w-3xl mx-auto"
+            className="text-sm md:text-base text-slate-350 leading-relaxed max-w-2xl mx-auto px-4"
           >
             Whether you’re exploring a new invention, preparing a patent application, protecting a brand, or seeking intellectual property support, KORK InventRex is here to help guide your next steps.
           </motion.p>

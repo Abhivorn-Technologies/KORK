@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, UploadCloud, File, X, Lock } from 'lucide-react';
+import { CheckCircle, ArrowRight, ArrowLeft, UploadCloud, File, X, Lock } from 'lucide-react';
 import { saveEnquiry } from '@/lib/firebase';
 import { useToast } from '@/components/common/Toast';
 
-type Path = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | null;
+type Path = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | null;
 type Step = 'initial' | 'questions' | 'recommendation' | 'form' | 'success';
 
 export default function AssessmentWizard() {
@@ -40,11 +40,12 @@ export default function AssessmentWizard() {
   const handleInitialSelection = (selection: string) => {
     switch(selection) {
       case 'I Have a New Invention': setPath('A'); break;
-      case 'I Need Patent Drawings': setPath('B'); break;
-      case 'I Want to File a Patent': setPath('C'); break;
-      case 'I Received an Office Action': setPath('D'); break;
-      case 'I Need Trademark Protection': setPath('E'); break;
-      case 'I’m Not Sure Where to Start': setPath('F'); break;
+      case 'I Need Patent Search & Evaluation': setPath('B'); break;
+      case 'I Need Patent Drawings': setPath('C'); break;
+      case 'I Want to File a Patent': setPath('D'); break;
+      case 'I Received an Office Action': setPath('E'); break;
+      case 'I Need Trademark Protection': setPath('F'); break;
+      case 'I’m Not Sure Where to Start': setPath('G'); break;
     }
     setAnswers({});
     if (selection === 'I’m Not Sure Where to Start') {
@@ -126,17 +127,19 @@ export default function AssessmentWizard() {
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
-        message: fullMessage
+        message: fullMessage,
+        type: 'assessment'
       });
 
       // Set tailored success message based on path
       let msg = "Thank you. Your request has been received.";
       if (path === 'A') msg = "Thank you. Your invention information has been received and is under review. Our team will reach you shortly!";
-      if (path === 'B') msg = "Thank you. Your drawing request has been received and our team will evaluate the provided materials and reach out to you shortly!";
-      if (path === 'C') msg = "Thank you. Your filing request has been received and our team will review the information provided and reach back to you shortly!";
-      if (path === 'D') msg = "Thank you. Your Office Action materials have been received for review.";
-      if (path === 'E') msg = "Thank you. Your trademark request has been received and is being evaluated.";
-      if (path === 'F') msg = "Thank you. Your consultation request has been received and we will contact you shortly.";
+      if (path === 'B') msg = "Thank you. Your Patent Search & Evaluation request has been received. Our team will review the information provided and contact you regarding recommended next steps.";
+      if (path === 'C') msg = "Thank you. Your drawing request has been received and our team will evaluate the provided materials and reach out to you shortly!";
+      if (path === 'D') msg = "Thank you. Your filing request has been received and our team will review the information provided and reach back to you shortly!";
+      if (path === 'E') msg = "Thank you. Your Office Action materials have been received for review.";
+      if (path === 'F') msg = "Thank you. Your trademark request has been received and is being evaluated.";
+      if (path === 'G') msg = "Thank you. Your consultation request has been received and we will contact you shortly.";
 
       setSuccessMessage(msg);
       setStep('success');
@@ -166,6 +169,7 @@ export default function AssessmentWizard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
         {[
           'I Have a New Invention',
+          'I Need Patent Search & Evaluation',
           'I Need Patent Drawings',
           'I Want to File a Patent',
           'I Received an Office Action',
@@ -232,6 +236,50 @@ export default function AssessmentWizard() {
   const renderPathBQuestions = () => (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto">
       <div className="space-y-3">
+        <h3 className="font-bold text-lg text-primary dark:text-white">What type of assessment are you interested in?</h3>
+        <select 
+          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          value={answers['assessmentType'] || ''}
+          onChange={(e) => handleAnswerChange('assessmentType', e.target.value)}
+        >
+          <option value="" disabled>Select an option...</option>
+          <option>Patent Search</option>
+          <option>Patentability Assessment</option>
+          <option>Prior Art Research</option>
+          <option>Competitive Landscape Review</option>
+          <option>Freedom-to-Operate Review</option>
+          <option>Not Sure</option>
+        </select>
+      </div>
+      <div className="space-y-3">
+        <h3 className="font-bold text-lg text-primary dark:text-white">What stage is your project currently in?</h3>
+        <select 
+          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          value={answers['projectStage'] || ''}
+          onChange={(e) => handleAnswerChange('projectStage', e.target.value)}
+        >
+          <option value="" disabled>Select an option...</option>
+          <option>Idea Stage</option>
+          <option>Prototype Stage</option>
+          <option>Product Development</option>
+          <option>Existing Patent Application</option>
+          <option>Existing Patent Portfolio</option>
+          <option>Not Sure</option>
+        </select>
+      </div>
+      <button 
+        disabled={!answers['assessmentType'] || !answers['projectStage']}
+        onClick={() => setStep('recommendation')}
+        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+      >
+        Continue
+      </button>
+    </div>
+  );
+
+  const renderPathCQuestions = () => (
+    <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto">
+      <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What type of drawings do you need?</h3>
         <select 
           className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
@@ -272,7 +320,7 @@ export default function AssessmentWizard() {
     </div>
   );
 
-  const renderPathCQuestions = () => (
+  const renderPathDQuestions = () => (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto">
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Which filing are you considering?</h3>
@@ -312,7 +360,7 @@ export default function AssessmentWizard() {
     </div>
   );
 
-  const renderPathDQuestions = () => (
+  const renderPathEQuestions = () => (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto">
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Which office issued the Office Action?</h3>
@@ -350,7 +398,7 @@ export default function AssessmentWizard() {
     </div>
   );
 
-  const renderPathEQuestions = () => (
+  const renderPathFQuestions = () => (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto">
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What are you seeking to protect?</h3>
@@ -385,6 +433,7 @@ export default function AssessmentWizard() {
       case 'C': return renderPathCQuestions();
       case 'D': return renderPathDQuestions();
       case 'E': return renderPathEQuestions();
+      case 'F': return renderPathFQuestions();
       default: return null;
     }
   };
@@ -396,22 +445,26 @@ export default function AssessmentWizard() {
         services: ['Patent Search Coordination', 'Patentability Assessment Coordination', 'Prior Art Research Coordination', 'Invention Documentation Support', 'Patent Readiness Assessment', 'Utility Patent Planning', 'Design Patent Planning', 'Plant Patent Planning', 'Trademark Planning', 'Trade Dress Planning']
       };
       case 'B': return {
+        title: 'Patent Search & Evaluation',
+        services: ['Patent Search Coordination', 'Patentability Assessment Coordination', 'Prior Art Research Coordination', 'Competitive Landscape Review', 'Innovation Readiness Assessment', 'Utility vs Design Patent Evaluation', 'Filing Strategy Consultation', 'Search Report Review Coordination']
+      };
+      case 'C': return {
         title: 'Patent Illustration Services',
         services: ['Utility Patent Drawings', 'Design Patent Drawings', 'Plant Patent Illustrations', 'Trademark Illustrations', 'Trade Dress Illustrations', 'Figure Development', 'Drawing Revisions', 'Filing-Ready Drawing Packages']
       };
-      case 'C': return {
+      case 'D': return {
         title: 'Patent Filing & Office Action Support',
         services: ['Provisional Patent Applications', 'Utility Patent Applications', 'Design Patent Applications', 'Plant Patent Applications', 'PCT Filing Coordination', 'Office Action Support', 'Drawing Revisions', 'Amendment Coordination', 'Portfolio Management']
       };
-      case 'D': return {
+      case 'E': return {
         title: 'Office Action Support',
         services: ['Office Action Review Coordination', 'Drawing Revisions', 'Amendment Support Coordination', 'Submission Management', 'Filing Support Coordination', 'Patent Portfolio Support']
       };
-      case 'E': return {
+      case 'F': return {
         title: 'Trademark & Brand Protection',
         services: ['Trademark Search Coordination', 'Trademark Filing Coordination', 'Logo Protection Support', 'Brand Protection Planning', 'Trademark Monitoring Support']
       };
-      case 'F': return {
+      case 'G': return {
         title: 'Consultation Services',
         message: 'Many inventors and entrepreneurs begin without knowing which intellectual property protections may apply to their innovation. Our team can help evaluate your project and identify potential pathways.',
         services: []
@@ -471,8 +524,8 @@ export default function AssessmentWizard() {
         {/* Path Specific Fields */}
         {path === 'A' && (
           <div className="space-y-4">
-            <select name="innovationCategory" onChange={(e) => handleAnswerChange('innovationCategory', e.target.value)} className="input-field">
-              <option value="" disabled selected>Innovation Category</option>
+            <select name="innovationCategory" defaultValue="" onChange={(e) => handleAnswerChange('innovationCategory', e.target.value)} className="input-field">
+              <option value="" disabled>Innovation Category</option>
               <option>Physical Product</option>
               <option>Mechanical System</option>
               <option>Medical Device</option>
@@ -481,8 +534,8 @@ export default function AssessmentWizard() {
               <option>Agricultural Innovation</option>
               <option>Other</option>
             </select>
-            <select name="developmentStage" onChange={(e) => handleAnswerChange('developmentStage', e.target.value)} className="input-field">
-              <option value="" disabled selected>Current Development Stage</option>
+            <select name="developmentStage" defaultValue="" onChange={(e) => handleAnswerChange('developmentStage', e.target.value)} className="input-field">
+              <option value="" disabled>Current Development Stage</option>
               <option>Idea Stage</option>
               <option>Prototype Stage</option>
               <option>Testing Stage</option>
@@ -506,8 +559,47 @@ export default function AssessmentWizard() {
         {path === 'B' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <select name="numberOfFigures" onChange={(e) => handleAnswerChange('numberOfFigures', e.target.value)} className="input-field">
-                <option value="" disabled selected>Number of Figures</option>
+              <select name="assessmentTypeDropdown" value={answers['assessmentType'] || ''} onChange={(e) => handleAnswerChange('assessmentType', e.target.value)} className="input-field">
+                <option value="" disabled>Assessment Type</option>
+                <option>Patent Search</option>
+                <option>Patentability Assessment</option>
+                <option>Prior Art Research</option>
+                <option>Competitive Landscape Review</option>
+                <option>Freedom-to-Operate Review</option>
+                <option>Not Sure</option>
+              </select>
+              <select name="technologyArea" defaultValue="" onChange={(e) => handleAnswerChange('technologyArea', e.target.value)} className="input-field">
+                <option value="" disabled>Technology Area</option>
+                <option>Mechanical</option>
+                <option>Electrical</option>
+                <option>Software</option>
+                <option>Medical Device</option>
+                <option>Consumer Product</option>
+                <option>Agriculture</option>
+                <option>Chemical</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-500 uppercase">Existing Materials</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {['Invention Disclosure', 'Product Description', 'Sketches', 'Drawings', 'Patent References', 'Existing Search Report', 'None'].map(opt => (
+                  <label key={opt} className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" onChange={() => handleMultiAnswerChange('existingMaterials', opt)} className="rounded border-slate-300 text-accent" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Project Description" rows={3} className="input-field resize-none" />
+          </div>
+        )}
+
+        {path === 'C' && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <select name="numberOfFigures" defaultValue="" onChange={(e) => handleAnswerChange('numberOfFigures', e.target.value)} className="input-field">
+                <option value="" disabled>Number of Figures</option>
                 <option>1–5</option><option>6–10</option><option>11–20</option><option>20+</option><option>Not Sure</option>
               </select>
               <input type="date" name="targetFilingDate" value={formData.targetFilingDate} onChange={handleInputChange} className="input-field" />
@@ -516,10 +608,10 @@ export default function AssessmentWizard() {
           </div>
         )}
 
-        {path === 'C' && (
+        {path === 'D' && (
           <div className="space-y-4">
-            <select name="filingStage" onChange={(e) => handleAnswerChange('filingStage', e.target.value)} className="input-field">
-              <option value="" disabled selected>Current Filing Stage</option>
+            <select name="filingStage" defaultValue="" onChange={(e) => handleAnswerChange('filingStage', e.target.value)} className="input-field">
+              <option value="" disabled>Current Filing Stage</option>
               <option>Idea</option><option>Prototype</option><option>Patent Search Complete</option><option>Drawings Complete</option><option>Ready To File</option>
             </select>
             <div className="space-y-2">
@@ -537,7 +629,7 @@ export default function AssessmentWizard() {
           </div>
         )}
 
-        {path === 'D' && (
+        {path === 'E' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input type="text" name="patentAppNumber" value={formData.patentAppNumber} onChange={handleInputChange} placeholder="Patent Application Number (Optional)" className="input-field" />
@@ -547,31 +639,31 @@ export default function AssessmentWizard() {
           </div>
         )}
 
-        {path === 'E' && (
+        {path === 'F' && (
           <div className="space-y-4">
             <input type="text" name="brandName" value={formData.brandName} onChange={handleInputChange} placeholder="Brand Name" className="input-field" />
-            <select name="trademarkStatus" onChange={(e) => handleAnswerChange('trademarkStatus', e.target.value)} className="input-field">
-              <option value="" disabled selected>Current Status</option>
+            <select name="trademarkStatus" defaultValue="" onChange={(e) => handleAnswerChange('trademarkStatus', e.target.value)} className="input-field">
+              <option value="" disabled>Current Status</option>
               <option>Already In Use</option><option>Planned Future Use</option><option>Not Sure</option>
             </select>
             <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Goods / Services Description" rows={3} className="input-field resize-none" />
           </div>
         )}
 
-        {path === 'F' && (
+        {path === 'G' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <select name="industry" onChange={(e) => handleAnswerChange('industry', e.target.value)} className="input-field">
-                <option value="" disabled selected>Industry</option>
+              <select name="industry" defaultValue="" onChange={(e) => handleAnswerChange('industry', e.target.value)} className="input-field">
+                <option value="" disabled>Industry</option>
                 <option>Technology</option><option>Manufacturing</option><option>Medical</option><option>Consumer Goods</option><option>Other</option>
               </select>
-              <select name="preferredContact" onChange={(e) => handleAnswerChange('preferredContact', e.target.value)} className="input-field">
-                <option value="" disabled selected>Preferred Contact Method</option>
+              <select name="preferredContact" defaultValue="" onChange={(e) => handleAnswerChange('preferredContact', e.target.value)} className="input-field">
+                <option value="" disabled>Preferred Contact Method</option>
                 <option>Phone</option><option>Email</option><option>Video Meeting</option>
               </select>
             </div>
-            <select name="projectType" onChange={(e) => handleAnswerChange('projectType', e.target.value)} className="input-field">
-              <option value="" disabled selected>What best describes your project?</option>
+            <select name="projectType" defaultValue="" onChange={(e) => handleAnswerChange('projectType', e.target.value)} className="input-field">
+              <option value="" disabled>What best describes your project?</option>
               <option>New Invention</option><option>Brand Protection</option><option>Patent Dispute</option><option>Not Sure</option>
             </select>
             <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Brief Description" rows={3} className="input-field resize-none" />
@@ -625,12 +717,18 @@ export default function AssessmentWizard() {
         
         {step === 'questions' && (
           <motion.div key="questions" exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+            <button type="button" onClick={() => setStep('initial')} className="mb-6 text-sm font-bold text-slate-500 hover:text-accent flex items-center gap-1 transition-colors">
+              <ArrowLeft size={16} /> Back
+            </button>
             {renderQuestions()}
           </motion.div>
         )}
 
         {step === 'recommendation' && (
           <motion.div key="recommendation" exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+            <button type="button" onClick={() => setStep(path === 'F' ? 'initial' : 'questions')} className="mb-6 text-sm font-bold text-slate-500 hover:text-accent flex items-center gap-1 transition-colors">
+              <ArrowLeft size={16} /> Back
+            </button>
             {renderRecommendation()}
           </motion.div>
         )}
@@ -641,9 +739,14 @@ export default function AssessmentWizard() {
             onSubmit={handleSubmit}
             className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300 max-w-2xl mx-auto"
           >
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-primary dark:text-white">Project Intake Form</h2>
-              <p className="text-sm text-slate-500 mt-2">Please provide your details below.</p>
+            <div className="mb-6">
+              <button type="button" onClick={() => setStep('recommendation')} className="mb-4 text-sm font-bold text-slate-500 hover:text-accent flex items-center gap-1 transition-colors">
+                <ArrowLeft size={16} /> Back
+              </button>
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-primary dark:text-white">Project Intake Form</h2>
+                <p className="text-sm text-slate-500 mt-2">Please provide your details below.</p>
+              </div>
             </div>
             
             {renderFormFields()}

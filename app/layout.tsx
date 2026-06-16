@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import WhatsAppButton from '@/components/common/WhatsAppButton';
+
 import GoogleAnalytics from '@/components/common/GoogleAnalytics';
 import { ToastProvider } from '@/components/common/Toast';
 const inter = Inter({
@@ -75,7 +75,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
-          <WhatsAppButton />
+
           <GoogleAnalytics />
         </ToastProvider>
       </body>

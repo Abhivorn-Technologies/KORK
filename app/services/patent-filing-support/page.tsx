@@ -40,6 +40,23 @@ const filingServices = [
       { name: 'National Phase Entry', desc: 'Manage translations and coordinate filings in individual countries through foreign associates.' },
       { name: 'International Portfolio Planning', desc: 'Devise long-term, budget-conscious strategies for global IP coverage.' }
     ]
+  },
+  {
+    title: 'Trademark Filing Support',
+    items: [
+      { name: 'Trademark Availability Searches', desc: 'Preliminary trademark clearance reviews and federal database conflict screening before filing.' },
+      { name: 'Trademark Application Coordination', desc: 'Support for word marks, logos, slogans, service marks, and composite trademark filings.' },
+      { name: 'Specimen & Classification Support', desc: 'Goods/services classification guidance and specimen preparation coordination.' },
+      { name: 'Trademark Office Action Support', desc: 'Assistance coordinating responses to USPTO trademark examination requirements.' }
+    ]
+  },
+  {
+    title: 'Trademark Portfolio Management',
+    items: [
+      { name: 'Trademark Monitoring', desc: 'Track application progress, publication periods, and registration milestones.' },
+      { name: 'Renewals & Maintenance', desc: 'Coordinate maintenance filings and renewal deadlines after registration.' },
+      { name: 'International Trademark Support', desc: 'Madrid Protocol coordination and foreign trademark filing support.' }
+    ]
   }
 ];
 

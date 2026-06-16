@@ -14,26 +14,25 @@ const navItems = [
     href: '/services',
     subItems: [
       { label: 'Inventor Services', href: '/services/inventor-services' },
+      { label: 'Patent Search & Evaluation', href: '/services/patent-search-evaluation' },
       { label: 'Patent Illustrations', href: '/services/patent-illustrations' },
       { label: 'Patent Filing Support', href: '/services/patent-filing-support' }
     ]
   },
   { 
     label: 'Resources', 
-    href: '/resources',
-    subItems: [
-      { label: 'Industries We Serve', href: '/resources/industries' }
-    ]
+    href: '/resources'
   },
   { 
     label: 'About Us', 
     href: '/about',
     subItems: [
-      { label: 'How It Works', href: '/about/how-it-works' }
+      { label: 'How It Works', href: '/about/how-it-works' },
+      { label: 'Industries We Serve', href: '/about/industries' }
     ]
   },
-  { label: 'Client Portal', href: '/client-portal' },
   { label: 'Contact', href: '/contact' },
+  { label: 'Client Portal', href: '/client-portal' },
 ];
 
 export default function Header() {
@@ -55,8 +54,8 @@ export default function Header() {
     <header id="main-header" className="fixed top-3 md:top-5 left-0 right-0 z-50 w-[calc(100%-1.5rem)] max-w-7xl mx-auto rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 transition-all duration-300 shadow-lg shadow-blue-900/5">
       <div className="container-custom flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 group">
-          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-10 w-auto max-w-[160px]" />
+        <Link href="/" className="flex items-center group -ml-2">
+          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-14 md:h-16 w-auto object-contain mix-blend-multiply dark:mix-blend-normal" />
         </Link>
 
         {/* Desktop Navigation */}

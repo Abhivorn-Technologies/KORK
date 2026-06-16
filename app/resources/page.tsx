@@ -634,7 +634,7 @@ export default function ResourcesHubPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
       
       {/* HERO SECTION */}
-      <section className="relative py-16 bg-slate-900 text-white overflow-hidden">
+      <section className="relative py-16 pt-28 bg-slate-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e40af_0%,transparent_60%)] opacity-35" />
         <div className="absolute top-0 right-0 p-32 opacity-20 transform translate-x-1/3 -translate-y-1/3">
           <BookOpen size={400} className="text-blue-500 blur-3xl" />

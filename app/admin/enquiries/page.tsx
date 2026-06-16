@@ -8,17 +8,21 @@ import { useToast } from '@/components/common/Toast';
 import { formatDate } from '@/utils/helpers';
 
 interface ParsedEnquiry extends Enquiry {
-  type: 'general' | 'partner';
+  type: 'general' | 'partner' | 'assessment';
   subject: string;
   partnershipInterest?: string;
   cleanMessage: string;
+  path?: string;
+  customFields?: Record<string, string>;
 }
 
 function parseEnquiry(e: Enquiry): ParsedEnquiry {
-  let type = e.type;
+  let type = e.type as 'general' | 'partner' | 'assessment' | undefined;
   let subject = e.subject;
   let partnershipInterest = e.partnershipInterest;
   let cleanMessage = e.message;
+  let path: string | undefined;
+  let customFields: Record<string, string> | undefined;
 
   // Fallback: Parse from string if format is [Type] [Meta] Message
   if (!type) {
@@ -29,6 +33,8 @@ function parseEnquiry(e: Enquiry): ParsedEnquiry {
         partnershipInterest = interestMatch[1];
       }
       cleanMessage = e.message.replace(/^\[Partner Inquiry\]\s*(\[Interest:\s*[^\]]+\])?\s*/, '');
+    } else if (e.message.startsWith('[Form: Path')) {
+      type = 'assessment';
     } else {
       type = 'general';
       const subjectMatch = e.message.match(/\[Subject:\s*([^\]]+)\]/);
@@ -39,12 +45,38 @@ function parseEnquiry(e: Enquiry): ParsedEnquiry {
     }
   }
 
+  if (type === 'assessment' || e.message.startsWith('[Form: Path')) {
+    type = 'assessment';
+    customFields = {};
+    const pathMatch = e.message.match(/\[Form: Path\s*([^\]]+)\]/);
+    if (pathMatch) {
+      path = pathMatch[1];
+    }
+    
+    const regex = /\[([^:\]]+):\s*([^\]]+)\]/g;
+    let match;
+    while ((match = regex.exec(e.message)) !== null) {
+      if (match[1] !== 'Form') {
+        customFields[match[1].trim()] = match[2].trim();
+      }
+    }
+    
+    const descMatch = e.message.match(/Description:\s*(.*)/s);
+    if (descMatch) {
+      cleanMessage = descMatch[1].trim();
+    } else {
+      cleanMessage = '';
+    }
+  }
+
   return {
     ...e,
     type: type || 'general',
-    subject: subject || 'General Inquiry',
+    subject: subject || (type === 'assessment' ? 'Project Intake' : 'General Inquiry'),
     partnershipInterest,
-    cleanMessage
+    cleanMessage,
+    path,
+    customFields
   };
 }
 
@@ -56,7 +88,7 @@ export default function AdminEnquiriesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEnquiry, setSelectedEnquiry] = useState<ParsedEnquiry | null>(null);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
-  const [activeTab, setActiveTab] = useState<'general' | 'partner' | 'tickets'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'partner' | 'assessment' | 'tickets'>('general');
   const [expandedClients, setExpandedClients] = useState<Record<string, boolean>>({});
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
@@ -86,6 +118,15 @@ We are keen to evaluate opportunities with ${selectedEnquiry.company || 'your or
 
 Best regards,
 Kork Partnerships Team`);
+    } else if (activeTab === 'assessment' && selectedEnquiry) {
+      setReplyText(`Hi ${selectedEnquiry.name},
+
+Thank you for reaching out to KORK InventRex regarding your project.
+
+Our team is reviewing the information you provided in your project intake form, and we will follow up with you shortly to discuss next steps.
+
+Best regards,
+KORK InventRex Team`);
     } else if (activeTab === 'tickets' && selectedTicket) {
       setReplyText(`Hi ${selectedTicket.clientName},
 
@@ -111,6 +152,8 @@ Kork Support Team`);
       ? `Response to KORK InventRex Inquiry - Subject: ${selectedEnquiry?.subject}`
       : activeTab === 'partner'
       ? `Partnership Proposal Response - KORK InventRex`
+      : activeTab === 'assessment'
+      ? `Project Intake Response - KORK InventRex`
       : `RE: Support Ticket #${selectedTicket?.ticketId} - ${selectedTicket?.subject}`;
 
     if (!email || !replyText.trim()) {
@@ -299,6 +342,39 @@ Kork Support Team`);
       document.body.removeChild(link);
       
       success('Export Succeeded', 'CSV sheet downloaded successfully.');
+    } else if (activeTab === 'assessment') {
+      const assessmentList = enquiries.map(parseEnquiry).filter(l => l.type === 'assessment');
+      if (assessmentList.length === 0) {
+        toastError('Export Failed', 'No project intakes available to export.');
+        return;
+      }
+
+      const headers = ['ID', 'Contact Name', 'Email', 'Phone', 'Company', 'Path', 'Message', 'Date Received'];
+      const rows = assessmentList.map(e => [
+        e.id,
+        `"${e.name.replace(/"/g, '""')}"`,
+        e.email,
+        e.phone || '',
+        `"${(e.company || '').replace(/"/g, '""')}"`,
+        `"${e.path || ''}"`,
+        `"${e.cleanMessage.replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+        e.createdAt
+      ]);
+
+      const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `kork_project_intakes_${new Date().toISOString().slice(0,10)}.csv`);
+      link.style.visibility = 'hidden';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      success('Export Succeeded', 'CSV sheet downloaded successfully.');
     } else {
       if (tickets.length === 0) {
         toastError('Export Failed', 'No support tickets available to export.');
@@ -348,6 +424,14 @@ Kork Support Team`);
     l.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (l.company && l.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
     (l.partnershipInterest && l.partnershipInterest.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    l.cleanMessage.toLowerCase().includes(searchQuery.toLowerCase())
+  ));
+
+  const assessmentLeads = parsedLeads.filter(l => l.type === 'assessment' && (
+    l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    l.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (l.company && l.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (l.path && l.path.toLowerCase().includes(searchQuery.toLowerCase())) ||
     l.cleanMessage.toLowerCase().includes(searchQuery.toLowerCase())
   ));
 
@@ -429,6 +513,21 @@ Kork Support Team`);
         </button>
         <button
           onClick={() => {
+            setActiveTab('assessment');
+            setSelectedTicket(null);
+            setSelectedEnquiry(null);
+            setSearchQuery('');
+          }}
+          className={`px-5 py-3 font-bold text-xs border-b-2 transition-all ${
+            activeTab === 'assessment'
+              ? 'border-accent text-accent'
+              : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+          }`}
+        >
+          Project Intakes ({assessmentLeads.length})
+        </button>
+        <button
+          onClick={() => {
             setActiveTab('tickets');
             setSelectedTicket(null);
             setSelectedEnquiry(null);
@@ -454,6 +553,8 @@ Kork Support Team`);
               ? "Search inquiries by name, email, or subject..." 
               : activeTab === 'partner'
               ? "Search partners by name, organization, or interest..."
+              : activeTab === 'assessment'
+              ? "Search intakes by name, path, or description..."
               : "Search tickets by ID, client, subject..."
           }
           value={searchQuery}
@@ -603,6 +704,73 @@ Kork Support Team`);
                 </tbody>
               </table>
             </div>
+          ) : activeTab === 'assessment' ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left text-slate-600 dark:text-slate-400">
+                <thead className="bg-slate-50 dark:bg-slate-950/60 text-slate-500 border-b border-slate-100 dark:border-slate-800">
+                  <tr>
+                    <th className="px-6 py-4 font-bold">Contact Name</th>
+                    <th className="px-6 py-4 font-bold">Path Taken</th>
+                    <th className="px-6 py-4 font-bold">Project Details</th>
+                    <th className="px-6 py-4 font-bold">Received Date</th>
+                    <th className="px-6 py-4 font-bold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {assessmentLeads.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-8 text-center text-slate-400">
+                        No project intakes matching query.
+                      </td>
+                    </tr>
+                  ) : (
+                    assessmentLeads.map((e) => (
+                      <tr 
+                        key={e.id} 
+                        className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer ${
+                          selectedEnquiry?.id === e.id ? 'bg-slate-50 dark:bg-slate-800' : ''
+                        }`}
+                        onClick={() => setSelectedEnquiry(e)}
+                      >
+                        <td className="px-6 py-4 font-bold text-primary dark:text-white">
+                          <div>
+                            <span>{e.name}</span>
+                            <span className="text-[10px] text-slate-400 block font-normal font-mono">{e.email}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">
+                          {e.path ? <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-400 border border-blue-900/30">Path {e.path}</span> : <span className="text-slate-400 italic">Unknown</span>}
+                        </td>
+                        <td className="px-6 py-4 max-w-[200px] truncate" title={e.cleanMessage}>
+                          {e.cleanMessage || <span className="text-slate-400 italic">No description</span>}
+                        </td>
+                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                          {formatDate(e.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 text-right" onClick={(ev) => ev.stopPropagation()}>
+                          <div className="inline-flex gap-2">
+                            <button
+                              onClick={() => setSelectedEnquiry(e)}
+                              className="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg"
+                              title="Inspect Intake"
+                            >
+                              <Eye size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(e.id, e.name)}
+                              className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg"
+                              title="Delete Intake"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {Object.keys(groupedFilteredTickets).length === 0 ? (
@@ -724,6 +892,11 @@ Kork Support Team`);
                   <Handshake size={16} className="text-purple-500" />
                   Partner Inspector
                 </>
+              ) : activeTab === 'assessment' ? (
+                <>
+                  <Info size={16} className="text-blue-500" />
+                  Intake Inspector
+                </>
               ) : (
                 <>
                   <Inbox size={16} className="text-accent" />
@@ -835,6 +1008,125 @@ Kork Support Team`);
             ) : (
               <div className="text-center py-12 text-slate-400 text-xs">
                 Select a general inquiry row from the table to inspect details and respond.
+              </div>
+            )
+          ) : activeTab === 'assessment' ? (
+            selectedEnquiry ? (
+              <div className="space-y-4 text-xs">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Contact Name</span>
+                    <p className="text-sm font-bold text-primary dark:text-white">{selectedEnquiry.name}</p>
+                  </div>
+                  {selectedEnquiry.path && (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-400 border border-blue-900/30">
+                      Path {selectedEnquiry.path}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Email Address</span>
+                    <p className="font-mono text-slate-600 dark:text-slate-400 truncate" title={selectedEnquiry.email}>
+                      {selectedEnquiry.email}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Phone Number</span>
+                    <p className="font-mono text-slate-600 dark:text-slate-400 truncate">
+                      {selectedEnquiry.phone || 'Not provided'}
+                    </p>
+                  </div>
+                </div>
+
+                {selectedEnquiry.company && (
+                  <div className="space-y-1 border-t border-slate-100 dark:border-slate-800 pt-2">
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Company</span>
+                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                      {selectedEnquiry.company}
+                    </p>
+                  </div>
+                )}
+
+                {selectedEnquiry.customFields && Object.keys(selectedEnquiry.customFields).length > 0 && (
+                  <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Assessment Answers</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(selectedEnquiry.customFields).map(([key, value]) => (
+                        <div key={key} className="bg-slate-50 dark:bg-slate-950/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+                          <span className="text-[9px] text-slate-400 font-bold uppercase block mb-0.5">{key}</span>
+                          <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+                            {key === 'NDA Required' ? (
+                              <span className={value === 'true' ? 'text-amber-600 dark:text-amber-500 font-bold' : ''}>
+                                {value === 'true' ? 'Yes, Required' : 'No'}
+                              </span>
+                            ) : (
+                              value
+                            )}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Project Description</span>
+                  <div className="p-3.5 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-800 mt-1">
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                      {selectedEnquiry.cleanMessage || 'No description provided.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Reply Composer */}
+                <div className="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Compose Reply Email</span>
+                  <textarea
+                    rows={5}
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all resize-y text-slate-700 dark:text-slate-300"
+                    placeholder="Write response message..."
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      disabled={sendingReply}
+                      onClick={handleSendEmailReply}
+                      className="flex-1 inline-flex justify-center items-center py-2 bg-gradient-to-r from-secondary to-accent text-white font-bold rounded-lg hover:opacity-95 text-center text-xs disabled:opacity-50"
+                    >
+                      {sendingReply ? 'Sending...' : 'Send Secure Reply'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const subject = `Project Intake Response - KORK InventRex`;
+                        handleReplyEmail(selectedEnquiry.email, subject, replyText);
+                      }}
+                      className="px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold"
+                      title="Open in Local Mail Client"
+                    >
+                      Mailto Link
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex justify-end">
+                  <button
+                    onClick={() => handleDelete(selectedEnquiry.id, selectedEnquiry.name)}
+                    className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg text-xs font-bold flex items-center gap-1.5"
+                    title="Delete Intake"
+                  >
+                    <Trash2 size={14} />
+                    <span>Delete Intake</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12 text-slate-400 text-xs">
+                Select a project intake row from the table to inspect details and respond.
               </div>
             )
           ) : activeTab === 'partner' ? (

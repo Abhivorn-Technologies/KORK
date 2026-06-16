@@ -176,14 +176,15 @@ function Scene({ activeIndex }: { activeIndex: number }) {
 
 export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
   return (
-    <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center pointer-events-none">
+    <div className="relative w-full h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center pointer-events-none">
       
+
       {/* Dynamic Radial Glow Background */}
       <div className="absolute inset-0 flex items-center justify-center">
         {THEMES.map((theme, idx) => (
           <div 
             key={idx}
-            className={`absolute w-[300px] h-[300px] md:w-[450px] md:h-[450px] rounded-full blur-[100px] transition-opacity duration-1000 ease-in-out mix-blend-screen ${theme.glow}`}
+            className={`absolute w-[400px] h-[400px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] rounded-full blur-[120px] transition-opacity duration-1000 ease-in-out mix-blend-screen ${theme.glow}`}
             style={{ opacity: activeIndex === idx ? 1 : 0 }}
           />
         ))}
@@ -191,7 +192,7 @@ export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
 
       {/* WebGL Canvas */}
       <div className="absolute inset-0 z-10">
-        <Canvas camera={{ position: [0, 0, 9], fov: 45 }} dpr={[1, 2]}>
+        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
           <Scene activeIndex={activeIndex} />
         </Canvas>
       </div>

@@ -80,7 +80,7 @@ export default function GeneralInquiryForm() {
         <input required type="text" name="subject" value={formData.subject} onChange={handleChange} placeholder="Subject" className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all" />
       </div>
       <textarea required name="message" value={formData.message} onChange={handleChange} placeholder="Message" rows={4} className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm resize-none focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all" />
-      <button suppressHydrationWarning disabled={loading} type="submit" className="w-full py-3 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+      <button suppressHydrationWarning disabled={loading} type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-secondary to-accent text-white font-bold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
         {loading ? 'Sending...' : 'Send General Inquiry'} <Send size={14} />
       </button>
     </motion.form>

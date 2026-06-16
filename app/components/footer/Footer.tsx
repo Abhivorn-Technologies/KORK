@@ -141,7 +141,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/resources/industries" className="hover:text-white flex items-center gap-1.5 transition-colors">
+                <Link href="/about/industries" className="hover:text-white flex items-center gap-1.5 transition-colors">
                   <span>Industries We Serve</span>
                 </Link>
               </li>
