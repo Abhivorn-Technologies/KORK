@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
       }
 
       // Enforce admin email authorization list
-      const allowedAdmins = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'];
+      const allowedAdmins = ['contact@korkinventrex.com', 'kavyasree@korkinventrex.com'];
       const normalizedEmail = email.toLowerCase().trim();
       
       if (!allowedAdmins.includes(normalizedEmail)) {
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="kayasree@korkinventrex.com"
+                placeholder="kavyasree@korkinventrex.com"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-600"
               />
             </div>

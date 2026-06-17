@@ -84,7 +84,7 @@ export default function ClientPortalPage() {
             setIsAuthenticated(false);
             setClientProfile(null);
             const userEmail = user.email?.toLowerCase().trim() || '';
-            const isAdminEmail = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'].includes(userEmail);
+            const isAdminEmail = ['contact@korkinventrex.com', 'kavyasree@korkinventrex.com'].includes(userEmail);
             
             if (isAdminEmail) {
               toastError('Access Denied', 'Administrator accounts cannot log in to the Client Portal. Please use a client account.');

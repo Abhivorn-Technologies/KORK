@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isFirebaseConfigured()) {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          const allowedAdmins = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'];
+          const allowedAdmins = ['contact@korkinventrex.com', 'kavyasree@korkinventrex.com'];
           const userEmail = user.email?.toLowerCase().trim() || '';
           
           if (allowedAdmins.includes(userEmail)) {
@@ -185,7 +185,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <div className="overflow-hidden">
                 <h4 className="text-xs font-bold text-white truncate leading-tight">Admin Terminal</h4>
-                <span className="text-[10px] text-slate-500 font-mono tracking-tighter truncate block mt-0.5">{auth.currentUser?.email || 'kayasree@korkinventrex.com'}</span>
+                <span className="text-[10px] text-slate-500 font-mono tracking-tighter truncate block mt-0.5">{auth.currentUser?.email || 'kavyasree@korkinventrex.com'}</span>
               </div>
             </div>
 
