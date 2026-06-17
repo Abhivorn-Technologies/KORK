@@ -6,7 +6,7 @@ service firebase.storage {
     function isAdmin() {
       return request.auth != null && 
         (request.auth.token.email == 'contact@korkinventrex.com' || 
-         request.auth.token.email == 'kayasree@korkinventrex.com');
+         request.auth.token.email == 'kavyasree@korkinventrex.com');
     }
 
     match /project_documents/{clientId}/{allPaths=**} {

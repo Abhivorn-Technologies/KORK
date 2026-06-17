@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebase/config';
 import { isFirebaseConfigured } from '@/lib/firebase';
 import { useToast } from '@/components/common/Toast';
-import { Lock, Mail, ShieldAlert } from 'lucide-react';
+import { Lock, Mail, ShieldAlert, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -16,6 +16,7 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +31,7 @@ export default function AdminLoginPage() {
       }
 
       // Enforce admin email authorization list
-      const allowedAdmins = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'];
+      const allowedAdmins = ['contact@korkinventrex.com', 'kavyasree@korkinventrex.com'];
       const normalizedEmail = email.toLowerCase().trim();
       
       if (!allowedAdmins.includes(normalizedEmail)) {
@@ -87,7 +88,8 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="kayasree@korkinventrex.com"
+                placeholder="kavyasree@korkinventrex.com"
+                autoComplete="off"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-600"
               />
             </div>
@@ -98,13 +100,21 @@ export default function AdminLoginPage() {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-600"
+                autoComplete="new-password"
+                className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent rounded-xl text-xs text-white focus:outline-none placeholder-slate-600"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 focus:outline-none transition-colors"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 

@@ -6,44 +6,13 @@ import { cn } from '@/utils/helpers';
 import { onSnapshot, collection, query, where, orderBy, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase/config';
 import { isFirebaseConfigured } from '@/lib/firebase';
+import { useToast } from '@/components/common/Toast';
 
 // Mock messages fallback data
-const MOCK_CONVERSATIONS = [
-  {
-    id: '1',
-    clientName: 'Acme Corp',
-    lastMessage: 'Can we schedule a call to discuss the latest drafts?',
-    time: '10:30 AM',
-    unread: true,
-    messages: [
-      { id: 'm1', sender: 'admin', text: 'Hello, we have uploaded the initial prior art search results to your document center. Let us know if you have any questions.', timestamp: new Date(Date.now() - 86400000).toISOString() },
-      { id: 'm2', sender: 'client', text: 'Thanks, reviewing them now. Can we schedule a call to discuss the latest drafts?', timestamp: new Date().toISOString() }
-    ]
-  },
-  {
-    id: '2',
-    clientName: 'Global Innovations',
-    lastMessage: 'The new CAD files look great. Proceeding with phase 2.',
-    time: 'Yesterday',
-    unread: false,
-    messages: [
-      { id: 'm1', sender: 'client', text: 'The new CAD files look great. Proceeding with phase 2.', timestamp: new Date(Date.now() - 86400000).toISOString() }
-    ]
-  },
-  {
-    id: '3',
-    clientName: 'Nexus Tech',
-    lastMessage: 'Invoice paid.',
-    time: 'Mon',
-    unread: false,
-    messages: [
-      { id: 'm1', sender: 'admin', text: 'Your final patent application has been filed.', timestamp: 'Mon, 9:00 AM' },
-      { id: 'm2', sender: 'client', text: 'Invoice paid.', timestamp: 'Mon, 11:30 AM' }
-    ]
-  }
-];
+const MOCK_CONVERSATIONS: any[] = [];
 
 export default function MessagesPage() {
+  const { error: toastError, success } = useToast();
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
   const [clients, setClients] = useState<any[]>([]);
@@ -83,20 +52,10 @@ export default function MessagesPage() {
         setActiveChat(projects[0].id);
       }
       setLoading(false);
-    }, (error) => {
-      console.error('Firestore list sync error, falling back to mock:', error);
-      const mockClients = MOCK_CONVERSATIONS.map(c => ({
-        id: c.id,
-        name: c.clientName,
-        projectName: 'Active Project',
-        lastMessage: c.lastMessage,
-        lastMessageTime: c.time,
-        unread: c.unread
-      }));
-      setClients(mockClients);
-      if (mockClients.length > 0 && !activeChat) {
-        setActiveChat(mockClients[0].id);
-      }
+    }, (error: any) => {
+      console.error('Firestore list sync error:', error);
+      toastError('Database Error', error.message || 'Failed to sync clients.');
+      setClients([]);
       setLoading(false);
     });
 
@@ -126,12 +85,10 @@ export default function MessagesPage() {
         ...doc.data()
       }));
       setMessages(msgs);
-    }, (error) => {
-      console.error('Firestore messages sync error, falling back to mock:', error);
-      const mockChat = MOCK_CONVERSATIONS.find(c => c.id === activeChat);
-      if (mockChat) {
-        setMessages(mockChat.messages);
-      }
+    }, (error: any) => {
+      console.error('Firestore messages sync error:', error);
+      toastError('Database Error', error.message || 'Failed to sync messages.');
+      setMessages([]);
     });
 
     return () => unsubscribe();

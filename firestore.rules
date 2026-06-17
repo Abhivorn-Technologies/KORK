@@ -6,7 +6,7 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && 
         (request.auth.token.email == 'contact@korkinventrex.com' || 
-         request.auth.token.email == 'kayasree@korkinventrex.com');
+         request.auth.token.email == 'kavyasree@korkinventrex.com');
     }
 
     // Public collections (anyone can read; only Admins can write)

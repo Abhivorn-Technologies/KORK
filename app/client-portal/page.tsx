@@ -20,6 +20,8 @@ import {
   X,
   CheckCircle,
   Eye,
+  EyeOff,
+  Trash2,
   Layers,
   Bell,
   FolderOpen,
@@ -38,8 +40,8 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/common/Toast';
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from 'firebase/auth';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, query, where, orderBy, onSnapshot, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { collection, query, where, orderBy, onSnapshot, addDoc, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db, storage } from '@/firebase/config';
 import { isFirebaseConfigured } from '@/lib/firebase';
 
@@ -145,6 +147,7 @@ export default function ClientPortalPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [clientProfile, setClientProfile] = useState<any>(null);
 
@@ -173,6 +176,8 @@ export default function ClientPortalPage() {
   // ── Password Change ───────────────────────────────────────────────────────
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
 
   // ── Scroll tracking for header ────────────────────────────────────────────
@@ -210,7 +215,8 @@ export default function ClientPortalPage() {
             setIsAuthenticated(false);
             setClientProfile(null);
             const userEmail = user.email?.toLowerCase().trim() || '';
-            const isAdminEmail = ['contact@korkinventrex.com', 'kayasree@korkinventrex.com'].includes(userEmail);
+            const isAdminEmail = ['contact@korkinventrex.com', 'kavyasree@korkinventrex.com'].includes(userEmail);
+            
             if (isAdminEmail) {
               toastError('Access Denied', 'Administrator accounts cannot log in to the Client Portal.');
             } else {
@@ -415,6 +421,30 @@ export default function ClientPortalPage() {
     else { success('File Decrypted', `"${file.name}" secure download packaging starting.`); }
   };
 
+  const handleDeleteFile = async (file: any) => {
+    if (!isFirebaseConfigured()) {
+      setUploadedFiles(prev => prev.filter(f => f.id !== file.id && f.name !== file.name));
+      success('File Deleted', `"${file.name}" has been securely removed.`);
+      return;
+    }
+    const userId = auth.currentUser?.uid;
+    if (!userId || (!file.id && !file.name)) return;
+    try {
+      // Attempt to delete from storage first
+      if (file.name) {
+        const fileRef = ref(storage, `project_documents/${userId}/${file.name}`);
+        await deleteObject(fileRef).catch(e => console.log('Storage delete error, ignoring:', e));
+      }
+      // Delete document entry from firestore
+      if (file.id) {
+        await deleteDoc(doc(db, 'documents', file.id));
+      }
+      success('File Deleted', `"${file.name}" has been securely removed.`);
+    } catch (err: any) {
+      toastError('Delete Failed', err.message);
+    }
+  };
+
   const handleTicketSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ticketSubject || !ticketMsg) return;
@@ -489,14 +519,20 @@ export default function ClientPortalPage() {
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">New Password</label>
               <div className="relative group">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent transition-colors" size={16} />
-                <input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Minimum 6 characters" className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-white focus:outline-none placeholder-slate-500 transition-all text-xs" />
+                <input type={showNewPassword ? "text" : "password"} required value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Minimum 6 characters" className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-white focus:outline-none placeholder-slate-500 transition-all text-xs" />
+                <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors">
+                  {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">Confirm New Password</label>
               <div className="relative group">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent transition-colors" size={16} />
-                <input type="password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Re-enter new password" className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-white focus:outline-none placeholder-slate-500 transition-all text-xs" />
+                <input type={showConfirmPassword ? "text" : "password"} required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Re-enter new password" className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-800 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl text-white focus:outline-none placeholder-slate-500 transition-all text-xs" />
+                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors">
+                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
             <button type="submit" disabled={changingPassword} className="w-full py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-black tracking-wide shadow-lg disabled:opacity-50 flex items-center justify-center text-xs">
@@ -703,14 +739,21 @@ export default function ClientPortalPage() {
                   <h3 className="text-xs font-bold uppercase tracking-wider text-white pb-2 border-b border-slate-800">Secure File Registry</h3>
                   <div className="divide-y divide-slate-800">
                     {clientUploads.map((file, idx) => (
-                      <div key={file.id || idx} className="py-4 flex justify-between items-center text-xs first:pt-0 last:pb-0">
+                      <div key={file.id || idx} className="py-4 flex justify-between items-center text-xs first:pt-0 last:pb-0 group">
                         <div className="space-y-0.5">
                           <h4 className="font-bold text-white">{file.name}</h4>
                           <span className="text-[10px] text-slate-500 font-semibold uppercase">{file.type} // {file.size}</span>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <span className="text-[10px] text-slate-500 font-mono">{file.date}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">{file.date}</span>
                           <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase font-mono bg-emerald-950/45 text-emerald-400 border border-emerald-900/30">{file.status}</span>
+                          <button
+                            onClick={() => handleDeleteFile(file)}
+                            className="p-1.5 text-slate-500 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all ml-1"
+                            title="Delete file permanently"
+                          >
+                            <Trash2 size={14} />
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -871,6 +914,7 @@ export default function ClientPortalPage() {
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             placeholder="client@example.com"
+                            autoComplete="off"
                             suppressHydrationWarning
                             className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-[#06b6d4] focus:ring-2 focus:ring-[#06b6d4]/20 rounded-xl text-slate-900 focus:outline-none placeholder-slate-400 transition-all text-sm"
                           />
@@ -881,14 +925,22 @@ export default function ClientPortalPage() {
                         <div className="relative group">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#06b6d4] transition-colors" size={16} />
                           <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             required
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="••••••••••••"
+                            autoComplete="new-password"
                             suppressHydrationWarning
-                            className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-[#06b6d4] focus:ring-2 focus:ring-[#06b6d4]/20 rounded-xl text-slate-900 focus:outline-none placeholder-slate-400 transition-all text-sm"
+                            className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 focus:border-[#06b6d4] focus:ring-2 focus:ring-[#06b6d4]/20 rounded-xl text-slate-900 focus:outline-none placeholder-slate-400 transition-all text-sm"
                           />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors"
+                          >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
                         </div>
                       </div>
                       <button

@@ -8,11 +8,7 @@ import { db } from '@/firebase/config';
 import { isFirebaseConfigured } from '@/lib/firebase';
 
 // Mock fallback data for clients
-const MOCK_CLIENTS = [
-  { id: '1', name: 'Acme Corp', email: 'contact@acme.com' },
-  { id: '2', name: 'Global Innovations', email: 'info@globalinnovations.com' },
-  { id: '3', name: 'Nexus Tech', email: 'ceo@nexustech.io' },
-];
+const MOCK_CLIENTS: any[] = [];
 
 const PHASES = [
   'Initial Consultation',
@@ -316,7 +312,7 @@ export default function ClientProjectsPage() {
       setLoading(false);
     }, (err) => {
       console.error('Error fetching client projects, falling back to mock:', err);
-      setClients(MOCK_CLIENTS);
+      setClients([]);
       setLoading(false);
     });
 

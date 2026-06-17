@@ -27,7 +27,7 @@ const illustrationServices = [
     icon: Grid,
     title: 'Design Patent Drawings',
     desc: 'High-precision perspective and orthographic drawings featuring precise line weights, stippling, and surface shading to protect visual appearance.',
-    examples: ['Product Contours & Shapes', 'Surface Shading & Texture', 'Environmental (dashed) Lines', 'UI/UX Screengrabs & Icons', 'Orthographic Projection Views']
+    examples: ['Product Contours & Shapes', 'Surface Shading & Texture', 'Environmental (dashed) Lines', 'Graphical User Interfaces & Icons', 'Orthographic Projection Views']
   },
   {
     icon: Sparkles,
@@ -90,16 +90,16 @@ const galleries = [
       '/assets/images/illustrations/utility-new-5.png'
     ] 
   },
-  { 
-    title: 'Design Perspective Example', 
-    desc: 'Detailed surface shading demonstrating product contours.', 
-    category: 'Design Patent', 
-    images: [
-      '/assets/images/illustrations/design-chair.png',
-      '/assets/images/illustrations/design-headphones.png',
-      '/assets/images/illustrations/design-drone.png'
-    ] 
-  },
+  // { 
+  //   title: 'Design Perspective Example', 
+  //   desc: 'Detailed surface shading demonstrating product contours.', 
+  //   category: 'Design Patent', 
+  //   images: [
+  //     '/assets/images/illustrations/design-chair.png',
+  //     '/assets/images/illustrations/design-headphones.png',
+  //     '/assets/images/illustrations/design-drone.png'
+  //   ] 
+  // },
   { 
     title: 'Trademark Specimen Example', 
     desc: 'Composite trademark layout matching USPTO rules.', 
@@ -260,7 +260,7 @@ export default function PatentIllustrationsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {galleries.map((gal, idx) => (
               <div 
                 key={idx} 
