@@ -137,7 +137,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/about/how-it-works" className="hover:text-white flex items-center gap-1.5 transition-colors">
-                  <span>How It Works</span>
+                  <span>How KORK Works</span>
                 </Link>
               </li>
               <li>

@@ -9,7 +9,8 @@ import {
   XCircle, 
   CheckCircle, 
   CheckCircle2, 
-  ArrowRight 
+  ArrowRight,
+  FileSearch
 } from 'lucide-react';
 import { fadeUpReveal } from '@/lib/animations';
 
@@ -27,6 +28,23 @@ const serviceCategories = [
       'Prior Art Research Coordination',
       'Patent Readiness Assessment',
       'Innovation Evaluation'
+    ]
+  },
+  {
+    id: 'patent-search-evaluation',
+    title: 'Patent Search & Evaluation Services',
+    icon: FileSearch,
+    desc: 'Helping innovators assess novelty, patent readiness, prior art, and filing strategy before investing in intellectual property protection.',
+    href: '/services/patent-search-evaluation',
+    buttonText: 'Explore Search Services',
+    items: [
+      'Patent Search Coordination',
+      'Prior Art Research',
+      'Patentability Assessment',
+      'Competitive Landscape Review',
+      'Innovation Readiness Assessment',
+      'Design vs. Utility Assessment',
+      'Filing Strategy Consultation'
     ]
   },
   {
@@ -116,11 +134,11 @@ export default function ServicesPage() {
         <div className="container-custom space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <h2 className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
-              One Platform. Three Service Categories.
+              One Platform. Four Service Categories.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
             {serviceCategories.map((category, idx) => {
               const Icon = category.icon;
               return (
@@ -155,10 +173,10 @@ export default function ServicesPage() {
                   <div className="pt-8">
                     <Link
                       href={category.href}
-                      className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-xl text-sm font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800/50 transition-colors"
+                      className="inline-flex items-center justify-center gap-1.5 w-full px-2 py-3.5 rounded-lg text-[10px] xl:text-xs font-bold whitespace-nowrap text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 transition-colors shadow-md"
                     >
                       {category.buttonText}
-                      <ArrowRight size={16} />
+                      <ArrowRight size={14} className="shrink-0" />
                     </Link>
                   </div>
                 </motion.div>

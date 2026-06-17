@@ -27,7 +27,7 @@ const navItems = [
     label: 'About Us', 
     href: '/about',
     subItems: [
-      { label: 'How It Works', href: '/about/how-it-works' },
+      { label: 'How KORK Works', href: '/about/how-it-works' },
       { label: 'Industries We Serve', href: '/about/industries' }
     ]
   },

@@ -14,6 +14,7 @@ export default function AssessmentWizard() {
   
   const [step, setStep] = useState<Step>('initial');
   const [path, setPath] = useState<Path>(null);
+  const [showErrors, setShowErrors] = useState(false);
   
   // Path A - F answers
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -48,6 +49,7 @@ export default function AssessmentWizard() {
       case 'I’m Not Sure Where to Start': setPath('G'); break;
     }
     setAnswers({});
+    setShowErrors(false);
     if (selection === 'I’m Not Sure Where to Start') {
       setStep('recommendation'); // Goes straight to display message -> form
     } else {
@@ -197,7 +199,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What type of innovation are you seeking to protect?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['type'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['type'] || ''}
           onChange={(e) => handleAnswerChange('type', e.target.value)}
         >
@@ -209,11 +211,12 @@ export default function AssessmentWizard() {
           <option>Brand / Logo</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['type'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Have you publicly disclosed your invention?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['disclosed'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['disclosed'] || ''}
           onChange={(e) => handleAnswerChange('disclosed', e.target.value)}
         >
@@ -222,11 +225,21 @@ export default function AssessmentWizard() {
           <option>No</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['disclosed'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <button 
-        disabled={!answers['type'] || !answers['disclosed']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['type'] || !answers['disclosed']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['type'] || !answers['disclosed']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -238,7 +251,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What type of assessment are you interested in?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['assessmentType'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['assessmentType'] || ''}
           onChange={(e) => handleAnswerChange('assessmentType', e.target.value)}
         >
@@ -247,14 +260,14 @@ export default function AssessmentWizard() {
           <option>Patentability Assessment</option>
           <option>Prior Art Research</option>
           <option>Competitive Landscape Review</option>
-          <option>Freedom-to-Operate Review</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['assessmentType'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What stage is your project currently in?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['projectStage'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['projectStage'] || ''}
           onChange={(e) => handleAnswerChange('projectStage', e.target.value)}
         >
@@ -266,11 +279,21 @@ export default function AssessmentWizard() {
           <option>Existing Patent Portfolio</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['projectStage'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <button 
-        disabled={!answers['assessmentType'] || !answers['projectStage']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['assessmentType'] || !answers['projectStage']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['assessmentType'] || !answers['projectStage']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -282,7 +305,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What type of drawings do you need?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['drawingType'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['drawingType'] || ''}
           onChange={(e) => handleAnswerChange('drawingType', e.target.value)}
         >
@@ -293,6 +316,7 @@ export default function AssessmentWizard() {
           <option>Trademark Illustrations</option>
           <option>Trade Dress Illustrations</option>
         </select>
+        {showErrors && !answers['drawingType'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What materials do you currently have available?</h3>
@@ -311,9 +335,18 @@ export default function AssessmentWizard() {
         </div>
       </div>
       <button 
-        disabled={!answers['drawingType']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['drawingType']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['drawingType']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -325,7 +358,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Which filing are you considering?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['filingType'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['filingType'] || ''}
           onChange={(e) => handleAnswerChange('filingType', e.target.value)}
         >
@@ -337,11 +370,12 @@ export default function AssessmentWizard() {
           <option>PCT / International Application</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['filingType'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Do you already have patent drawings?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['hasDrawings'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['hasDrawings'] || ''}
           onChange={(e) => handleAnswerChange('hasDrawings', e.target.value)}
         >
@@ -349,11 +383,21 @@ export default function AssessmentWizard() {
           <option>Yes</option>
           <option>No</option>
         </select>
+        {showErrors && !answers['hasDrawings'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <button 
-        disabled={!answers['filingType'] || !answers['hasDrawings']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['filingType'] || !answers['hasDrawings']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['filingType'] || !answers['hasDrawings']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -365,7 +409,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Which office issued the Office Action?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['office'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['office'] || ''}
           onChange={(e) => handleAnswerChange('office', e.target.value)}
         >
@@ -374,11 +418,12 @@ export default function AssessmentWizard() {
           <option>PCT / International Application</option>
           <option>Other / Unsure</option>
         </select>
+        {showErrors && !answers['office'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">Do you require drawing revisions?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['drawingRevisions'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['drawingRevisions'] || ''}
           onChange={(e) => handleAnswerChange('drawingRevisions', e.target.value)}
         >
@@ -387,11 +432,21 @@ export default function AssessmentWizard() {
           <option>No</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['drawingRevisions'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <button 
-        disabled={!answers['office'] || !answers['drawingRevisions']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['office'] || !answers['drawingRevisions']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['office'] || !answers['drawingRevisions']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -403,7 +458,7 @@ export default function AssessmentWizard() {
       <div className="space-y-3">
         <h3 className="font-bold text-lg text-primary dark:text-white">What are you seeking to protect?</h3>
         <select 
-          className="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm"
+          className={`w-full p-3 rounded-lg border ${showErrors && !answers['trademarkTarget'] ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'} bg-white dark:bg-slate-950 text-sm`}
           value={answers['trademarkTarget'] || ''}
           onChange={(e) => handleAnswerChange('trademarkTarget', e.target.value)}
         >
@@ -415,11 +470,21 @@ export default function AssessmentWizard() {
           <option>Packaging</option>
           <option>Not Sure</option>
         </select>
+        {showErrors && !answers['trademarkTarget'] && <p className="text-rose-500 text-xs font-bold mt-1">Please select an option.</p>}
       </div>
       <button 
-        disabled={!answers['trademarkTarget']}
-        onClick={() => setStep('recommendation')}
-        className="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold disabled:opacity-50"
+        onClick={() => {
+          if (!answers['trademarkTarget']) {
+            setShowErrors(true);
+          } else {
+            setStep('recommendation');
+          }
+        }}
+        className={`w-full py-3.5 rounded-xl font-bold transition-all ${
+          !answers['trademarkTarget']
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            : 'bg-accent text-white hover:opacity-90 shadow-lg'
+        }`}
       >
         Continue
       </button>
@@ -565,7 +630,6 @@ export default function AssessmentWizard() {
                 <option>Patentability Assessment</option>
                 <option>Prior Art Research</option>
                 <option>Competitive Landscape Review</option>
-                <option>Freedom-to-Operate Review</option>
                 <option>Not Sure</option>
               </select>
               <select name="technologyArea" defaultValue="" onChange={(e) => handleAnswerChange('technologyArea', e.target.value)} className="input-field">

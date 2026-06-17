@@ -108,7 +108,7 @@ const timelineRanges = [
   { service: 'Patent Drawings & Figures', duration: '2–7 Business Days', detail: 'Utility line drawings or design stippling/surface shading sheets.' },
   { service: 'Trademark Illustrations', duration: '1–3 Business Days', detail: 'Composite brand logo vectorization and specimen prep.' },
   { service: 'Utility Application Prep', duration: 'Varies by Complexity', detail: 'Coordinated specs documentation & claims drafting.' },
-  { service: 'Design Application Prep', duration: 'Varies by Complexity', desc: 'Formal registration package assembly.' },
+  { service: 'Design Application Prep', duration: 'Varies by Complexity', detail: 'Coordinated design application documentation, drawing package preparation, and filing-ready submission support.' },
   { service: 'Office Action Response Support', duration: 'Deadline Dependent', detail: 'Based on the USPTO 3-month or 6-month response windows.' }
 ];
 
@@ -454,9 +454,9 @@ export default function HowItWorksPage() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-850">
                 {timelineRanges.map((time, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/40">
-                    <td className="px-6 py-4 font-bold text-primary dark:text-white">{time.service}</td>
-                    <td className="px-6 py-4 text-secondary dark:text-accent font-semibold">{time.duration}</td>
-                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-normal">{time.detail}</td>
+                    <td className="px-6 py-4 font-bold text-primary dark:text-primary">{time.service}</td>
+                    <td className="px-6 py-4 text-secondary dark:text-secondary font-semibold">{time.duration}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-800 font-semibold">{time.detail}</td>
                   </tr>
                 ))}
               </tbody>
