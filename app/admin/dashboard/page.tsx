@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
       
       {/* Title Header */}
       <div>
-        <h1 className="text-2xl font-black text-primary dark:text-white tracking-tight">
+        <h1 className="text-xl font-black text-primary dark:text-white tracking-tight">
           Dashboard Overview
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -83,7 +83,7 @@ export default function AdminDashboardPage() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="p-6 rounded-2xl border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900 shadow-sm flex items-center justify-between hover:border-slate-200 dark:hover:border-slate-850 transition-all"
+            className="p-5 rounded-xl border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900 shadow-sm flex items-center justify-between hover:shadow-md hover:-translate-y-1 hover:border-slate-200 dark:hover:border-slate-800 transition-all duration-300"
           >
             <div className="space-y-2">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">

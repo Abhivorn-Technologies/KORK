@@ -82,8 +82,8 @@ export default function HomePage() {
   ];
 
   const faqs = [
-    { q: 'What services does KORK InventReX provide?', a: 'KORK InventReX provides patent illustration services, inventor support services, patent filing coordination, office action support, and intellectual property workflow management through a network of patent professionals.' },
-    { q: 'Does KORK InventReX provide legal advice?', a: 'No. Legal advice and patent representation are provided by licensed patent attorneys and registered patent agents. KORK InventReX coordinates and supports the overall patent process.' },
+    { q: 'What services does KORK InventRex provide?', a: 'KORK InventRex provides patent illustration services, inventor support services, patent filing coordination, office action support, and intellectual property workflow management through a network of patent professionals.' },
+    { q: 'Does KORK InventRex provide legal advice?', a: 'No. Legal advice and patent representation are provided by licensed patent attorneys and registered patent agents. KORK InventRex coordinates and supports the overall patent process.' },
     { q: 'Can you help first-time inventors?', a: 'Yes. Our services are designed to support inventors at every stage of the intellectual property journey, including invention documentation, patent searches, illustrations, and filing coordination.' },
     { q: 'What types of patent drawings do you prepare?', a: 'We prepare utility patent drawings, design patent drawings, plant patent illustrations, trademark illustrations, and trade dress illustrations.' },
     { q: 'How do I get started?', a: 'You can submit your invention details through our intake process or schedule a consultation with our team.' },
@@ -187,7 +187,7 @@ export default function HomePage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-base md:text-lg text-slate-300 max-w-4xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           >
-            Whether you are an inventor, entrepreneur, startup, researcher, or established business, KORK InventReX provides a streamlined pathway from invention disclosure to intellectual property protection through coordinated patent services and technical expertise.
+            Whether you are an inventor, entrepreneur, startup, researcher, or established business, KORK InventRex provides a streamlined pathway from invention disclosure to intellectual property protection through coordinated patent services and technical expertise.
           </motion.p> */}
 
           <motion.div
@@ -247,7 +247,7 @@ export default function HomePage() {
             
             <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border-l-4 border-rose-500 shadow-sm mt-4">
               <p className="text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed font-semibold">
-                At KORK InventReX, we simplify the process by providing one centralized platform where inventors can access coordinated intellectual property services and professional support.
+                At KORK InventRex, we simplify the process by providing one centralized platform where inventors can access coordinated intellectual property services and professional support.
               </p>
             </div>
           </motion.div>
@@ -289,7 +289,7 @@ export default function HomePage() {
               One Platform. Complete Intellectual Property Support.
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-              KORK InventReX brings together inventors, patent professionals, technical illustrators, and support services into a structured workflow designed to simplify the journey from concept to protection.
+              KORK InventRex brings together inventors, patent professionals, technical illustrators, and support services into a structured workflow designed to simplify the journey from concept to protection.
             </p>
           </motion.div>
 
@@ -366,7 +366,7 @@ export default function HomePage() {
               Why KORK
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-              Why Inventors Choose KORK InventReX
+              Why Inventors Choose KORK InventRex
             </h2>
           </motion.div>
 
@@ -435,7 +435,7 @@ export default function HomePage() {
               Professional Engagement
             </h2>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              KORK InventReX actively participates within the intellectual property community and works to build relationships that support inventors and intellectual property professionals. Memberships and professional affiliations help us remain connected to evolving industry practices and professional networks.
+              KORK InventRex actively participates within the intellectual property community and works to build relationships that support inventors and intellectual property professionals. Memberships and professional affiliations help us remain connected to evolving industry practices and professional networks.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-8 pt-6">
               <div className="flex flex-col gap-2">
