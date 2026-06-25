@@ -92,7 +92,7 @@ export default function NAPPMemberPage() {
     },
     {
       q: "Are office action revisions included?",
-      a: "For projects originally illustrated by KORK InventReX, office action drawing revisions are provided without additional illustration charges. For externally prepared drawings, NAPP members receive the standard 15% member discount."
+      a: "For projects originally illustrated by KORK InventRex, office action drawing revisions are provided without additional illustration charges. For externally prepared drawings, NAPP members receive the standard 15% member discount."
     },
     {
       q: "Can independent inventors use the program?",
@@ -134,7 +134,7 @@ export default function NAPPMemberPage() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
               className="text-base text-slate-500 dark:text-slate-500 leading-relaxed max-w-3xl mx-auto"
             >
-              KORK InventReX supports patent attorneys, patent agents, independent inventors, and innovation professionals with high-quality patent drawings prepared to USPTO standards.
+              KORK InventRex supports patent attorneys, patent agents, independent inventors, and innovation professionals with high-quality patent drawings prepared to USPTO standards.
             </motion.p>
             
             <motion.div 
@@ -230,7 +230,7 @@ export default function NAPPMemberPage() {
                 <CheckCircle2 className="text-blue-400" /> KORK Illustrated Projects
               </h3>
               <p className="text-slate-300 leading-relaxed font-medium">
-                For illustration projects originally prepared by KORK InventReX: Office Action drawing revisions are provided at <strong className="text-white">no additional illustration charge</strong>.
+                For illustration projects originally prepared by KORK InventRex: Office Action drawing revisions are provided at <strong className="text-white">no additional illustration charge</strong>.
               </p>
             </motion.div>
             <motion.div variants={fadeUpReveal} initial="hidden" whileInView="visible" whileHover={{ scale: 1.02 }} viewport={{ once: true, margin: "-50px" }} className="p-6 md:p-8 rounded-3xl bg-slate-900/60 border border-slate-700 backdrop-blur-sm">
@@ -327,7 +327,7 @@ export default function NAPPMemberPage() {
           <div className="p-6 rounded-2xl bg-slate-100 dark:bg-slate-900/80 text-center border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Important Disclosure</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              Patent filing and prosecution services are performed by independent licensed patent attorneys and registered patent agents. KORK InventReX is not a law firm, does not provide legal advice, and does not practice law.
+              Patent filing and prosecution services are performed by independent licensed patent attorneys and registered patent agents. KORK InventRex is not a law firm, does not provide legal advice, and does not practice law.
             </p>
           </div>
         </div>

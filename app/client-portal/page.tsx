@@ -1218,7 +1218,7 @@ export default function ClientPortalPage() {
               transition={{ duration: 0.6 }}
               className="text-center max-w-2xl mx-auto mb-10 space-y-3"
             >
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Dashboard Overview</h2>
+              <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Dashboard Overview</h2>
             </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -1229,7 +1229,7 @@ export default function ClientPortalPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="shine-card p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-2xl hover:border-blue-500/30 transition-all duration-300"
+                  className="shine-card p-5 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:-translate-y-1 hover:border-blue-500/30 transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 text-blue-900 flex items-center justify-center mb-4">
                     <f.icon size={20} />
@@ -1253,7 +1253,7 @@ export default function ClientPortalPage() {
                 transition={{ duration: 0.6 }}
                 className="space-y-6"
               >
-                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Project Management</h2>
+                <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Project Management</h2>
                 <p className="text-slate-500 leading-relaxed">Each project receives a dedicated workspace with comprehensive tracking tools to keep you informed at every milestone.</p>
                 <div className="space-y-3">
                   {projectFeatures.map((f, i) => (
@@ -1263,7 +1263,7 @@ export default function ClientPortalPage() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: i * 0.1 }}
-                      className="shine-card flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-2xl hover:border-blue-500/30 transition-all duration-300"
+                      className="shine-card flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:-translate-y-1 hover:border-blue-500/30 transition-all duration-300"
                     >
                       <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 text-blue-900 flex items-center justify-center shrink-0">
                         <f.icon size={18} />
