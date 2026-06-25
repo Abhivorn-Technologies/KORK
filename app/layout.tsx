@@ -13,48 +13,75 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'KORK InventRex | Coordinated IP & Patent Services Platform',
+    default: 'KORK InventRex | Patent Services, Patent Drawings & IP Filing Support',
     template: '%s | KORK InventRex',
   },
   description:
-    'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
+    'KORK InventRex helps inventors protect their ideas with patent illustrations, patent search coordination, filing support, IP portfolio management, and access to trusted patent professionals.',
   keywords: [
-    'patent illustration',
-    'patent drawing',
-    'prior art search',
-    'patentability evaluation',
-    'trademark services',
-    'patent filing coordination'
+    'Patent Services',
+    'Patent Filing Support',
+    'Patent Illustrations',
+    'Patent Drawings',
+    'Intellectual Property Services',
+    'USPTO Patent Drawings',
+    'Patent Search Services',
+    'Patent Application Support',
+    'Inventor Services',
+    'IP Portfolio Management',
+    'Utility Patent Drawings',
+    'Design Patent Drawings',
+    'Patent Attorney Network',
+    'Patent Prosecution Support',
+    'Invention Documentation',
+    'Patent Readiness Assessment',
+    'Trademark Illustration Services',
+    'Innovation Protection Services',
+    'patent services',
+    'patent filing support',
+    'patent illustrations',
+    'patent drawings',
+    'intellectual property services',
+    'inventor services',
+    'USPTO patent drawings',
+    'patent search',
+    'patent application support',
+    'IP management',
+    'innovation protection',
+    'trademark illustrations',
   ],
   authors: [{ name: 'KORK InventRex' }],
   creator: 'KORK InventRex',
   publisher: 'KORK InventRex',
   robots: 'index, follow',
+  alternates: {
+    canonical: 'https://www.korkinventrex.tech/',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    url: 'https://www.korkinventrex.tech/',
     siteName: 'KORK InventRex',
-    title: 'KORK InventRex | Coordinated IP & Patent Services Platform',
+    title: 'KORK InventRex | From Idea to Intellectual Property™',
     description:
-      'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
+      'Patent illustrations, filing support, inventor services, and intellectual property solutions designed to help innovators protect their ideas.',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`,
+        url: 'https://www.korkinventrex.tech/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'KORK InventRex',
+        alt: 'KORK InventRex | From Idea to Intellectual Property™',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KORK InventRex',
+    title: 'KORK InventRex | Patent Services & Intellectual Property Support',
     description:
-      'One platform coordinating prior art searches, patent illustrations, patent filing support, trademark services, and intellectual property professionals.',
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`],
+      'Transform your invention into protected intellectual property with patent drawings, filing support, and expert guidance.',
+    images: ['https://www.korkinventrex.tech/twitter-image.jpg'],
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL('https://www.korkinventrex.tech'),
 };
 
 export default function RootLayout({
@@ -69,6 +96,29 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/new_fevi.png" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="language" content="English" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "name": "KORK InventRex",
+              "url": "https://www.korkinventrex.tech",
+              "logo": "https://www.korkinventrex.tech/logo.png",
+              "description": "Patent illustrations, patent filing support, inventor services, intellectual property management and innovation protection solutions.",
+              "telephone": "+1-330-353-9850",
+              "email": "contact@korkinventrex.com",
+              "serviceType": [
+                "Patent Illustrations",
+                "Patent Filing Support",
+                "Patent Search Services",
+                "Inventor Services",
+                "IP Portfolio Management"
+              ]
+            })
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <ToastProvider>
