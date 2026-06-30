@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 const HeroAnimation = dynamic(() => import('../components/HeroAnimation').then((mod) => mod.HeroAnimation), { ssr: false });
@@ -140,15 +141,14 @@ export default function HomePage() {
             Integrated IP & Patent Support Platform
           </motion.div>
           
-          <motion.div
-            role="heading" aria-level={1}
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black tracking-tighter leading-[1.05] text-[#ffffff] max-w-5xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
           >
             From Idea to<br />
-            <motion.div 
+            <motion.span 
               className="inline-block"
               animate={{
                 color: activeServiceIndex === 0 ? '#67e8f9' :
@@ -159,8 +159,8 @@ export default function HomePage() {
               transition={{ duration: 1.5, ease: "easeInOut" }}
             >
               Intellectual Property™
-            </motion.div>
-          </motion.div>
+            </motion.span>
+          </motion.h1>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -439,11 +439,23 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-8 pt-6">
               <div className="flex flex-col gap-2">
-                <img src="/napp_logo.jpg" alt="NAPP member logo reference" className="h-14 w-auto object-contain dark:brightness-125" />
+                <Image 
+                  src="/napp_logo.jpg" 
+                  alt="NAPP member logo reference" 
+                  width={140} 
+                  height={56} 
+                  className="h-14 w-auto object-contain dark:brightness-125" 
+                />
                 <span className="text-[10px] text-slate-500 font-bold uppercase">National Association of Patent Practitioners</span>
               </div>
               <div className="flex flex-col gap-2">
-                <img src="/ipo_logo.jpg" alt="IPO logo reference" className="h-12 w-auto object-contain dark:brightness-125" />
+                <Image 
+                  src="/ipo_logo.jpg" 
+                  alt="IPO logo reference" 
+                  width={120} 
+                  height={48} 
+                  className="h-12 w-auto object-contain dark:brightness-125" 
+                />
                 <span className="text-[10px] text-slate-500 font-bold uppercase mt-1">Intellectual Property Owners Association</span>
               </div>
             </div>

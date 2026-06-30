@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -55,7 +56,14 @@ export default function Header() {
       <div className="container-custom flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center group -ml-2">
-          <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-14 md:h-16 w-auto object-contain mix-blend-multiply dark:mix-blend-normal" />
+          <Image 
+            src="/KORK_InventRex_Logo.jpg.jpeg" 
+            alt="KORK InventRex Logo" 
+            width={240} 
+            height={64} 
+            className="h-14 md:h-16 w-auto object-contain mix-blend-multiply dark:mix-blend-normal" 
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -163,6 +171,8 @@ export default function Header() {
                         <button 
                           onClick={() => setOpenMobileSubmenu(openMobileSubmenu === item.label ? null : item.label)}
                           className="p-2 mr-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                          aria-label={`Toggle ${item.label} submenu`}
+                          aria-expanded={openMobileSubmenu === item.label}
                         >
                           <ChevronDown size={20} className={cn("transition-transform duration-300", openMobileSubmenu === item.label && "rotate-180")} />
                         </button>

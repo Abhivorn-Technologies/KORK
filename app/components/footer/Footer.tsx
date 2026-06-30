@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Send, Phone, Mail, MapPin, Linkedin, Facebook, Twitter, Shield, ArrowUp } from 'lucide-react';
 import { saveEnquiry } from '@/lib/firebase';
@@ -59,7 +60,13 @@ export default function Footer() {
           {/* Company Brief & Newsletter */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center space-x-2">
-              <img src="/KORK_InventRex_Logo.jpg.jpeg" alt="KORK InventRex Logo" className="h-12 w-auto max-w-[200px]" />
+              <Image 
+                src="/KORK_InventRex_Logo.jpg.jpeg" 
+                alt="KORK InventRex Logo" 
+                width={180} 
+                height={48} 
+                className="h-12 w-auto max-w-[200px]" 
+              />
             </Link>
             
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -72,15 +79,19 @@ export default function Footer() {
                 Professional Affiliations
               </span>
               <div className="flex items-center gap-4 bg-slate-900/40 p-3 rounded-lg border border-slate-800/60 max-w-[280px]">
-                <img
+                <Image
                   src="/napp_logo.jpg"
                   alt="NAPP Member Logo"
+                  width={80}
+                  height={32}
                   className="h-8 w-auto object-contain brightness-90 contrast-125 dark:brightness-110"
                 />
                 <div className="h-6 w-px bg-slate-800" />
-                <img
+                <Image
                   src="/ipo_logo.jpg"
                   alt="IPO Member Logo"
+                  width={80}
+                  height={32}
                   className="h-8 w-auto object-contain brightness-90 contrast-125 dark:brightness-110"
                 />
               </div>
@@ -88,9 +99,9 @@ export default function Footer() {
 
             {/* Newsletter Subscription */}
             <div className="space-y-3 pt-2">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                 Newsletter Subscription
-              </h4>
+              </h3>
               {subscribed ? (
                 <div className="text-sm text-emerald-400 font-semibold flex items-center gap-1.5 animate-fade-in">
                   <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full" />
@@ -112,6 +123,7 @@ export default function Footer() {
                     type="submit"
                     disabled={loading}
                     className="px-4 bg-gradient-to-r from-secondary to-accent hover:opacity-95 text-white flex items-center justify-center disabled:opacity-50 transition-opacity"
+                    aria-label="Subscribe to newsletter"
                   >
                     {loading ? (
                       <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -290,6 +302,7 @@ export default function Footer() {
               onClick={scrollToTop}
               className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-800 hover:bg-accent hover:text-white transition-all shadow-md"
               title="Scroll to Top"
+              aria-label="Scroll to top"
             >
               <ArrowUp size={14} />
             </button>

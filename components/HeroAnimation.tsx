@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lightbulb, Settings, Shield, FileText } from 'lucide-react';
 
 const THEMES = [
   { color: '#22d3ee', glow: 'bg-cyan-500/30' },     // Cyan
@@ -175,6 +177,27 @@ function Scene({ activeIndex }: { activeIndex: number }) {
 }
 
 export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const FallbackIcon = useMemo(() => {
+    switch (activeIndex) {
+      case 0: return Lightbulb;
+      case 1: return Settings;
+      case 2: return Shield;
+      case 3: return FileText;
+      default: return Lightbulb;
+    }
+  }, [activeIndex]);
+
   // Use inline styles to guarantee the container always has height, 
   // bypassing any Tailwind CSS caching bugs when switching branches
   return (
@@ -200,12 +223,51 @@ export function HeroAnimation({ activeIndex = 0 }: { activeIndex?: number }) {
         ))}
       </div>
 
-      {/* WebGL Canvas */}
-      <div className="absolute inset-0 z-10">
-        <Canvas camera={{ position: [0, 0, 8.5], fov: 45 }} dpr={[1, 2]}>
-          <Scene activeIndex={activeIndex} />
-        </Canvas>
-      </div>
+      {isMobile ? (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, scale: 0.8, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: -10 }}
+              transition={{ duration: 0.5 }}
+              className="relative flex items-center justify-center"
+            >
+              {/* Internal spinning/pulsing glow element */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="absolute w-44 h-44 rounded-full border border-dashed opacity-25"
+                style={{ borderColor: THEMES[activeIndex].color }}
+              />
+              <motion.div
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="relative flex items-center justify-center p-8 rounded-full border border-white/5 bg-slate-900/35 backdrop-blur-sm"
+              >
+                <div 
+                  className="absolute inset-0 rounded-full opacity-30 filter blur-xl"
+                  style={{ background: `radial-gradient(circle, ${THEMES[activeIndex].color} 0%, transparent 70%)` }}
+                />
+                <FallbackIcon 
+                  size={64} 
+                  strokeWidth={1.5}
+                  style={{ color: THEMES[activeIndex].color }}
+                  className="relative z-10 filter drop-shadow-[0_0_12px_rgba(255,255,255,0.15)]"
+                />
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      ) : (
+        /* WebGL Canvas */
+        <div className="absolute inset-0 z-10">
+          <Canvas camera={{ position: [0, 0, 8.5], fov: 45 }} dpr={[1, 2]}>
+            <Scene activeIndex={activeIndex} />
+          </Canvas>
+        </div>
+      )}
 
     </div>
   );
